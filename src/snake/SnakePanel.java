@@ -120,7 +120,7 @@ public class SnakePanel extends GamePanel {
                     g.drawImage(ball_img, snake[z].x, snake[z].y, this); //Pinta el resto del cuerpo
                 }
             }
-            //Toolkit.getToolkit().sync(); //Esto no se si hace falta, y no me compila
+            this.getToolkit().sync();
         } else {
             gameOver(g);
         }
