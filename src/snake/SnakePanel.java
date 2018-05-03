@@ -25,7 +25,7 @@ import surfacegames.GamePanel;
  */
 public class SnakePanel extends GamePanel {
     
-    private final int MAX_DOTS = 100; // Tamaño máximo de la serpiente
+    private final int MAX_DOTS = 1000; // Tamaño máximo de la serpiente
     private final int DOT_SIZE = 10;
     private final int DELAY = 140;
     
@@ -152,7 +152,7 @@ public class SnakePanel extends GamePanel {
     private void checkApple(){
         // Si pasa por la manzana crece y se crea otra manzana.
         if(snake[0].equals(apple)){
-            dots++;
+            if(dots < MAX_DOTS -1) dots++;
             locateApple();
         }
     }
