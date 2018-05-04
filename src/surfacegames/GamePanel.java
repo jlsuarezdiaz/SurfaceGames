@@ -9,8 +9,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionListener;
+import java.io.File;
 import static java.lang.Math.ceil;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import static utils.Math.mod;
 
 /**
@@ -22,6 +25,9 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     protected Dimension dim = new Dimension(400,400);
     
     protected Surface surface = Surface.DISK;
+    
+    protected File backgroundSound = null;
+    protected Clip backgroundClip = null;
 
     /**
      * Creates new form GamePanel
@@ -79,7 +85,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
                 break;
             case V_SPHERE:
                 if(y >= h || y < 0){ //TODO hacerlo con módulos por si el punto se pasa dos veces la frontera
-                    psurf = new Point(mod(w-x,w),mod(h-y-gy,h));
+                    psurf = new Point(mod(w-x-gx,w),mod(h-y-gy,h));
                 }
                 else{
                     psurf = new Point(mod(x,w),mod(y,h));
@@ -87,7 +93,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
                 break;
             case H_SPHERE:
                 if(x >= w || x < 0){ //TODO hacerlo con módulos por si el punto se pasa dos veces la frontera
-                    psurf = new Point(mod(w-x-gx,w),mod(h-y,h));
+                    psurf = new Point(mod(w-x-gx,w),mod(h-y-gy,h));
                 }
                 else{
                     psurf = new Point(mod(x,w),mod(y,h));
@@ -184,7 +190,35 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     
     public abstract void pause();
         
+    public void setBackgroundSound(String filename){
+        this.backgroundSound = new File(filename);
+    }
     
+    public void playBackgroundSound(){
+        if(this.backgroundSound != null){
+            try{
+                backgroundClip = AudioSystem.getClip();
+                backgroundClip.open(AudioSystem.getAudioInputStream(backgroundSound));
+                backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+                backgroundClip.start();
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void stopBackgroundSound(){
+        if(backgroundClip != null){
+            try{
+                backgroundClip.stop();
+                backgroundClip.close();
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
     
 
     /**

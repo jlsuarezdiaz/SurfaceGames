@@ -5,7 +5,12 @@
  */
 package surfacegames;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.JInternalFrame;
 import snake.SnakeWindow;
@@ -96,8 +101,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         surfaceBtGroup = new javax.swing.ButtonGroup();
-        desktop = new javax.swing.JDesktopPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        desktop = new surfacegames.BackgroundDesktop();
+        topMenu = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
         newGameMenu = new javax.swing.JMenu();
         snakeMenuItem = new javax.swing.JMenuItem();
@@ -110,22 +115,19 @@ public class MainWindow extends javax.swing.JFrame {
         torusMenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         surfaceHelpMenuItem = new javax.swing.JMenuItem();
+        optionsMenu = new javax.swing.JMenu();
+        soundMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Surface Games");
         setPreferredSize(new java.awt.Dimension(1000, 800));
 
-        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
-        desktop.setLayout(desktopLayout);
-        desktopLayout.setHorizontalGroup(
-            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        desktopLayout.setVerticalGroup(
-            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
-        );
-
+        try{
+            desktop.setBackgroundImage(ImageIO.read(new File("src/surfacegames/media/background1.jpg")));
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");
@@ -142,7 +144,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         gameMenu.add(newGameMenu);
 
-        jMenuBar1.add(gameMenu);
+        topMenu.add(gameMenu);
 
         surfaceMenu.setText("Superficie");
 
@@ -205,9 +207,16 @@ public class MainWindow extends javax.swing.JFrame {
         surfaceHelpMenuItem.setText("Ayuda");
         surfaceMenu.add(surfaceHelpMenuItem);
 
-        jMenuBar1.add(surfaceMenu);
+        topMenu.add(surfaceMenu);
 
-        setJMenuBar(jMenuBar1);
+        optionsMenu.setText("Opciones");
+
+        soundMenuItem.setText("Sonido");
+        optionsMenu.add(soundMenuItem);
+
+        topMenu.add(optionsMenu);
+
+        setJMenuBar(topMenu);
 
         pack();
         setLocationRelativeTo(null);
@@ -262,18 +271,20 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane desktop;
+    private surfacegames.BackgroundDesktop desktop;
     private javax.swing.JRadioButtonMenuItem diskMenuItem;
     private javax.swing.JMenu gameMenu;
     private javax.swing.JRadioButtonMenuItem hcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem hsphereMenuItem;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu newGameMenu;
+    private javax.swing.JMenu optionsMenu;
     private javax.swing.JMenuItem snakeMenuItem;
+    private javax.swing.JMenuItem soundMenuItem;
     private javax.swing.ButtonGroup surfaceBtGroup;
     private javax.swing.JMenuItem surfaceHelpMenuItem;
     private javax.swing.JMenu surfaceMenu;
+    private javax.swing.JMenuBar topMenu;
     private javax.swing.JRadioButtonMenuItem torusMenuItem;
     private javax.swing.JRadioButtonMenuItem vcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem vsphereMenuItem;

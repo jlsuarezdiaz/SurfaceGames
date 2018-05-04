@@ -64,6 +64,7 @@ public class SnakePanel extends GamePanel {
         super();
         initComponents();
         initBoard();
+        
     }
     
     public void initBoard(){
@@ -109,6 +110,9 @@ public class SnakePanel extends GamePanel {
         // 2 (this) - evento que activa el temporizador (mas o menos)
         timer = new Timer(DELAY, this);
         timer.start();
+        
+        setBackgroundSound("src/snake/media/tetris_sound.wav");
+        playBackgroundSound();
     }
     
     public void paintComponent(Graphics g){
@@ -145,11 +149,13 @@ public class SnakePanel extends GamePanel {
         //TODO añadir graphics y poner un mensaje de pausa
         pause=true;
         timer.stop();
+        stopBackgroundSound();
     }
     
     public void resume(){
         pause=false;
         timer.start();
+        playBackgroundSound();
     }
     
     private void checkApple(){
@@ -216,6 +222,7 @@ public class SnakePanel extends GamePanel {
         
         if(!inGame){
             timer.stop();
+            stopBackgroundSound();
         }
     }
     
