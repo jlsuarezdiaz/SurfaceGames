@@ -5,6 +5,8 @@
  */
 package surfacegames;
 
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
 import javax.swing.JInternalFrame;
 import snake.SnakeWindow;
 
@@ -19,6 +21,69 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+    }
+    
+    private void startGame(GameType g){
+        JInternalFrame iw = null;
+        switch(g){
+            case SNAKE:
+                iw = new SnakeWindow(this);
+                break;
+        }
+        desktop.add(iw);
+        iw.setVisible(true);
+    }
+    
+    public void setView(GamePanel gp){
+        switch(gp.getSurface()){
+            case DISK:
+                this.diskMenuItem.setSelected(true);
+                break;
+            case V_SPHERE:
+                this.vsphereMenuItem.setSelected(true);
+                break;
+            case H_SPHERE:
+                this.hsphereMenuItem.setSelected(true);
+                break;
+            case V_CYLINDER:
+                this.vcylinderMenuItem.setSelected(true);
+                break;
+            case H_CYLINDER:
+                this.hcylinderMenuItem.setSelected(true);
+                break;
+            case TORUS:
+                this.torusMenuItem.setSelected(true);
+                break;
+        }
+        Enumeration<AbstractButton> buttons = surfaceBtGroup.getElements();
+        while(buttons.hasMoreElements()){
+            AbstractButton b = buttons.nextElement();
+            b.setEnabled(false);
+        }
+        
+        for(Surface s: gp.getAllowedSurfaces()){
+            switch(s){
+                case DISK:
+                this.diskMenuItem.setEnabled(true);
+                break;
+            case V_SPHERE:
+                this.vsphereMenuItem.setEnabled(true);
+                break;
+            case H_SPHERE:
+                this.hsphereMenuItem.setEnabled(true);
+                break;
+            case V_CYLINDER:
+                this.vcylinderMenuItem.setEnabled(true);
+                break;
+            case H_CYLINDER:
+                this.hcylinderMenuItem.setEnabled(true);
+                break;
+            case TORUS:
+                this.torusMenuItem.setEnabled(true);
+                break;
+            }
+        }
+        
     }
 
     /**
@@ -149,9 +214,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void snakeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snakeMenuItemActionPerformed
-        JInternalFrame iw = new SnakeWindow();
-        desktop.add(iw);
-        iw.setVisible(true);
+        startGame(GameType.SNAKE);
     }//GEN-LAST:event_snakeMenuItemActionPerformed
 
     private void diskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diskMenuItemActionPerformed

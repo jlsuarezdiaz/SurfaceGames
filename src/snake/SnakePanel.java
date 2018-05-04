@@ -15,15 +15,18 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import surfacegames.GamePanel;
+import surfacegames.Surface;
 
 /**
  *
  * @author nuria
  */
 public class SnakePanel extends GamePanel {
+    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
     
     private final int MAX_DOTS = 2000; // Tamaño máximo de la serpiente
     private final int DOT_SIZE = 10;
@@ -138,13 +141,13 @@ public class SnakePanel extends GamePanel {
         
     }
     
-    private void pause(){
+    public void pause(){
         //TODO añadir graphics y poner un mensaje de pausa
         pause=true;
         timer.stop();
     }
     
-    private void resume(){
+    public void resume(){
         pause=false;
         timer.start();
     }
@@ -243,6 +246,11 @@ public class SnakePanel extends GamePanel {
         repaint();
     }
     
+    @Override
+    public Surface[] getAllowedSurfaces() {
+        return allowedSurfaces;
+    }
+    
     
 
     /**
@@ -312,6 +320,8 @@ public class SnakePanel extends GamePanel {
         }
         
     }//GEN-LAST:event_formKeyPressed
+
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

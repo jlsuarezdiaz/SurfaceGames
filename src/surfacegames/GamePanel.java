@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import static java.lang.Math.ceil;
+import java.util.ArrayList;
 import static utils.Math.mod;
 
 /**
@@ -178,6 +179,12 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         }
         return false;
     }
+    
+    public abstract Surface[] getAllowedSurfaces();
+    
+    public abstract void pause();
+        
+    
     
 
     /**

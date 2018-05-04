@@ -7,6 +7,7 @@ package snake;
 
 import surfacegames.GamePanel;
 import surfacegames.GameWindow;
+import surfacegames.MainWindow;
 
 /**
  *
@@ -21,6 +22,11 @@ public class SnakeWindow extends GameWindow{
         super();
         initComponents();
         //setPreferredSize(snakePanel.getDimension());
+    }
+    
+    public SnakeWindow(MainWindow g){
+        super(g);
+        initComponents();
     }
 
     /**
