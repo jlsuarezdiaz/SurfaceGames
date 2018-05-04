@@ -60,43 +60,43 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     /**
      * Calcula las coordenadas dentro del panel del punto dado, según la superficie.
      * @param p
-     * @return Coordenadas equivalentes del punto en el panel, o null si el punto ha sobrepasado el borde de la superficie. 
+     * @param gridSize Tamaño del objeto sobre el que se calculan las coordenadas
+     * @return Coordenadas equivalentes del punto en el panel. Si el punto sobrepasa la superficie devuelve coordenadas inválidas
      */
-    public Point getCanonicalCoordinates(Point p){
+    public Point getCanonicalCoordinates(Point p, Dimension gridSize){
         int w = dim.width;
         int h = dim.height;
         int x = p.x;
         int y = p.y;
+        int gx = gridSize.width;
+        int gy = gridSize.height;
         Point psurf = null;
         
         switch(surface){
             case DISK:
-                if(x >= 0 && x <= w && y >= 0 && y <= h)
-                    psurf = p;
+                psurf = new Point(p);
                 break;
             case V_SPHERE:
-                //TODO
-                /*
-                if(y > h || y < 0){ //TODO hacerlo con módulos por si el punto se pasa dos veces la frontera
-                    psurf = new Point(mod(w-x,w),mod(h-y,h));
+                if(y >= h || y < 0){ //TODO hacerlo con módulos por si el punto se pasa dos veces la frontera
+                    psurf = new Point(mod(w-x,w),mod(h-y-gy,h));
                 }
                 else{
                     psurf = new Point(mod(x,w),mod(y,h));
                 }
-                */
                 break;
             case H_SPHERE:
-                //TODO
+                if(x >= w || x < 0){ //TODO hacerlo con módulos por si el punto se pasa dos veces la frontera
+                    psurf = new Point(mod(w-x-gx,w),mod(h-y,h));
+                }
+                else{
+                    psurf = new Point(mod(x,w),mod(y,h));
+                }
                 break;
             case V_CYLINDER:
-                if(y >= 0 && y <= h){
-                    psurf = new Point(mod(x,w),y);
-                }
+                psurf = new Point(mod(x,w),y);
                 break;
-            case H_CYLINDER:
-                if(x >= 0 && x <= w){
-                    psurf = new Point(x,mod(y,h));
-                }
+            case H_CYLINDER:                
+                psurf = new Point(x,mod(y,h));
                 break;
             case TORUS:
                 psurf = new Point(mod(x,w), mod(y,h));
@@ -107,7 +107,38 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         return psurf;
     }
     
+    public Point getCanonicalCoordinates(Point p){
+        return getCanonicalCoordinates(p, new Dimension(1,1));
+    }
+    
+    public boolean isOnBorder(Point p, Dimension gridSize){
+        int w = dim.width;
+        int h = dim.height;
+        int x = p.x;
+        int y = p.y;
+        int gx = gridSize.width;
+        int gy = gridSize.height;
+        
+        switch(surface){
+            case V_SPHERE:
+            case H_SPHERE:
+            case TORUS:
+                return false;
+            case DISK:
+                return x==-gx || x==w || y==-gy || y == h;
+            case V_CYLINDER:
+                return y==-gy || y== h;
+            case H_CYLINDER:
+                return x==-gx || x==w;
+        }
+        return false;
+    }
+    
     public boolean isOnBorder(Point p){
+        return isOnBorder(p,new Dimension(1,1));
+    }
+    
+    public boolean isOnBorderOrBeyond(Point p){
         int w = dim.width;
         int h = dim.height;
         int x = p.x;
@@ -119,11 +150,11 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
             case TORUS:
                 return false;
             case DISK:
-                return x==0 || x==w || y==0 || y == h;
+                return x<0 || x>=w || y<0 || y >= h;
             case V_CYLINDER:
-                return y==0 || y== h;
+                return y<1 || y>= h;
             case H_CYLINDER:
-                return x==0 || x==w;
+                return x<-1 || x>=w;
         }
         return false;
     }
@@ -140,7 +171,9 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
             case TORUS:
                 return false;
             case V_SPHERE:
-                //return y >= h || y < 0;
+                return y >= h || y < 0;
+            case H_SPHERE:
+                return x >= w || x < 0;
             
         }
         return false;
