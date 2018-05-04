@@ -25,7 +25,7 @@ import surfacegames.GamePanel;
  */
 public class SnakePanel extends GamePanel {
     
-    private final int MAX_DOTS = 1000; // Tamaño máximo de la serpiente
+    private final int MAX_DOTS = 2000; // Tamaño máximo de la serpiente
     private final int DOT_SIZE = 10;
     private final int DELAY = 140;
     
@@ -193,13 +193,13 @@ public class SnakePanel extends GamePanel {
                 downDirection=!downDirection;
             }
         }
-        snake[0] = getCanonicalCoordinates(snake[0]);
+        snake[0] = getCanonicalCoordinates(snake[0],new Dimension(DOT_SIZE,DOT_SIZE));
         
     }
     
     private void checkCollision(){
         // Si hemos chocado con algún border se acabó
-        if(snake[0] == null || isOnBorder(snake[0])){
+        if(snake[0] == null || isOnBorderOrBeyond(snake[0])){
             inGame = false;
         }
         else{
