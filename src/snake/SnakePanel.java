@@ -16,7 +16,10 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
@@ -146,10 +149,37 @@ public class SnakePanel extends GamePanel {
     }
     
     public void pause(){
-        //TODO añadir graphics y poner un mensaje de pausa
+        //TODO añadir graphics y poner un mensaje de pausa -> DONE
         pause=true;
         timer.stop();
+        
+        // Mensaje de pausa -> desaparece a los 2 segundos
+        final JOptionPane optionPane = new JOptionPane("Para renaudarlo pulsa tecla P.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, this);
+                
+        final JDialog dialog = new JDialog();
+        dialog.setTitle("Juego en pausa");
+        dialog.setModal(true);
+
+        dialog.setContentPane(optionPane);
+
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.pack();
+
+        //create timer to dispose of dialog after 5 seconds
+        Timer timer = new Timer(2000, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dialog.dispose();
+            }
+        });
+        
+        timer.setRepeats(false);//the timer should only go off once
+
+        //start timer to close JDialog as dialog modal we must start the timer before its visible
+        timer.start();
         stopBackgroundSound();
+        dialog.setVisible(true);
+       
     }
     
     public void resume(){

@@ -128,6 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
         catch(Exception ex){
             ex.printStackTrace();
         }
+        desktop.setLayout(null);
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");
