@@ -5,8 +5,11 @@
  */
 package surfacegames;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -57,8 +60,24 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        Graphics2D g2d = (Graphics2D)g;
+        
+        
+        int w = dim.width;
+        int h = dim.height;
+        
+        
+        BasicStroke stroke = new BasicStroke(3.0f);
+        g2d.setStroke(stroke);
+        
         switch(surface){
             //TODO pintar un borde (línea degradada para identificar los bordes en el rectágulo).
+            case V_CYLINDER:
+                g2d.setColor(Color.RED);
+                g2d.drawLine(0, 0, 0, h);
+                g2d.drawLine(w,0,w,h);
+            break;
         }
     }
     

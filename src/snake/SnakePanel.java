@@ -245,7 +245,7 @@ public class SnakePanel extends GamePanel {
             //Else comprobamos si choca consigo misma
             for(int z = dots; z > 0; z--){
                 if((z > 4) && snake[0].equals(snake[z])){
-                    inGame = false; //TODO hace falta el z > 4?
+                    inGame = false; 
                 }
             }
         }
