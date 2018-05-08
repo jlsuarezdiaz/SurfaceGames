@@ -63,20 +63,36 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         
         Graphics2D g2d = (Graphics2D)g;
         
-        
         int w = dim.width;
         int h = dim.height;
-        
-        
-        BasicStroke stroke = new BasicStroke(3.0f);
+       
+        BasicStroke stroke = new BasicStroke(2.0f);
         g2d.setStroke(stroke);
-        
+        int grosor = (int) stroke.getLineWidth();
+
         switch(surface){
             //TODO pintar un borde (línea degradada para identificar los bordes en el rectágulo).
             case V_CYLINDER:
                 g2d.setColor(Color.RED);
-                g2d.drawLine(0, 0, 0, h);
-                g2d.drawLine(w,0,w,h);
+                g2d.drawLine(grosor, 0, grosor, h);
+                g2d.drawLine(w-grosor,0,w-grosor,h);
+            break;
+            
+            case H_CYLINDER:
+                g2d.setColor(Color.RED);
+                g2d.drawLine(0, grosor, w, grosor);
+                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+            break;
+            
+            case TORUS:
+                g2d.setColor(Color.RED);
+                g2d.drawLine(grosor, 0, grosor, h);
+                g2d.drawLine(w-grosor,0,w-grosor,h);
+                
+                g2d.setColor(Color.BLUE);
+                g2d.drawLine(0, grosor, w, grosor);
+                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                
             break;
         }
     }
