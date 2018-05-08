@@ -130,7 +130,10 @@ public class SnakePanel extends GamePanel {
                     g.drawImage(ball_img, snake[z].x, snake[z].y, this); //Pinta el resto del cuerpo
                 }
             }
-            this.getToolkit().sync();
+            if(pause){
+                paintPause(g);
+            }
+            this.getToolkit().sync(); //Fuerza la sincronización
         } else {
             gameOver(g);
         }
@@ -148,11 +151,23 @@ public class SnakePanel extends GamePanel {
         
     }
     
+    private void paintPause(Graphics g){
+        String msg = "PAUSA";
+        Font medium = new Font("Helvetica", Font.BOLD, 20);
+        FontMetrics metr = getFontMetrics(medium);
+
+        g.setColor(Color.white);
+        g.setFont(medium);
+        g.drawString(msg, (dim.width - metr.stringWidth(msg)) / 2, dim.height / 2);
+    }
+    
     public void pause(){
         //TODO cuando se cierra el juego sale -> corregirlo
         pause=true;
         timer.stop();
-        
+        stopBackgroundSound();
+        repaint();
+        /*
         // Mensaje de pausa -> desaparece a los 2 segundos
         final JOptionPane optionPane = new JOptionPane("Para renaudarlo pulsa tecla P.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, this);
                 
@@ -179,7 +194,7 @@ public class SnakePanel extends GamePanel {
         timer.start();
         stopBackgroundSound();
         dialog.setVisible(true);
-       
+        */
     }
     
     public void resume(){
@@ -304,17 +319,7 @@ public class SnakePanel extends GamePanel {
                 formKeyPressed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed

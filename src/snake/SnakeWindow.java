@@ -48,11 +48,11 @@ public class SnakeWindow extends GameWindow{
         snakePanel.setLayout(snakePanelLayout);
         snakePanelLayout.setHorizontalGroup(
             snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
         snakePanelLayout.setVerticalGroup(
             snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGap(0, 268, Short.MAX_VALUE)
         );
 
         getContentPane().add(snakePanel, java.awt.BorderLayout.CENTER);

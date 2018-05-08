@@ -38,11 +38,12 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
      */
     public GamePanel() {
         initComponents();
-        setPreferredSize(dim);
+        setDimension(dim);
     }
     
     public void setSurface(Surface s){
         this.surface = s;
+        this.repaint();
     }
     
     public Surface getSurface(){
@@ -51,7 +52,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     
     public void setDimension(Dimension d){
         this.dim = d;
-        setPreferredSize(dim);
+        setPreferredSize(new Dimension(dim.width,dim.height+8)); //TODO por alguna razón la ventana se come 8 pixels de la parte de abajo del panel. Intentar averiguar por qué para no tener que hacer esto.
     }
     
     public Dimension getDimension(){
@@ -65,9 +66,17 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         Graphics2D g2d = (Graphics2D)g;
         
         //Definimos colores para degradado (STACKOVERFLOW)
+        //TODO++: Añadir lineas para bordes (en este caso con un color fijo y que les de apariencia de borde)
+        //TODO: Buscar una combinación de colores buena para los 3 gradientes y que los colores sean lo suficientemente distintos en cada gradiente.
+        //TODO--: Buscar un stroke redondeado para que no queden feas las esquinas (?) ver practica 5 o 6 de SM
         Color startColor = Color.RED;
+        Color endColor = Color.YELLOW;
+        
         Color startColor2 = Color.BLUE;
-        Color endColor = Color.WHITE;
+        Color endColor2 = Color.MAGENTA;
+        
+        Color startColor3 = Color.GREEN;
+        Color endColor3 = Color.CYAN;
         
                 
         int w = dim.width;
@@ -75,21 +84,21 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         
         int startX, startY, endX, endY;
     
-        GradientPaint gradient, gradient2;
+        GradientPaint gradient, gradient2, gradient3;
 
        
-        BasicStroke stroke = new BasicStroke(2.0f);
+        BasicStroke stroke = new BasicStroke(4.0f);
         g2d.setStroke(stroke);
-        int grosor = (int) stroke.getLineWidth();
-
+        //int grosor = (int) stroke.getLineWidth();
+        int offset = (int) stroke.getLineWidth()/2;
         switch(surface){
             case V_CYLINDER:
                 startX = startY = endX = 0;
                 endY = h;
                 gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
                 g2d.setPaint(gradient);
-                g2d.drawLine(grosor, 0, grosor, h);
-                g2d.drawLine(w-grosor,0,w-grosor,h);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                g2d.drawLine(w-offset,0,w-offset,h-offset);
             break;
             
             case H_CYLINDER:
@@ -97,8 +106,8 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
                 endX = w;
                 gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
                 g2d.setPaint(gradient);
-                g2d.drawLine(0, grosor, w, grosor);
-                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
             break;
             
             case TORUS:
@@ -106,39 +115,51 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
                 endX = w;
                 gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
                 g2d.setPaint(gradient);
-                g2d.drawLine(0, grosor, w, grosor);
-                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
                 
                 
                 startX = startY = endX = 0;
                 endY = h;
-                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
                 g2d.setPaint(gradient2);
-                g2d.drawLine(grosor, 0, grosor, h);
-                g2d.drawLine(w-grosor,0,w-grosor,h);    
+                g2d.drawLine(offset, offset, offset, h-offset);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset);    
             break;
             
             case V_SPHERE:
                 startX = startY = endX = 0;
                 endY = h;
-                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
-                g2d.setPaint(gradient2);
-                g2d.drawLine(grosor, 0, grosor, h);
-                g2d.drawLine(w-grosor,0,w-grosor,h);
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset);
                 
                 startX = startY = endY = 0;
                 endX = w/2;
-                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
-                g2d.setPaint(gradient);
-                g2d.drawLine(0, grosor, w/2, grosor);
-                g2d.drawLine(0,h-4*grosor,w/2,h-4*grosor);
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(offset, offset, w/2, offset);
                 
+                startY = endY = 0;
                 startX = w/2;
                 endX = w;
-                gradient = new GradientPaint(endX, endY, startColor, startX, startY, endColor);
-                g2d.setPaint(gradient);
-                g2d.drawLine(w/2, grosor, w, grosor);
-                g2d.drawLine(w/2,h-4*grosor,w,h-4*grosor);
+                gradient2 = new GradientPaint(endX, endY, startColor2, startX, startY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w/2, offset, w-offset, offset);
+                
+                
+                
+                gradient3 = new GradientPaint(endX, endY, startColor3, startX, startY, endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(w/2,h-offset,w-offset,h-offset);
+                
+                startX = startY = endY = 0;
+                endX = w/2;
+                gradient3 = new GradientPaint(startX, startY, startColor3, endX, endY, endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(offset,h-offset,w/2,h-offset);
+                
             break;
             
             
@@ -147,22 +168,33 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
                 endX = w;
                 gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
                 g2d.setPaint(gradient);
-                g2d.drawLine(0, grosor, w, grosor);
-                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
                 
                 startX = startY = endX = 0;
                 endY = h/2;
-                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
                 g2d.setPaint(gradient2);
-                g2d.drawLine(grosor, 0, grosor, h/2);
-                g2d.drawLine(w-grosor,0,w-grosor,h/2);
+                g2d.drawLine(offset, offset, offset, h/2);
                 
-                endY = h;
+                startX = endX = 0;
                 startY = h/2;
-                gradient2 = new GradientPaint(endX, endY, startColor2, startX, startY, endColor);
+                endY = h;
+                gradient2 = new GradientPaint(endX, endY, startColor2, startX, startY, endColor2);
                 g2d.setPaint(gradient2);
-                g2d.drawLine(grosor, h/2, grosor, h);
-                g2d.drawLine(w-grosor,h/2,w-grosor,h);
+                g2d.drawLine(offset, h/2, offset, h-offset);
+                
+                
+                
+                gradient3 = new GradientPaint(endX, endY, startColor3, startX, startY, endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(w-offset,h/2,w-offset,h-offset);
+                
+                startX = startY = endX = 0;
+                endY = h/2;
+                gradient3 = new GradientPaint(startX, startY, startColor3, endX, endY, endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(w-offset,offset,w-offset,h/2);
                 
             break;
         }
