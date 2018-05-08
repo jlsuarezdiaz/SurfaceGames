@@ -149,7 +149,7 @@ public class SnakePanel extends GamePanel {
     }
     
     public void pause(){
-        //TODO añadir graphics y poner un mensaje de pausa -> DONE
+        //TODO cuando se cierra el juego sale -> corregirlo
         pause=true;
         timer.stop();
         

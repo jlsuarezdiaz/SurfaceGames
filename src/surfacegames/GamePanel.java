@@ -8,6 +8,7 @@ package surfacegames;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -63,35 +64,105 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         
         Graphics2D g2d = (Graphics2D)g;
         
+        //Definimos colores para degradado (STACKOVERFLOW)
+        Color startColor = Color.RED;
+        Color startColor2 = Color.BLUE;
+        Color endColor = Color.WHITE;
+        
+                
         int w = dim.width;
         int h = dim.height;
+        
+        int startX, startY, endX, endY;
+    
+        GradientPaint gradient, gradient2;
+
        
         BasicStroke stroke = new BasicStroke(2.0f);
         g2d.setStroke(stroke);
         int grosor = (int) stroke.getLineWidth();
 
         switch(surface){
-            //TODO pintar un borde (línea degradada para identificar los bordes en el rectágulo).
             case V_CYLINDER:
-                g2d.setColor(Color.RED);
+                startX = startY = endX = 0;
+                endY = h;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
                 g2d.drawLine(grosor, 0, grosor, h);
                 g2d.drawLine(w-grosor,0,w-grosor,h);
             break;
             
             case H_CYLINDER:
-                g2d.setColor(Color.RED);
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
                 g2d.drawLine(0, grosor, w, grosor);
                 g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
             break;
             
             case TORUS:
-                g2d.setColor(Color.RED);
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(0, grosor, w, grosor);
+                g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                
+                
+                startX = startY = endX = 0;
+                endY = h;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(grosor, 0, grosor, h);
+                g2d.drawLine(w-grosor,0,w-grosor,h);    
+            break;
+            
+            case V_SPHERE:
+                startX = startY = endX = 0;
+                endY = h;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
+                g2d.setPaint(gradient2);
                 g2d.drawLine(grosor, 0, grosor, h);
                 g2d.drawLine(w-grosor,0,w-grosor,h);
                 
-                g2d.setColor(Color.BLUE);
+                startX = startY = endY = 0;
+                endX = w/2;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(0, grosor, w/2, grosor);
+                g2d.drawLine(0,h-4*grosor,w/2,h-4*grosor);
+                
+                startX = w/2;
+                endX = w;
+                gradient = new GradientPaint(endX, endY, startColor, startX, startY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(w/2, grosor, w, grosor);
+                g2d.drawLine(w/2,h-4*grosor,w,h-4*grosor);
+            break;
+            
+            
+            case H_SPHERE:
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
                 g2d.drawLine(0, grosor, w, grosor);
                 g2d.drawLine(0,h-4*grosor,w,h-4*grosor);
+                
+                startX = startY = endX = 0;
+                endY = h/2;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(grosor, 0, grosor, h/2);
+                g2d.drawLine(w-grosor,0,w-grosor,h/2);
+                
+                endY = h;
+                startY = h/2;
+                gradient2 = new GradientPaint(endX, endY, startColor2, startX, startY, endColor);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(grosor, h/2, grosor, h);
+                g2d.drawLine(w-grosor,h/2,w-grosor,h);
                 
             break;
         }
