@@ -17,6 +17,8 @@ import java.io.File;
 import static java.lang.Math.ceil;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import static utils.Math.mod;
@@ -33,6 +35,8 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     
     protected URL backgroundSound = null;
     protected Clip backgroundClip = null;
+    
+    protected Map<String, Clip> soundEffects = new HashMap<String,Clip>();
 
     /**
      * Creates new form GamePanel
@@ -331,13 +335,19 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         
     public void setBackgroundSound(String filename){
         this.backgroundSound = getClass().getResource(filename);
+        try{
+            backgroundClip = AudioSystem.getClip();
+            backgroundClip.open(AudioSystem.getAudioInputStream(backgroundSound));
+        }
+        catch(Exception ex){
+                ex.printStackTrace();
+        }
     }
     
     public void playBackgroundSound(){
         if(this.backgroundSound != null){
             try{
-                backgroundClip = AudioSystem.getClip();
-                backgroundClip.open(AudioSystem.getAudioInputStream(backgroundSound));
+                
                 backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
                 backgroundClip.start();
             }
@@ -351,7 +361,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         if(backgroundClip != null){
             try{
                 backgroundClip.stop();
-                backgroundClip.close();
+                //backgroundClip.close();
             }
             catch(Exception ex){
                 ex.printStackTrace();
@@ -359,6 +369,35 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
         }
     }
     
+    public void addSoundEffect(String key, String path){
+        try{
+            Clip c = AudioSystem.getClip();
+            c.open(AudioSystem.getAudioInputStream(getClass().getResource(path)));
+            soundEffects.put(key, c);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void playSoundEffect(String key){
+        Clip c = soundEffects.get(key);
+        if(c != null){
+            c.stop();
+            c.setMicrosecondPosition(0);
+            c.start();
+        }
+    }
+    
+    public void clean(){
+        if(backgroundClip != null){
+            backgroundClip.close();
+        }
+        
+        for(Clip c : soundEffects.values()){
+            c.close();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -30,6 +30,12 @@ public abstract class GameWindow extends javax.swing.JInternalFrame {
     public void setParent(MainWindow p){
         this.parent = p;
     }
+    
+    @Override
+    public void dispose(){
+        super.dispose();
+        getGamePanel().clean();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

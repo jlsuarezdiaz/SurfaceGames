@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -114,8 +115,13 @@ public class SnakePanel extends GamePanel {
         timer = new Timer(DELAY, this);
         timer.start();
         
-        setBackgroundSound("/snake/media/tetris_sound.wav");
+        setBackgroundSound("/surfacegames/media/tetris_sound.wav");
         playBackgroundSound();
+        
+        addSoundEffect("coin", "/surfacegames/media/coin.wav");
+        addSoundEffect("fortnite", "/surfacegames/media/fortnite.wav");
+        addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
+        addSoundEffect("teleport", "/surfacegames/media/teleport.wav");
     }
     
     public void paintComponent(Graphics g){
@@ -179,6 +185,7 @@ public class SnakePanel extends GamePanel {
         // Si pasa por la manzana crece y se crea otra manzana.
         if(snake[0].equals(apple)){
             if(dots < MAX_DOTS -1) dots++;
+            playSoundEffect("coin");
             locateApple();
         }
     }
@@ -219,7 +226,12 @@ public class SnakePanel extends GamePanel {
                 downDirection=!downDirection;
             }
         }
+        Point last = snake[0];
         snake[0] = getCanonicalCoordinates(snake[0],new Dimension(DOT_SIZE,DOT_SIZE));
+        
+        if(!last.equals(snake[0])){
+            playSoundEffect("teleport");
+        }
         
     }
     
@@ -240,6 +252,13 @@ public class SnakePanel extends GamePanel {
         if(!inGame){
             timer.stop();
             stopBackgroundSound();
+            playSoundEffect("explosion");
+            
+            try{
+                sleep(2000);
+            }
+            catch(Exception ex){}
+            playSoundEffect("fortnite");
         }
     }
     
@@ -274,6 +293,8 @@ public class SnakePanel extends GamePanel {
     public Surface[] getAllowedSurfaces() {
         return allowedSurfaces;
     }
+    
+    
     
     
 
