@@ -162,39 +162,11 @@ public class SnakePanel extends GamePanel {
     }
     
     public void pause(){
-        //TODO cuando se cierra el juego sale -> corregirlo
         pause=true;
         timer.stop();
         stopBackgroundSound();
-        repaint();
-        /*
-        // Mensaje de pausa -> desaparece a los 2 segundos
-        final JOptionPane optionPane = new JOptionPane("Para renaudarlo pulsa tecla P.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, this);
-                
-        final JDialog dialog = new JDialog();
-        dialog.setTitle("Juego en pausa");
-        dialog.setModal(true);
-
-        dialog.setContentPane(optionPane);
-
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        dialog.pack();
-
-        //create timer to dispose of dialog after 5 seconds
-        Timer timer = new Timer(2000, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                dialog.dispose();
-            }
-        });
-        
-        timer.setRepeats(false);//the timer should only go off once
-
-        //start timer to close JDialog as dialog modal we must start the timer before its visible
-        timer.start();
-        stopBackgroundSound();
-        dialog.setVisible(true);
-        */
+     
+        repaint();  
     }
     
     public void resume(){
