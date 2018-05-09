@@ -81,15 +81,15 @@ public class SnakePanel extends GamePanel {
     
     private void loadImages() {
 
-        ImageIcon iid = new ImageIcon("src/snake/media/dot.png");
+        ImageIcon iid = new ImageIcon(getClass().getResource("/snake/media/dot.png"));
         ball_img = iid.getImage();
 
-        ImageIcon iia = new ImageIcon("src/snake/media/apple.png");
+        ImageIcon iia = new ImageIcon(getClass().getResource("/snake/media/apple.png"));
         apple_img = iia.getImage();
         
         
 
-        ImageIcon iih = new ImageIcon("src/snake/media/head.png");
+        ImageIcon iih = new ImageIcon(getClass().getResource("/snake/media/head.png"));
         head_img = iih.getImage();
     }
     
@@ -114,7 +114,7 @@ public class SnakePanel extends GamePanel {
         timer = new Timer(DELAY, this);
         timer.start();
         
-        setBackgroundSound("src/snake/media/tetris_sound.wav");
+        setBackgroundSound("/snake/media/tetris_sound.wav");
         playBackgroundSound();
     }
     

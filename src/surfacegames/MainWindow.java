@@ -123,12 +123,11 @@ public class MainWindow extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1000, 800));
 
         try{
-            desktop.setBackgroundImage(ImageIO.read(new File("src/surfacegames/media/background1.jpg")));
+            desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/background1.jpg")));
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
-        desktop.setLayout(null);
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");

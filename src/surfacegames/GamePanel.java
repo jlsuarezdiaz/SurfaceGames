@@ -15,6 +15,7 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.File;
 import static java.lang.Math.ceil;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -30,7 +31,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     
     protected Surface surface = Surface.DISK;
     
-    protected File backgroundSound = null;
+    protected URL backgroundSound = null;
     protected Clip backgroundClip = null;
 
     /**
@@ -329,7 +330,7 @@ public abstract class GamePanel extends javax.swing.JPanel implements ActionList
     public abstract void pause();
         
     public void setBackgroundSound(String filename){
-        this.backgroundSound = new File(filename);
+        this.backgroundSound = getClass().getResource(filename);
     }
     
     public void playBackgroundSound(){
