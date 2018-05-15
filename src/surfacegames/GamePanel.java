@@ -27,7 +27,7 @@ import static utils.Math.mod;
  *
  * @author jlsuarezdiaz
  */
-public abstract class GamePanel extends javax.swing.JPanel implements ActionListener{
+public abstract class GamePanel extends javax.swing.JPanel{
     
     protected Dimension dim = new Dimension(400,400);
     

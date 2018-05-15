@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import surfacegames.AnimatedGamePanel;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
 
@@ -29,7 +30,7 @@ import surfacegames.Surface;
  *
  * @author nuria
  */
-public class SnakePanel extends GamePanel {
+public class SnakePanel extends AnimatedGamePanel {
     private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
     
     private final int MAX_DOTS = 2000; // Tamaño máximo de la serpiente
