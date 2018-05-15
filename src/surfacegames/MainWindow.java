@@ -36,8 +36,7 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new SnakeWindow(this);
                 break;
             case PUZZLE:
-                //iw = new Puzzle();
-                
+                //iw = new Puzzle();               
             case MINESWEEPER:
                 iw = new MinesWindow(this);
         }
