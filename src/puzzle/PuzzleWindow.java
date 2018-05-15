@@ -37,14 +37,14 @@ public class PuzzleWindow extends GameWindow{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        snakePanel = new snake.SnakePanel();
+        puzzlePanel = new puzzle.PuzzlePanel();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Snake");
+        setTitle("Puzzle");
 
-        javax.swing.GroupLayout snakePanelLayout = new javax.swing.GroupLayout(snakePanel);
-        snakePanel.setLayout(snakePanelLayout);
+        javax.swing.GroupLayout snakePanelLayout = new javax.swing.GroupLayout(puzzlePanel);
+        puzzlePanel.setLayout(snakePanelLayout);
         snakePanelLayout.setHorizontalGroup(
             snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 390, Short.MAX_VALUE)
@@ -54,18 +54,18 @@ public class PuzzleWindow extends GameWindow{
             .addGap(0, 268, Short.MAX_VALUE)
         );
 
-        getContentPane().add(snakePanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(puzzlePanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>                        
 
 
     // Variables declaration - do not modify                     
-    private snake.SnakePanel snakePanel;
+    private puzzle.PuzzlePanel puzzlePanel;
     // End of variables declaration                   
 
     //@Override
     public GamePanel getGamePanel() {
-        return this.snakePanel;
+        return this.puzzlePanel;
     }
 }

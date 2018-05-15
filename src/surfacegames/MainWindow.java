@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.JInternalFrame;
+import puzzle.PuzzleWindow;
 import snake.SnakeWindow;
 
 /**
@@ -35,7 +36,8 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new SnakeWindow(this);
                 break;
             case PUZZLE:
-                //iw = new Puzzle();
+                iw = new PuzzleWindow(this);
+                break;
         }
         desktop.add(iw);
         iw.setVisible(true);

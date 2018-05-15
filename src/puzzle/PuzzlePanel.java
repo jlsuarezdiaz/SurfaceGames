@@ -7,6 +7,7 @@ package puzzle;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -25,9 +26,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
 
@@ -38,6 +43,7 @@ import surfacegames.Surface;
 public class PuzzlePanel extends GamePanel{
     private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
 
+    private JPanel panel;
     private BufferedImage source;
     private BufferedImage resized;    
     private Image image;
@@ -45,10 +51,12 @@ public class PuzzlePanel extends GamePanel{
     private int width, height;    
     
     private List<MyButton> buttons;
-    private List<Point> solution;
-
+    
     private final int NUMBER_OF_BUTTONS = 12;
-    private final int DESIRED_WIDTH = 300;
+    //private final int DESIRED_WIDTH = 300;
+    
+    //BORRAR
+    Image img;
     
     public PuzzlePanel() {
         initUI();
@@ -56,112 +64,91 @@ public class PuzzlePanel extends GamePanel{
     
     /*Métodos abstractos*/
     @Override
-    public void pause(){
-        //TODO  -> Pausa
-        repaint(); 
+    public void pause(){ 
     };
     
+    @Override
     public  Surface[] getAllowedSurfaces(){
         return allowedSurfaces;
     };
     
 
-    
+    @Override
     public void actionPerformed(ActionEvent e){
-        //Evento que se activa con cada tick del timer.
-        //TODO -> QUE COÑO
-        repaint();
+        
     }
     
-    private void initUI() {
 
-        solution = new ArrayList<>();
-        
-        solution.add(new Point(0, 0));
-        solution.add(new Point(0, 1));
-        solution.add(new Point(0, 2));
-        solution.add(new Point(1, 0));
-        solution.add(new Point(1, 1));
-        solution.add(new Point(1, 2));
-        solution.add(new Point(2, 0));
-        solution.add(new Point(2, 1));
-        solution.add(new Point(2, 2));
-        solution.add(new Point(3, 0));
-        solution.add(new Point(3, 1));
-        solution.add(new Point(3, 2));
+    private void initUI() {
+      
 
         buttons = new ArrayList<>();
 
-        this.setBorder(BorderFactory.createLineBorder(Color.gray));
-        this.setLayout(new GridLayout(4, 3, 0, 0));
+        panel = new JPanel();
+        panel.setSize(this.dim);
+        panel.setBorder(BorderFactory.createLineBorder(Color.gray));
+        panel.setLayout(new GridLayout(4, 3, 0, 0));
 
         try {
             source = loadImage();
-            int h = getNewHeight(source.getWidth(), source.getHeight());
-            resized = resizeImage(source, DESIRED_WIDTH, h, BufferedImage.TYPE_INT_ARGB);
-
+            
         } catch (IOException ex) {
             Logger.getLogger(PuzzlePanel.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
 
-        width = resized.getWidth(null);
-        height = resized.getHeight(null);
-
-        add(this, BorderLayout.CENTER);
+        width = source.getWidth(null);
+        height = source.getHeight(null);
+        
+        add(panel, BorderLayout.CENTER);
 
         for (int i = 0; i < 4; i++) {
 
             for (int j = 0; j < 3; j++) {
 
-                image = createImage(new FilteredImageSource(resized.getSource(),
+                image = createImage(new FilteredImageSource(source.getSource(),
                         new CropImageFilter(j * width / 3, i * height / 4,
                                 (width / 3), height / 4)));
                 
+                
                 MyButton button = new MyButton(image);
-                button.putClientProperty("position", new Point(i, j));
+                button.putClientProperty("position", new Point(i, (j+2)%3));
 
                 if (i == 3 && j == 2) {
                     lastButton = new MyButton();
-                    lastButton.setBorderPainted(false);
-                    lastButton.setContentAreaFilled(false);
+                    lastButton.setBorderPainted(true);
+                    lastButton.setContentAreaFilled(true);
                     lastButton.setLastButton();
-                    lastButton.putClientProperty("position", new Point(i, j));
+                    lastButton.putClientProperty("position", new Point(i, (j+2)%3));
                 } else {
                     buttons.add(button);
                 }
             }
         }
-
+        
         Collections.shuffle(buttons);
         buttons.add(lastButton);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-
             MyButton btn = buttons.get(i);
-            this.add(btn);
+            panel.add(btn);
             btn.setBorder(BorderFactory.createLineBorder(Color.gray));
             btn.addActionListener(new ClickAction());
         }
-
-        /*
-        pack();
-        setTitle("Puzzle");
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+        
     }
+    
     
     private int getNewHeight(int w, int h) {
 
-        double ratio = DESIRED_WIDTH / (double) w;
+        double ratio = w / (double) w;
         int newHeight = (int) (h * ratio);
         return newHeight;
     }
 
     private BufferedImage loadImage() throws IOException {
 
-        BufferedImage bimg = ImageIO.read(new File("src/resources/icesid.jpg"));
+        BufferedImage bimg = ImageIO.read(new File("src/puzzle/icesid.jpg"));
 
         return bimg;
     }
@@ -177,17 +164,56 @@ public class PuzzlePanel extends GamePanel{
         return resizedImage;
     }
     
+    private boolean validateMovement(int bidx, int lidx){
+        Surface tipo = this.getSurface();
+        boolean disco, lateral, bases;
+
+       switch(tipo){
+            case DISK:
+               return (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+            
+            case V_CYLINDER:
+            case V_SPHERE:
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+                lateral = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
+                return(disco||lateral);
+            
+            case H_CYLINDER:
+            case H_SPHERE:
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+                bases = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
+                return(disco||bases);
+                
+            case TORUS:
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+                lateral = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
+                bases = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
+                return(disco||lateral||bases);
+                
+            /*case V_CYLINDER:
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+                aux1 = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
+                return(disco||aux1);
+                
+            case H_CYLINDER:
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+                aux1 = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
+                return(disco||aux1);*/
+       }                
+
+        
+        return false;
+    }
+    
     private class ClickAction extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
             checkButton(e);
             checkSolution();
         }
 
         private void checkButton(ActionEvent e) {
-
             int lidx = 0;
             
             for (MyButton button : buttons) {
@@ -199,41 +225,123 @@ public class PuzzlePanel extends GamePanel{
             JButton button = (JButton) e.getSource();
             int bidx = buttons.indexOf(button);
 
-            if ((bidx - 1 == lidx) || (bidx + 1 == lidx)
-                    || (bidx - 3 == lidx) || (bidx + 3 == lidx)) {
+            if (validateMovement(bidx, lidx)) {
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
             }
         }
+        
+
 
         private void updateButtons() {
-
-            removeAll();
+            
+            panel.removeAll();
             
             for (JComponent btn : buttons) {
-                add(btn);
+                panel.add(btn);
             }
 
-            validate();
+            panel.validate();
         }
     }
      
-     private void checkSolution() {
+    private void checkSolution() {
 
         List<Point> current = new ArrayList<>();
 
         for (JComponent btn : buttons) {
             current.add((Point) btn.getClientProperty("position"));
         }
+        
+        ArrayList<ArrayList<Point>> sols = createSolutions();
 
-        if (compareList(solution, current)) {
-            JOptionPane.showMessageDialog(this, "Finished",
+        for(ArrayList<Point> solution : sols){
+            if (compareList(solution, current)) {
+            JOptionPane.showMessageDialog(this, "Terminado!!!!",
                     "Congratulation", JOptionPane.INFORMATION_MESSAGE);
         }
+        }
+        
+    }
+    
+    private ArrayList<ArrayList<Point>> createSolutions(){
+        Surface tipo = this.getSurface();
+        
+        ArrayList<Point> solution1 = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution1.add(new Point(i,j));
+            }
+        }
+       
+        
+        ArrayList<Point> solution2 = new ArrayList<>();
+        
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution2.add(new Point(i,(j+1)%3));
+            }
+        }
+        
+        
+        ArrayList<Point> solution3 = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution3.add(new Point(i,(j+2)%3));
+            }
+        }
+        
+        
+        ArrayList<Point> solution4 = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution4.add(new Point((i+1)%4,j));
+            }
+        }
+        
+        ArrayList<Point> solution5 = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution5.add(new Point((i+2)%4,j));
+            }
+        }
+        
+        ArrayList<Point> solution6 = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j++){
+                solution3.add(new Point((i+3)%4,j));
+            }
+        }
+        
+        
+
+        ArrayList<ArrayList<Point>> all_sol = new ArrayList<>();
+        
+        switch(tipo){
+            case DISK:
+                all_sol.add(solution1);
+                break;
+            case V_SPHERE:
+            case V_CYLINDER:
+                all_sol.add(solution1);
+                all_sol.add(solution2);
+                all_sol.add(solution3);
+                break;
+            case H_SPHERE:
+            case H_CYLINDER:
+                all_sol.add(solution1);
+                all_sol.add(solution5);
+                all_sol.add(solution6);
+                all_sol.add(solution4);
+                break;
+        }
+        
+        return all_sol;
+        
+        
     }
 
     public static boolean compareList(List ls1, List ls2) {
-        
         return ls1.toString().contentEquals(ls2.toString());
     }
 }
