@@ -10,5 +10,5 @@ package surfacegames;
  * @author jlsuarezdiaz
  */
 public enum GameType {
-    SNAKE
+    SNAKE, PUZZLE
 }

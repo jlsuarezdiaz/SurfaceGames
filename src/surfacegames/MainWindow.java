@@ -34,6 +34,8 @@ public class MainWindow extends javax.swing.JFrame {
             case SNAKE:
                 iw = new SnakeWindow(this);
                 break;
+            case PUZZLE:
+                //iw = new Puzzle();
         }
         desktop.add(iw);
         iw.setVisible(true);
@@ -106,6 +108,7 @@ public class MainWindow extends javax.swing.JFrame {
         gameMenu = new javax.swing.JMenu();
         newGameMenu = new javax.swing.JMenu();
         snakeMenuItem = new javax.swing.JMenuItem();
+        puzzleMenuItem = new javax.swing.JMenuItem();
         surfaceMenu = new javax.swing.JMenu();
         diskMenuItem = new javax.swing.JRadioButtonMenuItem();
         vsphereMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -128,6 +131,7 @@ public class MainWindow extends javax.swing.JFrame {
         catch(Exception ex){
             ex.printStackTrace();
         }
+        desktop.setLayout(null);
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");
@@ -141,6 +145,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         newGameMenu.add(snakeMenuItem);
+
+        puzzleMenuItem.setText("Puzzle");
+        puzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                puzzleMenuItemActionPerformed(evt);
+            }
+        });
+        newGameMenu.add(puzzleMenuItem);
 
         gameMenu.add(newGameMenu);
 
@@ -268,6 +280,11 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_hcylinderMenuItemActionPerformed
 
+    private void puzzleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puzzleMenuItemActionPerformed
+        // TODO add your handling code here:
+        startGame(GameType.PUZZLE);
+    }//GEN-LAST:event_puzzleMenuItemActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -279,6 +296,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu newGameMenu;
     private javax.swing.JMenu optionsMenu;
+    private javax.swing.JMenuItem puzzleMenuItem;
     private javax.swing.JMenuItem snakeMenuItem;
     private javax.swing.JMenuItem soundMenuItem;
     private javax.swing.ButtonGroup surfaceBtGroup;
