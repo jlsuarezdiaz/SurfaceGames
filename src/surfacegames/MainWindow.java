@@ -39,6 +39,9 @@ public class MainWindow extends javax.swing.JFrame {
             case PUZZLE:
                 iw = new PuzzleWindow(this);
                 break;
+            case MINESWEEPER:
+                iw = new MinesWindow(this);
+                break;
         }
         
         desktop.add(iw);
