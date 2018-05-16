@@ -138,11 +138,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         try{
             desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/fondo.jpg")));
+            desktop.setPreferredSize(new java.awt.Dimension(800, 600));
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
-        desktop.setLayout(null);
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");
