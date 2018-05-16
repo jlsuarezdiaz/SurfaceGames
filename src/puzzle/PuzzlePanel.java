@@ -120,7 +120,7 @@ public class PuzzlePanel extends GamePanel{
             }
         }
         
-        //Collections.shuffle(buttons);
+        Collections.shuffle(buttons);
         buttons.add(lastButton);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
@@ -183,16 +183,7 @@ public class PuzzlePanel extends GamePanel{
                 lateral = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
                 bases = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
                 return(disco||lateral||bases);
-                
-            /*case V_CYLINDER:
-                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
-                aux1 = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
-                return(disco||aux1);
-                
-            case H_CYLINDER:
-                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
-                aux1 = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
-                return(disco||aux1);*/
+               
        }                
 
         
