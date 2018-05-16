@@ -181,7 +181,7 @@ public class PuzzlePanel extends GamePanel{
                 
             case TORUS:
                 disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
-                lateral = lateral = (bidx%col == 0 && lidx == bidx + (col-1)) || (lidx%col == 0 && bidx == lidx + (col-1));
+                lateral = (bidx%col == 0 && lidx == bidx + (col-1)) || (lidx%col == 0 && bidx == lidx + (col-1));
                 bases = (bidx < col && lidx == bidx + col*(fil-1)) || (lidx < col  && bidx == lidx + col*(fil-1));
                 return(disco||lateral||bases);
                
