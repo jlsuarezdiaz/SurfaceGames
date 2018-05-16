@@ -35,27 +35,37 @@ public class MinesWindow extends GameWindow {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        minesPanel = new minesweeper.MinesPanel();
-        statusBar = new javax.swing.JLabel();
+        minesweeper1 = new minesweeper.Minesweeper();
 
         setClosable(true);
         setIconifiable(true);
-        getContentPane().add(minesPanel, java.awt.BorderLayout.CENTER);
 
-        statusBar.setText("jLabel1");
-        getContentPane().add(statusBar, java.awt.BorderLayout.PAGE_END);
+        javax.swing.GroupLayout minesweeper1Layout = new javax.swing.GroupLayout(minesweeper1);
+        minesweeper1.setLayout(minesweeper1Layout);
+        minesweeper1Layout.setHorizontalGroup(
+            minesweeper1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 384, Short.MAX_VALUE)
+        );
+        minesweeper1Layout.setVerticalGroup(
+            minesweeper1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 270, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(minesweeper1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private minesweeper.MinesPanel minesPanel;
-    private javax.swing.JLabel statusBar;
+    private minesweeper.Minesweeper minesweeper1;
     // End of variables declaration//GEN-END:variables
 
    // @Override
-  public GamePanel getGamePanel() {
-        return this.minesPanel;
+
+    @Override
+    public GamePanel getGamePanel() {
+        return this.minesweeper1;
     }
+
 }
