@@ -36,30 +36,14 @@ public class MinesWindow extends GameWindow {
     private void initComponents() {
 
         minesPanel = new minesweeper.MinesPanel();
+        statusBar = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout minesPanelLayout = new javax.swing.GroupLayout(minesPanel);
-        minesPanel.setLayout(minesPanelLayout);
-        minesPanelLayout.setHorizontalGroup(
-            minesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
-        );
-        minesPanelLayout.setVerticalGroup(
-            minesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
-        );
+        setClosable(true);
+        setIconifiable(true);
+        getContentPane().add(minesPanel, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(minesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(minesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        statusBar.setText("jLabel1");
+        getContentPane().add(statusBar, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -67,10 +51,11 @@ public class MinesWindow extends GameWindow {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private minesweeper.MinesPanel minesPanel;
+    private javax.swing.JLabel statusBar;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public GamePanel getGamePanel() {
+   // @Override
+  public GamePanel getGamePanel() {
         return this.minesPanel;
     }
 }
