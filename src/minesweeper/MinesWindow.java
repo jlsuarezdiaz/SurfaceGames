@@ -13,10 +13,10 @@ import surfacegames.MainWindow;
  *
  * @author Javier
  */
-public class MinesWindow extends GameWindow {
+public class MinesWindow extends GameWindow{
 
     /**
-     * Creates new form NewJInternalFrame
+     * Creates new form MinesWindow
      */
     public MinesWindow() {
         initComponents();
@@ -35,37 +35,32 @@ public class MinesWindow extends GameWindow {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        minesweeper1 = new minesweeper.Minesweeper();
+        minesPanel1 = new minesweeper.MinesPanel();
 
-        setClosable(true);
-        setIconifiable(true);
-
-        javax.swing.GroupLayout minesweeper1Layout = new javax.swing.GroupLayout(minesweeper1);
-        minesweeper1.setLayout(minesweeper1Layout);
-        minesweeper1Layout.setHorizontalGroup(
-            minesweeper1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(minesPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
         );
-        minesweeper1Layout.setVerticalGroup(
-            minesweeper1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 270, Short.MAX_VALUE)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minesPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        getContentPane().add(minesweeper1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private minesweeper.Minesweeper minesweeper1;
+    private minesweeper.MinesPanel minesPanel1;
     // End of variables declaration//GEN-END:variables
-
-   // @Override
 
     @Override
     public GamePanel getGamePanel() {
-        return this.minesweeper1;
+        return this.minesPanel1;
     }
-
 }
