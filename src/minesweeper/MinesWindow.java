@@ -37,6 +37,8 @@ public class MinesWindow extends GameWindow{
 
         minesPanel1 = new minesweeper.MinesPanel();
 
+        setClosable(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
