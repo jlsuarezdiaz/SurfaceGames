@@ -49,11 +49,13 @@ public class PuzzlePanel extends GamePanel{
     private Image image;
     private MyButton lastButton;
     private int width, height;    
-    
+    private int fil = 4;
+    private int col = 4;
+            
     private List<MyButton> buttons;
     
-    private final int NUMBER_OF_BUTTONS = 12;
-    private final int DESIRED_WIDTH = 300;
+    private final int NUMBER_OF_BUTTONS = fil*col;
+    private int desired_width = 300;
 
     public PuzzlePanel() {
         initUI();
@@ -76,9 +78,9 @@ public class PuzzlePanel extends GamePanel{
         panel = new JPanel();
         panel.setSize(this.dim);
         panel.setBorder(BorderFactory.createLineBorder(Color.gray));
-        panel.setLayout(new GridLayout(4, 3, 0, 0));
+        panel.setLayout(new GridLayout(fil, col, 0, 0));
         
-        int desired_width = this.dim.width;
+        desired_width = this.dim.width;
 
         try {
             source = loadImage();
@@ -96,24 +98,24 @@ public class PuzzlePanel extends GamePanel{
         
         add(panel, BorderLayout.CENTER);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < fil; i++) {
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < col; j++) {
 
                 image = createImage(new FilteredImageSource(resized.getSource(),
-                        new CropImageFilter(j * width / 3, i * height / 4,
-                                (width / 3), height / 4)));
+                        new CropImageFilter(j * width / col, i * height / fil,
+                                (width / col), height / fil)));
                 
                 
                 MyButton button = new MyButton(image);
-                button.putClientProperty("position", new Point(i, (j+2)%3));
+                button.putClientProperty("position", new Point(i, j));
 
                 if (i == 3 && j == 2) {
                     lastButton = new MyButton();
                     lastButton.setBorderPainted(true);
                     lastButton.setContentAreaFilled(true);
                     lastButton.setLastButton();
-                    lastButton.putClientProperty("position", new Point(i, (j+2)%3));
+                    lastButton.putClientProperty("position", new Point(i, j));
                 } else {
                     buttons.add(button);
                 }
@@ -134,7 +136,6 @@ public class PuzzlePanel extends GamePanel{
     
     
     private int getNewHeight(int w, int h) {
-
         double ratio = w / (double) w;
         int newHeight = (int) (h * ratio);
         return newHeight;
@@ -164,24 +165,24 @@ public class PuzzlePanel extends GamePanel{
 
        switch(tipo){
             case DISK:
-               return (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
+               return (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
             
             case V_CYLINDER:
             case V_SPHERE:
-                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
-                lateral = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
+                lateral = (bidx%col == 0 && lidx == bidx + (col-1)) || (lidx%col == 0 && bidx == lidx + (col-1));
                 return(disco||lateral);
             
             case H_CYLINDER:
             case H_SPHERE:
-                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
-                bases = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
+                bases = (bidx < col && lidx == bidx + col*(fil-1)) || (lidx < col  && bidx == lidx + col*(fil-1));
                 return(disco||bases);
                 
             case TORUS:
-                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - 3 == lidx) || (bidx + 3 == lidx);
-                lateral = (bidx%3 == 0 && lidx == bidx + 2) || (lidx%3 == 0 && bidx == lidx + 2);
-                bases = (bidx < 3 && lidx == bidx + 9) || (lidx < 3  && bidx == lidx + 9);
+                disco = (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
+                lateral = lateral = (bidx%col == 0 && lidx == bidx + (col-1)) || (lidx%col == 0 && bidx == lidx + (col-1));
+                bases = (bidx < col && lidx == bidx + col*(fil-1)) || (lidx < col  && bidx == lidx + col*(fil-1));
                 return(disco||lateral||bases);
                
        }                
@@ -253,53 +254,51 @@ public class PuzzlePanel extends GamePanel{
         Surface tipo = this.getSurface();
         
         ArrayList<Point> solution1 = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
                 solution1.add(new Point(i,j));
             }
         }
        
-        
         ArrayList<Point> solution2 = new ArrayList<>();
         
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
-                solution2.add(new Point(i,(j+1)%3));
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
+                solution2.add(new Point(i,(j+1)%col));
             }
         }
         
         
         ArrayList<Point> solution3 = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
-                solution3.add(new Point(i,(j+2)%3));
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
+                solution3.add(new Point(i,(j+2)%col));
             }
         }
         
         
         ArrayList<Point> solution4 = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
-                solution4.add(new Point((i+1)%4,j));
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
+                solution4.add(new Point((i+1)%fil,j));
             }
         }
         
         ArrayList<Point> solution5 = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
-                solution5.add(new Point((i+2)%4,j));
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
+                solution5.add(new Point((i+2)%fil,j));
             }
         }
         
         ArrayList<Point> solution6 = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j++){
-                solution3.add(new Point((i+3)%4,j));
+        for(int i = 0; i < fil; i++){
+            for(int j = 0; j < col; j++){
+                solution3.add(new Point((i+3)%fil,j));
             }
         }
         
-        
-
+       
         ArrayList<ArrayList<Point>> all_sol = new ArrayList<>();
         
         switch(tipo){
