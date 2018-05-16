@@ -18,6 +18,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import puzzle.PuzzleWindow;
 import minesweeper.MinesWindow;
+import minesweeper.MinesWindow2;
 import snake.SnakeWindow;
 
 /**
@@ -43,7 +44,7 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new PuzzleWindow(this);
                 break;
             case MINESWEEPER:
-                iw = new MinesWindow(this);
+                iw = new MinesWindow2(this);
                 break;
         }
         
@@ -120,7 +121,7 @@ public class MainWindow extends javax.swing.JFrame {
         newGameMenu = new javax.swing.JMenu();
         snakeMenuItem = new javax.swing.JMenuItem();
         puzzleMenuItem = new javax.swing.JMenuItem();
-        minesweeper = new javax.swing.JMenuItem();
+        minesweeperMenuItem = new javax.swing.JMenuItem();
         surfaceMenu = new javax.swing.JMenu();
         diskMenuItem = new javax.swing.JRadioButtonMenuItem();
         vsphereMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -165,13 +166,13 @@ public class MainWindow extends javax.swing.JFrame {
         });
         newGameMenu.add(puzzleMenuItem);
 
-        minesweeper.setText("Minesweeper");
-        minesweeper.addActionListener(new java.awt.event.ActionListener() {
+        minesweeperMenuItem.setText("Buscaminas");
+        minesweeperMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minesweeperActionPerformed(evt);
+                minesweeperMenuItemActionPerformed(evt);
             }
         });
-        newGameMenu.add(minesweeper);
+        newGameMenu.add(minesweeperMenuItem);
 
         gameMenu.add(newGameMenu);
 
@@ -353,7 +354,7 @@ public class MainWindow extends javax.swing.JFrame {
         startGame(GameType.PUZZLE);
     }//GEN-LAST:event_puzzleMenuItemActionPerformed
 
-    private void minesweeperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minesweeperActionPerformed
+    private void minesweeperMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minesweeperMenuItemActionPerformed
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
             repaint();
@@ -361,7 +362,7 @@ public class MainWindow extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         startGame(GameType.MINESWEEPER);
-    }//GEN-LAST:event_minesweeperActionPerformed
+    }//GEN-LAST:event_minesweeperMenuItemActionPerformed
 
 
 
@@ -372,7 +373,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem hcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem hsphereMenuItem;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JMenuItem minesweeper;
+    private javax.swing.JMenuItem minesweeperMenuItem;
     private javax.swing.JMenu newGameMenu;
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JMenuItem puzzleMenuItem;

@@ -32,12 +32,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="puzzleMenuItemActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="minesweeper">
+                <MenuItem class="javax.swing.JMenuItem" name="minesweeperMenuItem">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Minesweeper"/>
+                    <Property name="text" type="java.lang.String" value="Buscaminas"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="minesweeperActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="minesweeperMenuItemActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
