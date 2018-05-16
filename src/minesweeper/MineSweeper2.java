@@ -5,6 +5,7 @@
  */
 package minesweeper;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -54,14 +55,15 @@ public class MineSweeper2 extends GamePanel {
      */
     public MineSweeper2() {
         
-        
+        setDimension(new Dimension(CELL_SIZE*N_ROWS,CELL_SIZE*N_COLS));
         initComponents();
+        
         
         img = new Image[NUM_IMAGES];
         
         for(int i = 0; i < NUM_IMAGES; i++){
             System.out.println(i);
-            img[i] = (new ImageIcon(getClass().getResource("/minesweeper/media/"+i + ".gif"))).getImage();
+            img[i] = (new ImageIcon(getClass().getResource("/minesweeper/media/"+i + ".png"))).getImage();
         }
         
         setDoubleBuffered(true);
