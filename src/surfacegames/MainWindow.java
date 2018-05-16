@@ -5,6 +5,7 @@
  */
 package surfacegames;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -12,7 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import puzzle.PuzzleWindow;
 import minesweeper.MinesWindow;
 import snake.SnakeWindow;
@@ -52,6 +55,7 @@ public class MainWindow extends javax.swing.JFrame {
         switch(gp.getSurface()){
             case DISK:
                 this.diskMenuItem.setSelected(true);
+                 
                 break;
             case V_SPHERE:
                 this.vsphereMenuItem.setSelected(true);
@@ -133,11 +137,12 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("Surface Games");
 
         try{
-            desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/background1.jpg")));
+            desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/fondo.jpg")));
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
+        desktop.setLayout(null);
         getContentPane().add(desktop, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Juego");
@@ -249,11 +254,23 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void snakeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snakeMenuItemActionPerformed
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         startGame(GameType.SNAKE);
     }//GEN-LAST:event_snakeMenuItemActionPerformed
 
     private void diskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diskMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.DISK);
         }
@@ -261,13 +278,26 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void torusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_torusMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/toro.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.TORUS);
+            
         }
     }//GEN-LAST:event_torusMenuItemActionPerformed
 
     private void vsphereMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vsphereMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/esfera.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.V_SPHERE);
         }
@@ -275,6 +305,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void hsphereMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsphereMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/esfera.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.H_SPHERE);
         }
@@ -282,6 +318,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void vcylinderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vcylinderMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/cilindro.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.V_CYLINDER);
         }
@@ -289,6 +331,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void hcylinderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hcylinderMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/cilindro_h_1.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         if(iw != null){
             ((GameWindow)iw).getGamePanel().setSurface(Surface.H_CYLINDER);
         }
@@ -296,10 +344,22 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void puzzleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puzzleMenuItemActionPerformed
         // TODO add your handling code here:
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         startGame(GameType.PUZZLE);
     }//GEN-LAST:event_puzzleMenuItemActionPerformed
 
     private void minesweeperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minesweeperActionPerformed
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         startGame(GameType.MINESWEEPER);
     }//GEN-LAST:event_minesweeperActionPerformed
 
