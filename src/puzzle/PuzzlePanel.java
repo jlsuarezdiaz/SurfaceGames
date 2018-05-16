@@ -53,11 +53,8 @@ public class PuzzlePanel extends GamePanel{
     private List<MyButton> buttons;
     
     private final int NUMBER_OF_BUTTONS = 12;
-    //private final int DESIRED_WIDTH = 300;
-    
-    //BORRAR
-    Image img;
-    
+    private final int DESIRED_WIDTH = 300;
+
     public PuzzlePanel() {
         initUI();
     }
@@ -72,33 +69,30 @@ public class PuzzlePanel extends GamePanel{
         return allowedSurfaces;
     };
     
-
-    @Override
-    public void actionPerformed(ActionEvent e){
-        
-    }
-    
-
+  
     private void initUI() {
-      
-
         buttons = new ArrayList<>();
 
         panel = new JPanel();
         panel.setSize(this.dim);
         panel.setBorder(BorderFactory.createLineBorder(Color.gray));
         panel.setLayout(new GridLayout(4, 3, 0, 0));
+        
+        int desired_width = this.dim.width;
 
         try {
             source = loadImage();
+            int h = getNewHeight(source.getWidth(), source.getHeight());
+            resized = resizeImage(source, desired_width, h,
+                    BufferedImage.TYPE_INT_ARGB);
             
         } catch (IOException ex) {
             Logger.getLogger(PuzzlePanel.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
 
-        width = source.getWidth(null);
-        height = source.getHeight(null);
+        width = resized.getWidth(null);
+        height = resized.getHeight(null);
         
         add(panel, BorderLayout.CENTER);
 
@@ -106,7 +100,7 @@ public class PuzzlePanel extends GamePanel{
 
             for (int j = 0; j < 3; j++) {
 
-                image = createImage(new FilteredImageSource(source.getSource(),
+                image = createImage(new FilteredImageSource(resized.getSource(),
                         new CropImageFilter(j * width / 3, i * height / 4,
                                 (width / 3), height / 4)));
                 
@@ -126,7 +120,7 @@ public class PuzzlePanel extends GamePanel{
             }
         }
         
-        Collections.shuffle(buttons);
+        //Collections.shuffle(buttons);
         buttons.add(lastButton);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
