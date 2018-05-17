@@ -5,6 +5,7 @@
  */
 package surfacegames;
 
+import battleship.Gui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import puzzle.PuzzleWindow;
 import minesweeper.MinesWindow;
 import minesweeper.MinesWindow2;
 import snake.SnakeWindow;
+import static surfacegames.GameType.BATTLESHIP;
 
 /**
  *
@@ -46,17 +48,20 @@ public class MainWindow extends javax.swing.JFrame {
             case MINESWEEPER:
                 iw = new MinesWindow2(this);
                 break;
+            case BATTLESHIP:
+                Gui.main(null);
+                break;
         }
-        
-        desktop.add(iw);
-        iw.setVisible(true);
+        if (g != BATTLESHIP){
+            desktop.add(iw);
+            iw.setVisible(true);
+        }
     }
     
     public void setView(GamePanel gp){
         switch(gp.getSurface()){
             case DISK:
                 this.diskMenuItem.setSelected(true);
-                 
                 break;
             case V_SPHERE:
                 this.vsphereMenuItem.setSelected(true);
@@ -122,6 +127,7 @@ public class MainWindow extends javax.swing.JFrame {
         snakeMenuItem = new javax.swing.JMenuItem();
         puzzleMenuItem = new javax.swing.JMenuItem();
         minesweeperMenuItem = new javax.swing.JMenuItem();
+        battleshipMenuItem = new javax.swing.JMenuItem();
         surfaceMenu = new javax.swing.JMenu();
         diskMenuItem = new javax.swing.JRadioButtonMenuItem();
         vsphereMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -173,6 +179,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         newGameMenu.add(minesweeperMenuItem);
+
+        battleshipMenuItem.setText("Battleship");
+        battleshipMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                battleshipMenuItemActionPerformed(evt);
+            }
+        });
+        newGameMenu.add(battleshipMenuItem);
 
         gameMenu.add(newGameMenu);
 
@@ -364,9 +378,20 @@ public class MainWindow extends javax.swing.JFrame {
         startGame(GameType.MINESWEEPER);
     }//GEN-LAST:event_minesweeperMenuItemActionPerformed
 
+    private void battleshipMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_battleshipMenuItemActionPerformed
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        startGame(GameType.BATTLESHIP);
+    }//GEN-LAST:event_battleshipMenuItemActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem battleshipMenuItem;
     private surfacegames.BackgroundDesktop desktop;
     private javax.swing.JRadioButtonMenuItem diskMenuItem;
     private javax.swing.JMenu gameMenu;
