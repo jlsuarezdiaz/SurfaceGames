@@ -8,13 +8,16 @@ package minesweeper;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.Math.floorDiv;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
+import static utils.Math.mod;
 
 /**
  *
@@ -62,7 +65,6 @@ public class MineSweeper2 extends GamePanel {
         img = new Image[NUM_IMAGES];
         
         for(int i = 0; i < NUM_IMAGES; i++){
-            System.out.println(i);
             img[i] = (new ImageIcon(getClass().getResource("/minesweeper/media/"+i + ".png"))).getImage();
         }
         
@@ -71,13 +73,40 @@ public class MineSweeper2 extends GamePanel {
         newGame();
     }
     
+    private int getCanonicalPosition(int pos){
+        //Posicion --> Coordenadas de mina
+        int x = floorDiv(pos,N_COLS);
+        int y = mod(pos,N_COLS);
+        //Coordenadas de mina --> Coordenadas de panel
+        Point p = new Point(x*CELL_SIZE,y*CELL_SIZE);
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE,CELL_SIZE));
+        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        x = p.x /CELL_SIZE;
+        y = p.y /CELL_SIZE;
+        // Coordenadas de mina canónicas --> Posición canónica.
+        pos = x*N_COLS + y;
+        return pos;
+    }
+    
+    private boolean isPositionValid(int pos){
+        //Posicion --> Coordenadas de mina
+        int x = floorDiv(pos,N_COLS);
+        int y = mod(pos,N_COLS);
+        //Coordenadas de mina --> Coordenadas de panel
+        Point p = new Point(x*CELL_SIZE,y*CELL_SIZE);
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        return !isOnBorderOrBeyond(p);
+    }
+    
     private void newGame(){
         Random random;
         int current_col;
         
         int i = 0;
         int position = 0;
-        int cell = 0;
+        //int cell = 0;
+        //int canonical = 0;
         
         random = new Random();
         inGame = true;
@@ -103,7 +132,34 @@ public class MineSweeper2 extends GamePanel {
                 current_col = position % N_COLS;
                 field[position] = COVERED_MINE_CELL;
                 i++;
-
+                
+                int neighborhood[] = new int[]{
+                    position -1 - N_COLS, //arriba izquierda
+                    position -1,          //PSOE
+                    position -1 + N_COLS, //abajo izquierda
+                    position - N_COLS,    //arriba centro
+                    position + N_COLS,    //abajo centro
+                    position +1 - N_COLS, //arriba derecha
+                    position +1 ,         //Ciudadanos
+                    position +1 + N_COLS  //abajo derecha
+                };
+                
+                for(int cell : neighborhood){
+                    if(isPositionValid(cell)){
+                        int canonical = getCanonicalPosition(cell);
+                        //System.out.println(cell);
+                        //System.out.println(canonical);
+                        //System.out.println("---");
+                        if (field[canonical] != COVERED_MINE_CELL)
+                            field[canonical] += 1;
+                    }
+                }
+                
+               
+                
+                
+                
+                /*
                 if (current_col > 0) { 
                     cell = position - 1 - N_COLS;
                     if (cell >= 0)
@@ -143,6 +199,7 @@ public class MineSweeper2 extends GamePanel {
                         if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                 }
+                */
             }
         }
     }
@@ -150,8 +207,34 @@ public class MineSweeper2 extends GamePanel {
     public void find_empty_cells(int j) {
 
         int current_col = j % N_COLS;
-        int cell;
 
+        int neighborhood[] = new int[]{
+            j -1 - N_COLS, //arriba izquierda
+            j -1,          //PSOE
+            j -1 + N_COLS, //abajo izquierda
+            j - N_COLS,    //arriba centro
+            j + N_COLS,    //abajo centro
+            j +1 - N_COLS, //arriba derecha
+            j +1 ,         //Ciudadanos
+            j +1 + N_COLS  //abajo derecha
+        };
+        
+        for(int cell: neighborhood){
+            if(isPositionValid(cell)){
+                int canonical = getCanonicalPosition(cell);
+                System.out.println(cell);
+                System.out.println(canonical);
+                System.out.println("---");
+                if(field[canonical] > MINE_CELL){
+                    field[canonical] -= COVER_FOR_CELL;
+                    if(field[canonical] == EMPTY_CELL){
+                        find_empty_cells(canonical);
+                    }
+                }
+            }
+        }
+        
+        /*
         if (current_col > 0) { 
             cell = j - N_COLS - 1;
             if (cell >= 0)
@@ -219,6 +302,7 @@ public class MineSweeper2 extends GamePanel {
                         find_empty_cells(cell);
                 }
         }
+        */
     }
     
     @Override
