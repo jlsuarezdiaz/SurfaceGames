@@ -2,6 +2,7 @@ package battleship;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import surfacegames.*;
 
 //rename shipLocations?
 public class PlaceShips {
@@ -111,13 +112,44 @@ public class PlaceShips {
         return shipColor;
     }
     //rules for player placement of ships
-    public static boolean player(int button) {
+    public static boolean player(int button, Surface surface) {
 
+        System.out.println("\n"+pLocations);
         int ship = 0;
         int size = pLocations.size();
+        int lastButt;
         int lDifference = 0;
+        
         if (pLocations != null && !pLocations.isEmpty()) {
-            lDifference = button - pLocations.get(pLocations.size() - 1);
+            lastButt = pLocations.get(pLocations.size() - 1);
+            lDifference = button - lastButt;
+            surface = Surface.H_CYLINDER;
+            switch(surface){
+                case DISK:
+                break;
+                case V_SPHERE:
+                break;
+                case H_SPHERE:
+                break;
+                case TORUS:
+                break;
+                case V_CYLINDER:
+                    //Identificar horizontalmente
+                    if(lastButt%10 == 0 && (button-9)==lastButt)
+                        lDifference = -1;
+                    else if((lastButt-9)%10==0 && (button+9)==lastButt)
+                        lDifference = -1;
+                break;
+                case H_CYLINDER:
+                    //Identificar verticalmente
+                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
+                        lDifference = -10;
+                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
+                        lDifference = 10;
+                break;
+                default:
+            }
+            
         }
         if (size == 17) {
             pAddShips = false;

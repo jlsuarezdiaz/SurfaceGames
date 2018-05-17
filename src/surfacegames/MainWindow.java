@@ -17,6 +17,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButtonMenuItem;
 import puzzle.PuzzleWindow;
 import minesweeper.MinesWindow;
 import minesweeper.MinesWindow2;
@@ -49,6 +50,9 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new MinesWindow2(this);
                 break;
             case BATTLESHIP:
+                //String[] valueSurf;
+                //valueSurf = { ((JRadioButtonMenuItem)surfaceMenu.getSelectedObjects()).getText() };
+                //Gui.main(valueSurf);
                 Gui.main(null);
                 break;
         }

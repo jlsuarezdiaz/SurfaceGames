@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import surfacegames.Surface;
 
 public class Gui extends JFrame implements ActionListener {
 
@@ -14,6 +15,7 @@ public class Gui extends JFrame implements ActionListener {
     private static JFrame f = new JFrame("HUNDIR LA FLOTA");
     private static JPanel container = new JPanel();
     private static Gui gui = new Gui();
+    private static Surface surface;
 
     public static void main(String[] args) {
         PlaceShips.cpu();
@@ -86,7 +88,7 @@ public class Gui extends JFrame implements ActionListener {
                 }
 
             } else if (bCoord >= 200 && PlaceShips.pAddShips) {
-                PlaceShips.player(bCoord);
+                PlaceShips.player(bCoord,surface);
                 if (PlaceShips.getpLocations().contains(bCoord)) {
                     button.setBackground(PlaceShips.getCurrentPlayerShipColor());
                 }
