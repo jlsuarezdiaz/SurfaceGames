@@ -22,7 +22,13 @@ public class Gui extends JFrame implements ActionListener {
         createGui();
         f.setVisible(true);
     }
-
+    public static void setSurface(Surface surf){
+        surface = surf;
+    }
+    
+    public static Surface getSurface(){
+        return surface;
+    }
     private static void createGui() {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);

@@ -53,9 +53,7 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new MinesWindow2(this);
                 break;
             case BATTLESHIP:
-                //String[] valueSurf;
-                //valueSurf = { ((JRadioButtonMenuItem)surfaceMenu.getSelectedObjects()).getText() };
-                //Gui.main(valueSurf);
+                Gui.setSurface(selectedSurface);
                 Gui.main(null);
                 break;
         }

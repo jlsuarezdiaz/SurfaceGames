@@ -131,8 +131,7 @@ public class PlaceShips {
             else if(abs(button-lastButt)==10)
                 okVertical = true;
             
-            surface = Surface.H_SPHERE;
-            switch(surface){
+            switch(Gui.getSurface()){
                 case V_SPHERE:
                     //Identificar parte superior e inferior
                     if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
@@ -185,7 +184,6 @@ public class PlaceShips {
                     else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
                         okVertical = true;
                 break;
-                default:
             }
             
         }
