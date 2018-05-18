@@ -244,6 +244,7 @@ public class MineSweeper2 extends GamePanel {
         
         addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
         addSoundEffect("coin", "/surfacegames/media/coin.wav");
+        addSoundEffect("win","/surfacegames/media/epic_win.wav");
     }
     
     public void find_empty_cells(int j) {
@@ -392,6 +393,7 @@ public class MineSweeper2 extends GamePanel {
 
         if (uncover == 0 && inGame) {
             inGame = false;
+            playSoundEffect("win");
             //statusbar.setText("Game won");
         } else if (!inGame){
             //statusbar.setText("Game lost");
