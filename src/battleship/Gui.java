@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import surfacegames.Surface;
 
 public class Gui extends JFrame implements ActionListener {
@@ -57,10 +58,16 @@ public class Gui extends JFrame implements ActionListener {
 
         for (int i = 0; i < NUM_BUTTONS; i++) {
             buttons[i] = new JButton(Integer.toString(i));
+            buttons[i].setBorder(new LineBorder(Color.BLACK));
             if (PlaceShips.cLocations.contains(100 + i)) {
-                buttons[i].setBackground(Color.gray); //change color to see cpu ships
+                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+//                buttons[i
+//                
+//                buttons[i].setBackground(Color.gray); //change color to see cpu ships
             } else {
-                buttons[i].setBackground(Color.gray);
+//                buttons[i].setBackground(Color.gray);
+                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+//                buttons[i].setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
             }
             buttons[i].setActionCommand((num * 100) + i + "");
             buttons[i].setPreferredSize(new Dimension(100,100));
@@ -84,14 +91,18 @@ public class Gui extends JFrame implements ActionListener {
             //code here to handle user clicking on grid
             if (bCoord < 200) {
                 if (Guess.player(bCoord)) {
-                    button.setBackground(Color.red);
+                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-roto.png")));
+                    button.setEnabled(false);
                 } else {
+                    button.setEnabled(false);
                     button.setBackground(Color.LIGHT_GRAY);
                 }
 
             } else if (bCoord >= 200 && PlaceShips.pAddShips) {
                 PlaceShips.player(bCoord,surface);
                 if (PlaceShips.getpLocations().contains(bCoord)) {
+                    button.setEnabled(false);
+                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
                     button.setBackground(PlaceShips.getCurrentPlayerShipColor());
                 }
             }
