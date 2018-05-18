@@ -42,7 +42,7 @@ public class MineSweeper2 extends GamePanel {
     private final int DRAW_MARK = 11;
     private final int DRAW_WRONG_MARK = 12;
     
-    private final int N_MINES = 10;
+    private final int N_MINES = 40;
     private final int N_ROWS = 16;
     private final int N_COLS = 16;
 
