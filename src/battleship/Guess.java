@@ -69,7 +69,8 @@ public class Guess {
                 CheckGame.cpu("LANCHA", button);
             }
         } else {
-            Gui.buttons[button].setBackground(Color.LIGHT_GRAY);
+            Gui.buttons[button].setEnabled(false);
+//            Gui.buttons[button].setBackground(Color.LIGHT_GRAY);
 
         }
         cGuesses.add(guess);

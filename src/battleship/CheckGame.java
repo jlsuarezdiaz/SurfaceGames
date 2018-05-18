@@ -53,7 +53,6 @@ public class CheckGame {
             }
         }
         cAllShips--;
-//        System.out.println(cpuLocations);
         if (cAllShips == 0) {
             //gameover
             Gui.message("¡HUNDISTE LA FLOTA!");
@@ -64,41 +63,44 @@ public class CheckGame {
     }
 
     public static boolean cpu(String ship, int index) {
-
+        boolean iconChange = false;
         if (ship.equals("PORTAAVIONES")) {
-            Gui.buttons[index].setBackground(Color.RED);
+            iconChange = true;
             pPortaaviones--;
             if (pPortaaviones == 0) {
                 Guess.changeMode(0);
             }
         }
         if (ship.equals("ACORAZADO")) {
-            Gui.buttons[index].setBackground(Color.RED);
+            iconChange = true;
             pAcorazado--;
             if (pAcorazado == 0) {
                 Guess.changeMode(1);
             }
         }
         if (ship.equals("CRUCERO")) {
-            Gui.buttons[index].setBackground(Color.RED);
+            iconChange = true;
             pCrucero--;
             if (pCrucero == 0) {
                 Guess.changeMode(2);
             }
         }
         if (ship.equals("SUBMARINO")) {
-            Gui.buttons[index].setBackground(Color.RED);
+            iconChange = true;
             pSubmarino--;
             if (pSubmarino == 0) {
                 Guess.changeMode(3);
             }
         }
         if (ship.equals("LANCHA")) {
-            Gui.buttons[index].setBackground(Color.RED);
+            iconChange = true;
             pLancha--;
             if (pLancha == 0) {
                 Guess.changeMode(4);
             }
+        }
+        if (iconChange){
+            Gui.buttons[index].setDisabledIcon(new javax.swing.ImageIcon("/battleship/media/barco-roto.png"));
         }
         pAllShips--;
         if (pAllShips == 0) {

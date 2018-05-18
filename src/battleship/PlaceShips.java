@@ -1,6 +1,7 @@
 package battleship;
 
 import java.awt.Color;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import surfacegames.*;
 
@@ -114,40 +115,75 @@ public class PlaceShips {
     //rules for player placement of ships
     public static boolean player(int button, Surface surface) {
 
-        System.out.println("\n"+pLocations);
+        //System.out.println("\n"+pLocations);
         int ship = 0;
         int size = pLocations.size();
         int lastButt;
-        int lDifference = 0;
+        boolean okVertical = false;
+        boolean okHorizontal = false;
         
         if (pLocations != null && !pLocations.isEmpty()) {
             lastButt = pLocations.get(pLocations.size() - 1);
-            lDifference = button - lastButt;
-            surface = Surface.H_CYLINDER;
-            switch(surface){
-                case DISK:
-                break;
+            
+            //Posiciones básicas
+            if(abs(button-lastButt)==1)
+                okHorizontal = true;
+            else if(abs(button-lastButt)==10)
+                okVertical = true;
+            
+            switch(Gui.getSurface()){
                 case V_SPHERE:
+                    //Identificar parte superior e inferior
+                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
+                        okVertical = true;
+                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
+                        okVertical = true;
+                    //Identificar mitades lateral izquierdo
+                    if(lastButt%10 == 0 && abs(lastButt-button)==90) //!!!
+                        okVertical = true;
+                    //Identificar mitades lateral derecho
+                    if((lastButt-9)%10==0 && abs(lastButt-button)==90) //!!!
+                        okVertical = true;
                 break;
                 case H_SPHERE:
+                    //Identificar laterales
+                    if(lastButt%10 == 0 && (button-9)==lastButt)
+                        okHorizontal = true;
+                    else if((lastButt-9)%10==0 && (button+9)==lastButt)
+                        okHorizontal = true;
+                    //Identificar mitades parte superior
+                    if(lastButt>=200 && lastButt<=209 && (lastButt+button)%10==9)
+                        okHorizontal=true;
+                    //Identificar mitades parte inferior
+                    if(lastButt>=290 && lastButt<=299 && (lastButt+button)%10==9)
+                        okHorizontal=true;
                 break;
                 case TORUS:
+                    //Identificar laterales
+                    if(lastButt%10 == 0 && (button-9)==lastButt)
+                        okHorizontal = true;
+                    else if((lastButt-9)%10==0 && (button+9)==lastButt)
+                        okHorizontal = true;
+                    //Identificar parte superior e inferior
+                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
+                        okVertical = true;
+                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
+                        okVertical = true;
                 break;
                 case V_CYLINDER:
-                    //Identificar horizontalmente
+                    //Identificar laterales
                     if(lastButt%10 == 0 && (button-9)==lastButt)
-                        lDifference = -1;
+                        okHorizontal = true;
                     else if((lastButt-9)%10==0 && (button+9)==lastButt)
-                        lDifference = -1;
+                        okHorizontal = true;
                 break;
                 case H_CYLINDER:
-                    //Identificar verticalmente
+                    //Identificar parte superior e inferior
                     if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
-                        lDifference = -10;
+                        okVertical = true;
                     else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
-                        lDifference = 10;
+                        okVertical = true;
                 break;
-                default:
             }
             
         }
@@ -193,12 +229,12 @@ public class PlaceShips {
             secondSpot = true;
             return true;
         } else if (secondSpot) {
-            if ((lDifference == 10 || lDifference == -10) && checkValidVertical(button, currentShip - 2)) {
+            if(okVertical && checkValidVertical(button, currentShip - 2)){
                 pVertical = true;
                 pLocations.add(button);
                 secondSpot = false;
                 return true;
-            } else if ((lDifference == 1 || lDifference == -1) && checkValidHorizontal(button, currentShip - 2)) {
+            }else if(okHorizontal && checkValidHorizontal(button, currentShip - 2)){
                 pVertical = false;
                 pLocations.add(button);
                 secondSpot = false;
@@ -209,7 +245,7 @@ public class PlaceShips {
 
         } else {
             if (pVertical) {
-                if (lDifference == 10 || lDifference == -10) {
+                if (okVertical) {
                     pLocations.add(button);
                     if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
                         firstSpot = true;
@@ -220,7 +256,7 @@ public class PlaceShips {
                 }
                 //need to prevent wrap around placement
             } else if (!pVertical) {
-                if (lDifference == 1 || lDifference == -1) {
+                if (okHorizontal) {
                     pLocations.add(button);
                     if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
                         firstSpot = true;
@@ -245,11 +281,5 @@ public class PlaceShips {
 //        System.out.println("east = " + Helper.checkDirection("east", bCoord, ship, pLocations));
 //        System.out.println("west = " + Helper.checkDirection("west", bCoord, ship, pLocations));
         return Helper.checkDirection("east", bCoord, ship, pLocations) + Helper.checkDirection("west", bCoord, ship, pLocations) >= ship;
-    }
-
-    public static void reset() {
-        cLocations.clear();
-        pLocations.clear();
-
     }
 }

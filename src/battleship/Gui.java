@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import surfacegames.Surface;
 
 public class Gui extends JFrame implements ActionListener {
@@ -22,7 +23,13 @@ public class Gui extends JFrame implements ActionListener {
         createGui();
         f.setVisible(true);
     }
-
+    public static void setSurface(Surface surf){
+        surface = surf;
+    }
+    
+    public static Surface getSurface(){
+        return surface;
+    }
     private static void createGui() {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);
@@ -37,17 +44,13 @@ public class Gui extends JFrame implements ActionListener {
         //Tableros
         container.add(gui.createGrid(1)).setBounds(20, 50, 500, 500);
         container.add(gui.createGrid(2)).setBounds(550, 50, 500, 500);       
-        //Botón reset
-        JButton reset = new JButton("Reiniciar");
-        reset.addActionListener(e -> reset());
-        container.add(reset).setBounds(1100, 100, 100, 20);
         //Mensaje
         container.add(message);
         message.setBounds(250, 600, 500, 20);
         
         f.setContentPane(container);
-
-        f.setSize(1300, 1000);
+        //Tamaño ventana juego
+        f.setSize(1100, 1000);
     }
 
     private Container createGrid(int num) {
@@ -55,10 +58,16 @@ public class Gui extends JFrame implements ActionListener {
 
         for (int i = 0; i < NUM_BUTTONS; i++) {
             buttons[i] = new JButton(Integer.toString(i));
+            buttons[i].setBorder(new LineBorder(Color.BLACK));
             if (PlaceShips.cLocations.contains(100 + i)) {
-                buttons[i].setBackground(Color.gray); //change color to see cpu ships
+                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+//                buttons[i
+//                
+//                buttons[i].setBackground(Color.gray); //change color to see cpu ships
             } else {
-                buttons[i].setBackground(Color.gray);
+//                buttons[i].setBackground(Color.gray);
+                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+//                buttons[i].setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
             }
             buttons[i].setActionCommand((num * 100) + i + "");
             buttons[i].setPreferredSize(new Dimension(100,100));
@@ -82,14 +91,18 @@ public class Gui extends JFrame implements ActionListener {
             //code here to handle user clicking on grid
             if (bCoord < 200) {
                 if (Guess.player(bCoord)) {
-                    button.setBackground(Color.red);
+                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-roto.png")));
+                    button.setEnabled(false);
                 } else {
+                    button.setEnabled(false);
                     button.setBackground(Color.LIGHT_GRAY);
                 }
 
             } else if (bCoord >= 200 && PlaceShips.pAddShips) {
                 PlaceShips.player(bCoord,surface);
                 if (PlaceShips.getpLocations().contains(bCoord)) {
+                    button.setEnabled(false);
+                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
                     button.setBackground(PlaceShips.getCurrentPlayerShipColor());
                 }
             }
@@ -105,13 +118,5 @@ public class Gui extends JFrame implements ActionListener {
     public static void message(String text) {
         Gui.text.setText(text);
 
-    }
-
-    public static void reset() {
-        PlaceShips.reset();
-        Guess.reset();
-        container.removeAll();
-        PlaceShips.cpu();
-        createGui();
     }
 }
