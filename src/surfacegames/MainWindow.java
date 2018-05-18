@@ -207,6 +207,15 @@ public class MainWindow extends javax.swing.JFrame {
         topMenu.add(gameMenu);
 
         surfaceMenu.setText("Superficie");
+        surfaceMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                surfaceMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
 
         surfaceBtGroup.add(diskMenuItem);
         diskMenuItem.setSelected(true);
@@ -407,6 +416,16 @@ public class MainWindow extends javax.swing.JFrame {
         }
         startGame(GameType.BATTLESHIP);
     }//GEN-LAST:event_battleshipMenuItemActionPerformed
+
+    private void surfaceMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_surfaceMenuMenuSelected
+        if(desktop.getSelectedFrame() == null){
+            Enumeration<AbstractButton> buttons = surfaceBtGroup.getElements();
+            while(buttons.hasMoreElements()){
+                AbstractButton b = buttons.nextElement();
+                b.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_surfaceMenuMenuSelected
 
 
 

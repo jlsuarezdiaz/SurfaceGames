@@ -56,6 +56,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Superficie"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="surfaceMenuMenuSelected"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="diskMenuItem">
               <Properties>

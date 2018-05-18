@@ -302,7 +302,7 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case DISK:
                 return x<0 || x>=w || y<0 || y >= h;
             case V_CYLINDER:
-                return y<1 || y>= h;
+                return y<-1 || y>= h;
             case H_CYLINDER:
                 return x<-1 || x>=w;
         }

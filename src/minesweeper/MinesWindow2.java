@@ -41,6 +41,8 @@ public class MinesWindow2 extends GameWindow {
         mineSweeper21 = new minesweeper.MineSweeper2();
 
         setClosable(true);
+        setIconifiable(true);
+        setTitle("Buscaminas");
 
         mineSweeper21.setLayout(new java.awt.BorderLayout());
         getContentPane().add(mineSweeper21, java.awt.BorderLayout.CENTER);

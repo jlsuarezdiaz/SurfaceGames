@@ -42,7 +42,7 @@ public class MineSweeper2 extends GamePanel {
     private final int DRAW_MARK = 11;
     private final int DRAW_WRONG_MARK = 12;
     
-    private final int N_MINES = 40;
+    private final int N_MINES = 10;
     private final int N_ROWS = 16;
     private final int N_COLS = 16;
 
@@ -75,11 +75,11 @@ public class MineSweeper2 extends GamePanel {
     }
     
     private Point positionToMineCoord(int pos){
-        return new Point(floorDiv(pos,N_COLS),mod(pos,N_COLS));
+        return new Point(mod(pos,N_COLS),floorDiv(pos,N_COLS));
     }
     
     private int mineCoordToPosition(Point mine_coord){
-        return mine_coord.x*N_COLS + mine_coord.y;
+        return mine_coord.y*N_COLS + mine_coord.x;
     }
     
     private Point getCanonicalPosition(Point mine_coord){
@@ -93,8 +93,7 @@ public class MineSweeper2 extends GamePanel {
     private boolean isPositionValid(Point mine_coord){
         //Coordenadas de panel --> Coordenadas de panel canónicas
         Point p = new Point(mine_coord.x*CELL_SIZE, mine_coord.y*CELL_SIZE);
-        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE,CELL_SIZE));
-        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        
         return !isOnBorderOrBeyond(p);
     }
     
@@ -105,8 +104,8 @@ public class MineSweeper2 extends GamePanel {
      */
     private int getCanonicalPosition(int pos){
         //Posicion --> Coordenadas de mina
-        int x = floorDiv(pos,N_COLS);
-        int y = mod(pos,N_COLS);
+        int y = floorDiv(pos,N_COLS);
+        int x = mod(pos,N_COLS);
         //Coordenadas de mina --> Coordenadas de panel
         Point p = new Point(x*CELL_SIZE,y*CELL_SIZE);
         //Coordenadas de panel --> Coordenadas de panel canónicas
@@ -115,7 +114,7 @@ public class MineSweeper2 extends GamePanel {
         x = p.x /CELL_SIZE;
         y = p.y /CELL_SIZE;
         // Coordenadas de mina canónicas --> Posición canónica.
-        pos = x*N_COLS + y;
+        pos = y*N_COLS + x;
         return pos;
     }
     
@@ -126,8 +125,8 @@ public class MineSweeper2 extends GamePanel {
      */
     private boolean isPositionValid(int pos){
         //Posicion --> Coordenadas de mina
-        int x = floorDiv(pos,N_COLS);
-        int y = mod(pos,N_COLS);
+        int y = floorDiv(pos,N_COLS);
+        int x = mod(pos,N_COLS);
         //Coordenadas de mina --> Coordenadas de panel
         Point p = new Point(x*CELL_SIZE,y*CELL_SIZE);
         //Coordenadas de panel --> Coordenadas de panel canónicas
@@ -263,6 +262,9 @@ public class MineSweeper2 extends GamePanel {
             new Point(mc.x+1, mc.y+1), //abajo derecha
         };
         
+        for(Point p: neighborhood){
+            System.out.println(p);
+        }
         for(Point p: neighborhood){
             if(isPositionValid(p)){
                 Point canonical = getCanonicalPosition(p);
@@ -414,6 +416,14 @@ public class MineSweeper2 extends GamePanel {
     public boolean isSurfaceChangeAllowedDuringGame(){
         return false;
     }
+
+    @Override
+    public void setSurface(Surface s) {
+        super.setSurface(s);
+        newGame();
+    }
+    
+    
     
     class MinesAdapter extends MouseAdapter {
         
