@@ -9,6 +9,7 @@ import battleship.Gui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ import static surfacegames.GameType.BATTLESHIP;
  * @author jlsuarezdiaz
  */
 public class MainWindow extends javax.swing.JFrame {
+    
+    private Surface selectedSurface = Surface.DISK;
 
     /**
      * Creates new form MainWindow
@@ -38,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void startGame(GameType g){
-        JInternalFrame iw = null;
+        GameWindow iw = null;
         switch(g){
             case SNAKE:
                 iw = new SnakeWindow(this);
@@ -57,6 +60,13 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
         }
         if (g != BATTLESHIP){
+            if(Arrays.asList(iw.getGamePanel().getAllowedSurfaces()).contains(selectedSurface)){
+                iw.getGamePanel().setSurface(selectedSurface);
+            }
+            else{
+                iw.getGamePanel().setSurface(iw.getGamePanel().getAllowedSurfaces()[0]);
+                setView(iw.getGamePanel());
+            }
             desktop.add(iw);
             iw.setVisible(true);
         }
@@ -89,26 +99,28 @@ public class MainWindow extends javax.swing.JFrame {
             b.setEnabled(false);
         }
         
-        for(Surface s: gp.getAllowedSurfaces()){
-            switch(s){
-                case DISK:
-                this.diskMenuItem.setEnabled(true);
-                break;
-            case V_SPHERE:
-                this.vsphereMenuItem.setEnabled(true);
-                break;
-            case H_SPHERE:
-                this.hsphereMenuItem.setEnabled(true);
-                break;
-            case V_CYLINDER:
-                this.vcylinderMenuItem.setEnabled(true);
-                break;
-            case H_CYLINDER:
-                this.hcylinderMenuItem.setEnabled(true);
-                break;
-            case TORUS:
-                this.torusMenuItem.setEnabled(true);
-                break;
+        if(gp.isSurfaceChangeAllowedDuringGame()){
+            for(Surface s: gp.getAllowedSurfaces()){
+                switch(s){
+                    case DISK:
+                    this.diskMenuItem.setEnabled(true);
+                    break;
+                case V_SPHERE:
+                    this.vsphereMenuItem.setEnabled(true);
+                    break;
+                case H_SPHERE:
+                    this.hsphereMenuItem.setEnabled(true);
+                    break;
+                case V_CYLINDER:
+                    this.vcylinderMenuItem.setEnabled(true);
+                    break;
+                case H_CYLINDER:
+                    this.hcylinderMenuItem.setEnabled(true);
+                    break;
+                case TORUS:
+                    this.torusMenuItem.setEnabled(true);
+                    break;
+                }
             }
         }
         
@@ -284,6 +296,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void diskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diskMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.DISK;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
             repaint();
@@ -297,6 +310,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void torusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_torusMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.TORUS;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/toro.jpg")));
             repaint();
@@ -311,6 +325,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void vsphereMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vsphereMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.V_SPHERE;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/esfera.jpg")));
             repaint();
@@ -324,6 +339,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void hsphereMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsphereMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.H_SPHERE;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/esfera.jpg")));
             repaint();
@@ -337,6 +353,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void vcylinderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vcylinderMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.V_CYLINDER;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/cilindro.jpg")));
             repaint();
@@ -350,6 +367,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void hcylinderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hcylinderMenuItemActionPerformed
         JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.H_CYLINDER;
         try{
             this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/cilindro_h_1.jpg")));
             repaint();

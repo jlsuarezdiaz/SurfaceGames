@@ -295,7 +295,10 @@ public class SnakePanel extends AnimatedGamePanel {
         return allowedSurfaces;
     }
     
-    
+    @Override
+    public boolean isSurfaceChangeAllowedDuringGame(){
+        return true;
+    }
     
     
 

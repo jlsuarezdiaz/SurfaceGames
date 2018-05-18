@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
 import static utils.Math.mod;
+import static java.lang.Math.floorDiv;
 
 /**
  *
@@ -73,6 +74,35 @@ public class MineSweeper2 extends GamePanel {
         newGame();
     }
     
+    private Point positionToMineCoord(int pos){
+        return new Point(floorDiv(pos,N_COLS),mod(pos,N_COLS));
+    }
+    
+    private int mineCoordToPosition(Point mine_coord){
+        return mine_coord.x*N_COLS + mine_coord.y;
+    }
+    
+    private Point getCanonicalPosition(Point mine_coord){
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        Point p = new Point(mine_coord.x*CELL_SIZE, mine_coord.y*CELL_SIZE);
+        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE,CELL_SIZE));
+        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        return new Point(p.x/CELL_SIZE,p.y/CELL_SIZE);
+    }
+    
+    private boolean isPositionValid(Point mine_coord){
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        Point p = new Point(mine_coord.x*CELL_SIZE, mine_coord.y*CELL_SIZE);
+        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE,CELL_SIZE));
+        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        return !isOnBorderOrBeyond(p);
+    }
+    
+    /**
+     * @deprecated 
+     * @param pos
+     * @return 
+     */
     private int getCanonicalPosition(int pos){
         //Posicion --> Coordenadas de mina
         int x = floorDiv(pos,N_COLS);
@@ -89,6 +119,11 @@ public class MineSweeper2 extends GamePanel {
         return pos;
     }
     
+    /**
+     * @deprecated 
+     * @param pos
+     * @return 
+     */
     private boolean isPositionValid(int pos){
         //Posicion --> Coordenadas de mina
         int x = floorDiv(pos,N_COLS);
@@ -132,26 +167,30 @@ public class MineSweeper2 extends GamePanel {
                 current_col = position % N_COLS;
                 field[position] = COVERED_MINE_CELL;
                 i++;
+                Point mc = positionToMineCoord(position);
                 
-                int neighborhood[] = new int[]{
-                    position -1 - N_COLS, //arriba izquierda
-                    position -1,          //PSOE
-                    position -1 + N_COLS, //abajo izquierda
-                    position - N_COLS,    //arriba centro
-                    position + N_COLS,    //abajo centro
-                    position +1 - N_COLS, //arriba derecha
-                    position +1 ,         //Ciudadanos
-                    position +1 + N_COLS  //abajo derecha
+                Point neighborhood[] = new Point[]{
+                    new Point(mc.x-1, mc.y-1), //arriba izquierda
+                    new Point(mc.x-1, mc.y  ), //PSOE
+                    new Point(mc.x-1, mc.y+1), //abajo izquierda
+                    new Point(mc.x  , mc.y-1), //arriba centro
+                    new Point(mc.x  , mc.y+1), //abajo centro
+                    new Point(mc.x+1, mc.y-1), //arriba derecha
+                    new Point(mc.x+1, mc.y  ), //Ciudadanos
+                    new Point(mc.x+1, mc.y+1), //abajo derecha
                 };
                 
-                for(int cell : neighborhood){
-                    if(isPositionValid(cell)){
-                        int canonical = getCanonicalPosition(cell);
-                        //System.out.println(cell);
-                        //System.out.println(canonical);
-                        //System.out.println("---");
-                        if (field[canonical] != COVERED_MINE_CELL)
-                            field[canonical] += 1;
+                for(Point p: neighborhood){
+                    if(isPositionValid(p)){
+                        Point canonical = getCanonicalPosition(p);
+                        int canon_pos = mineCoordToPosition(canonical);
+                        System.out.println(p);
+                        System.out.println(canonical);
+                        System.out.println(canon_pos);
+                        System.out.println("---");
+                        
+                        if (field[canon_pos] != COVERED_MINE_CELL)
+                            field[canon_pos] += 1;
                     }
                 }
                 
@@ -202,33 +241,39 @@ public class MineSweeper2 extends GamePanel {
                 */
             }
         }
+        
+        addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
+        addSoundEffect("coin", "/surfacegames/media/coin.wav");
     }
     
     public void find_empty_cells(int j) {
 
         int current_col = j % N_COLS;
 
-        int neighborhood[] = new int[]{
-            j -1 - N_COLS, //arriba izquierda
-            j -1,          //PSOE
-            j -1 + N_COLS, //abajo izquierda
-            j - N_COLS,    //arriba centro
-            j + N_COLS,    //abajo centro
-            j +1 - N_COLS, //arriba derecha
-            j +1 ,         //Ciudadanos
-            j +1 + N_COLS  //abajo derecha
+        Point mc = positionToMineCoord(j);
+        Point neighborhood[] = new Point[]{
+            new Point(mc.x-1, mc.y-1), //arriba izquierda
+            new Point(mc.x-1, mc.y  ), //PSOE
+            new Point(mc.x-1, mc.y+1), //abajo izquierda
+            new Point(mc.x  , mc.y-1), //arriba centro
+            new Point(mc.x  , mc.y+1), //abajo centro
+            new Point(mc.x+1, mc.y-1), //arriba derecha
+            new Point(mc.x+1, mc.y  ), //Ciudadanos
+            new Point(mc.x+1, mc.y+1), //abajo derecha
         };
         
-        for(int cell: neighborhood){
-            if(isPositionValid(cell)){
-                int canonical = getCanonicalPosition(cell);
-                System.out.println(cell);
-                System.out.println(canonical);
+        for(Point p: neighborhood){
+            if(isPositionValid(p)){
+                Point canonical = getCanonicalPosition(p);
+                System.out.println("From: "+mc);
+                System.out.println("To: "+p);
+                System.out.println("Canon: "+canonical);
                 System.out.println("---");
-                if(field[canonical] > MINE_CELL){
-                    field[canonical] -= COVER_FOR_CELL;
-                    if(field[canonical] == EMPTY_CELL){
-                        find_empty_cells(canonical);
+                int canon_pos = mineCoordToPosition(canonical);
+                if(field[canon_pos] > MINE_CELL){
+                    field[canon_pos] -= COVER_FOR_CELL;
+                    if(field[canon_pos] == EMPTY_CELL){
+                        find_empty_cells(canon_pos);
                     }
                 }
             }
@@ -363,6 +408,11 @@ public class MineSweeper2 extends GamePanel {
         
     }
     
+    @Override
+    public boolean isSurfaceChangeAllowedDuringGame(){
+        return false;
+    }
+    
     class MinesAdapter extends MouseAdapter {
         
         @Override
@@ -420,10 +470,17 @@ public class MineSweeper2 extends GamePanel {
                         field[(cRow * N_COLS) + cCol] -= COVER_FOR_CELL;
                         rep = true;
 
-                        if (field[(cRow * N_COLS) + cCol] == MINE_CELL)
+                        if (field[(cRow * N_COLS) + cCol] == MINE_CELL){
                             inGame = false;
-                        if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL)
+                            playSoundEffect("explosion");
+                        }
+                        else if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL){
                             find_empty_cells((cRow * N_COLS) + cCol);
+                            playSoundEffect("coin");
+                        }
+                        else{
+                            playSoundEffect("coin");
+                        }
                     }
                 }
 

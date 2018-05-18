@@ -331,6 +331,8 @@ public abstract class GamePanel extends javax.swing.JPanel{
     
     public abstract Surface[] getAllowedSurfaces();
     
+    public abstract boolean isSurfaceChangeAllowedDuringGame();
+    
     public abstract void pause();
         
     public void setBackgroundSound(String filename){

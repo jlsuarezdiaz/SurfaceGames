@@ -71,6 +71,11 @@ public class PuzzlePanel extends GamePanel{
         return allowedSurfaces;
     };
     
+    @Override
+    public boolean isSurfaceChangeAllowedDuringGame(){
+        return true;
+    }
+    
   
     private void initUI() {
         buttons = new ArrayList<>();

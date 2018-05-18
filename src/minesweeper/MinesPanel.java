@@ -85,6 +85,10 @@ public class MinesPanel extends GamePanel {
                 
     }
     
+    @Override
+    public boolean isSurfaceChangeAllowedDuringGame(){
+        return false;
+    }
  
     public void setManue() {
         JMenuBar bar = new JMenuBar();
