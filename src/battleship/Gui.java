@@ -37,17 +37,13 @@ public class Gui extends JFrame implements ActionListener {
         //Tableros
         container.add(gui.createGrid(1)).setBounds(20, 50, 500, 500);
         container.add(gui.createGrid(2)).setBounds(550, 50, 500, 500);       
-        //Botón reset
-        JButton reset = new JButton("Reiniciar");
-        reset.addActionListener(e -> reset());
-        container.add(reset).setBounds(1100, 100, 100, 20);
         //Mensaje
         container.add(message);
         message.setBounds(250, 600, 500, 20);
         
         f.setContentPane(container);
 
-        f.setSize(1300, 1000);
+        f.setSize(1100, 1000);
     }
 
     private Container createGrid(int num) {
@@ -105,13 +101,5 @@ public class Gui extends JFrame implements ActionListener {
     public static void message(String text) {
         Gui.text.setText(text);
 
-    }
-
-    public static void reset() {
-        PlaceShips.reset();
-        Guess.reset();
-        container.removeAll();
-        PlaceShips.cpu();
-        createGui();
     }
 }
