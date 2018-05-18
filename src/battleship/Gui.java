@@ -42,7 +42,7 @@ public class Gui extends JFrame implements ActionListener {
         message.setBounds(250, 600, 500, 20);
         
         f.setContentPane(container);
-
+        //Tamaño ventana juego
         f.setSize(1100, 1000);
     }
 

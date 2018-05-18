@@ -131,11 +131,33 @@ public class PlaceShips {
             else if(abs(button-lastButt)==10)
                 okVertical = true;
             
-            surface = Surface.TORUS;
+            surface = Surface.H_SPHERE;
             switch(surface){
                 case V_SPHERE:
+                    //Identificar parte superior e inferior
+                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
+                        okVertical = true;
+                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
+                        okVertical = true;
+                    //Identificar mitades lateral izquierdo
+                    if(lastButt%10 == 0 && abs(lastButt-button)==90) //!!!
+                        okVertical = true;
+                    //Identificar mitades lateral derecho
+                    if((lastButt-9)%10==0 && abs(lastButt-button)==90) //!!!
+                        okVertical = true;
                 break;
                 case H_SPHERE:
+                    //Identificar laterales
+                    if(lastButt%10 == 0 && (button-9)==lastButt)
+                        okHorizontal = true;
+                    else if((lastButt-9)%10==0 && (button+9)==lastButt)
+                        okHorizontal = true;
+                    //Identificar mitades parte superior
+                    if(lastButt>=200 && lastButt<=209 && (lastButt+button)%10==9)
+                        okHorizontal=true;
+                    //Identificar mitades parte inferior
+                    if(lastButt>=290 && lastButt<=299 && (lastButt+button)%10==9)
+                        okHorizontal=true;
                 break;
                 case TORUS:
                     //Identificar laterales
