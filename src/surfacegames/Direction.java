@@ -9,20 +9,6 @@ package surfacegames;
  *
  * @author jlsuarezdiaz
  */
-public enum Surface {
-    DISK, 
-    V_SPHERE, 
-    H_SPHERE, 
-    TORUS, 
-    V_CYLINDER, 
-    H_CYLINDER,
-    TORUS_2,
-    //n-toros?
-    
-    
-    V_MOBIUS,
-    H_MOBIUS,
-    PROJECTIVE,
-    V_KLEIN,
-    H_KLEIN
+public enum Direction {
+    UP, DOWN, LEFT, RIGHT, SAME
 }

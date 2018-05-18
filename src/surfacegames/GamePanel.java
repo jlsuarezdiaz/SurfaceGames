@@ -83,13 +83,16 @@ public abstract class GamePanel extends javax.swing.JPanel{
         Color startColor3 = Color.GREEN;
         Color endColor3 = Color.CYAN;
         
+        Color startColor4 = Color.ORANGE;
+        Color endColor4 = new Color(160, 82, 45); // BROWN
+        
                 
         int w = dim.width;
         int h = dim.height;
         
         int startX, startY, endX, endY;
     
-        GradientPaint gradient, gradient2, gradient3;
+        GradientPaint gradient, gradient2, gradient3, gradient4;
 
        
         BasicStroke stroke = new BasicStroke(4.0f);
@@ -202,6 +205,65 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 g2d.drawLine(w-offset,offset,w-offset,h/2);
                 
             break;
+            
+            case TORUS_2:
+                startX = startY = endY = 0;
+                endX = w/2;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w/2, offset);
+                
+                startX = endX = w;
+                startY = 0;
+                endY = h/2;
+                gradient = new GradientPaint(endX, endY, startColor, startX, startY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(w-offset, offset, w-offset, h/2);
+                
+                startX = w/2;
+                endX = w;
+                startY = endY = 0;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w/2,offset,w-offset,offset);
+                
+                startX = endX = w;
+                startY = h/2;
+                endY = h;
+                gradient2 = new GradientPaint(endX,endY,startColor2,startX,startY,endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w-offset, h/2, w-offset, h-offset);
+                
+                startX = w/2;
+                endX = w;
+                startY = endY = h;
+                gradient3 = new GradientPaint(endX,endY,startColor3,startX,startY,endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(w/2,h-offset, w-offset, h-offset);
+                
+                startX = endX = 0;
+                startY = h/2;
+                endY = h;
+                gradient3 = new GradientPaint(startX,startY,startColor3,endX,endY,endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(offset, h/2, offset, h-offset);
+                
+                startX = 0;
+                endX = w/2;
+                startY = endY = h;
+                gradient4 = new GradientPaint(endX,endY,startColor4,startX,startY,endColor4);
+                g2d.setPaint(gradient4);
+                g2d.drawLine(offset, h-offset, w/2, h-offset);
+                
+                startX = startY = endX = 0;
+                endY = w/2;
+                gradient4 = new GradientPaint(startX,startY,startColor4,endX,endY,endColor4);
+                g2d.setPaint(gradient4);
+                g2d.drawLine(offset, offset, offset, h/2);
+                
+                
+                
+            break;
         }
     }
     
@@ -251,6 +313,41 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case TORUS:
                 psurf = new Point(mod(x,w), mod(y,h));
                 break;
+            case TORUS_2:
+            {
+                float t = ((float)h/w);
+                float s = ((float)w/h);
+                
+                if(y < 0 && x < w/2){
+                    psurf = new Point((int)(s*mod(y,h)),h/2 - (int)(t*x) - gy);
+                }
+                else if(y < 0 && x < w){
+                    psurf = new Point((int)(s*mod(y,h)),h - (int)(t*(x-w/2)) - gy);
+                }
+                else if(x >= w && y < h/2){
+                    psurf = new Point(w/2 - (int)(s*y) - gx, (int)(t*mod(x,w)));
+                }
+                else if(x >= w && y < h){
+                    psurf = new Point(w - (int)(s*(y - h/2))- gx, (int)(t*mod(x,w)));
+                }
+                else if(y >= h && x < w/2){
+                    psurf = new Point((int)(s*mod(y,h)), h/2 - (int)(t*x) -gy);
+                }
+                else if(y >= h && x < w){
+                    psurf = new Point((int)(s*mod(y,h)), h - (int)(t*(x-w/2)) - gy);
+                }
+                else if(x < 0 && y < h/2){
+                    psurf = new Point(w/2 - (int)(s*y) -gx, (int)(t*mod(x,w)));
+                }
+                else if(x < 0 && y < h){
+                    psurf = new Point(w - (int)(s*(y - h/2)) - gx, (int)(t*mod(x,w)));
+                }
+                else{
+                    psurf = new Point(p);
+                }
+                
+            }
+            break;
               
         }
         
@@ -273,6 +370,7 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case V_SPHERE:
             case H_SPHERE:
             case TORUS:
+            case TORUS_2:
                 return false;
             case DISK:
                 return x==-gx || x==w || y==-gy || y == h;
@@ -298,6 +396,7 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case V_SPHERE:
             case H_SPHERE:
             case TORUS:
+            case TORUS_2:
                 return false;
             case DISK:
                 return x<0 || x>=w || y<0 || y >= h;
@@ -327,6 +426,52 @@ public abstract class GamePanel extends javax.swing.JPanel{
             
         }
         return false;
+    }
+    
+    public Direction getDirectionChange(Point p){
+        int w = dim.width;
+        int h = dim.height;
+        int x = p.x;
+        int y = p.y;
+        switch(surface){
+            case DISK:
+            case V_CYLINDER:
+            case H_CYLINDER:
+            case TORUS:
+                return Direction.SAME;
+            case V_SPHERE:
+                if(y >= h){
+                    return Direction.UP;
+                }
+                else if(y < 0){
+                    return Direction.DOWN;
+                }
+                else return Direction.SAME;
+            case H_SPHERE:
+                if(x >= w){
+                    return Direction.LEFT;
+                }
+                else if(x < 0){
+                    return Direction.RIGHT;
+                }
+                else return Direction.SAME;
+            case TORUS_2:
+                if(x >= w){
+                    return Direction.DOWN;
+                }
+                else if(x < 0){
+                    return Direction.UP;
+                }
+                else if(y >= h){
+                    return Direction.RIGHT;
+                }
+                else if(y < 0){
+                    return Direction.LEFT;
+                }
+                else return Direction.SAME;
+            
+        }
+        return null;
     }
     
     public abstract Surface[] getAllowedSurfaces();

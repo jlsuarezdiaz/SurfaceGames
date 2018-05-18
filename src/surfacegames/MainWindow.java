@@ -90,6 +90,9 @@ public class MainWindow extends javax.swing.JFrame {
             case TORUS:
                 this.torusMenuItem.setSelected(true);
                 break;
+            case TORUS_2:
+                this.torus2MenuItem.setSelected(true);
+                break;
         }
         Enumeration<AbstractButton> buttons = surfaceBtGroup.getElements();
         while(buttons.hasMoreElements()){
@@ -117,6 +120,9 @@ public class MainWindow extends javax.swing.JFrame {
                     break;
                 case TORUS:
                     this.torusMenuItem.setEnabled(true);
+                    break;
+                case TORUS_2:
+                    this.torus2MenuItem.setEnabled(true);
                     break;
                 }
             }
@@ -149,6 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
         vcylinderMenuItem = new javax.swing.JRadioButtonMenuItem();
         hcylinderMenuItem = new javax.swing.JRadioButtonMenuItem();
         torusMenuItem = new javax.swing.JRadioButtonMenuItem();
+        torus2MenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         surfaceHelpMenuItem = new javax.swing.JMenuItem();
         optionsMenu = new javax.swing.JMenu();
@@ -271,6 +278,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         surfaceMenu.add(torusMenuItem);
+
+        surfaceBtGroup.add(torus2MenuItem);
+        torus2MenuItem.setText("2-Toro");
+        torus2MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                torus2MenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(torus2MenuItem);
         surfaceMenu.add(jSeparator1);
 
         surfaceHelpMenuItem.setText("Ayuda");
@@ -427,6 +443,20 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_surfaceMenuMenuSelected
 
+    private void torus2MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_torus2MenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.TORUS_2;
+        try{
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg")));
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.TORUS_2);
+        }
+    }//GEN-LAST:event_torus2MenuItemActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -447,6 +477,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem surfaceHelpMenuItem;
     private javax.swing.JMenu surfaceMenu;
     private javax.swing.JMenuBar topMenu;
+    private javax.swing.JRadioButtonMenuItem torus2MenuItem;
     private javax.swing.JRadioButtonMenuItem torusMenuItem;
     private javax.swing.JRadioButtonMenuItem vcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem vsphereMenuItem;

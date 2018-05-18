@@ -25,7 +25,7 @@ import static java.lang.Math.floorDiv;
  * @author jlsuarezdiaz
  */
 public class MineSweeper2 extends GamePanel {
-    private static final Surface ALLOWED_SURFACES[] = {Surface.DISK,Surface.H_CYLINDER,Surface.V_CYLINDER,Surface.H_SPHERE,Surface.V_SPHERE,Surface.TORUS};
+    private static final Surface ALLOWED_SURFACES[] = {Surface.DISK,Surface.H_CYLINDER,Surface.V_CYLINDER,Surface.H_SPHERE,Surface.V_SPHERE,Surface.TORUS,Surface.TORUS_2};
     
     private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;

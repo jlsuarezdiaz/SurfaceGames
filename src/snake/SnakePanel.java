@@ -23,6 +23,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import surfacegames.AnimatedGamePanel;
+import surfacegames.Direction;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
 
@@ -31,7 +32,7 @@ import surfacegames.Surface;
  * @author nuria
  */
 public class SnakePanel extends AnimatedGamePanel {
-    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
+    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS,Surface.TORUS_2};
     
     private final int MAX_DOTS = 2000; // Tamaño máximo de la serpiente
     private final int DOT_SIZE = 10;
@@ -217,6 +218,7 @@ public class SnakePanel extends AnimatedGamePanel {
         }
         
         //Actualiza la cabeza y la dirección según la superficie
+        /*
         if(isOnOrientationChange(snake[0])){
             if(leftDirection || rightDirection){
                 leftDirection=!leftDirection;
@@ -226,7 +228,35 @@ public class SnakePanel extends AnimatedGamePanel {
                 upDirection=!upDirection;
                 downDirection=!downDirection;
             }
+        }*/
+        Direction dir = getDirectionChange(snake[0]);
+        switch(dir){
+            case UP:
+                upDirection = true;
+                downDirection = false;
+                leftDirection = false;
+                rightDirection = false;
+                break;
+            case DOWN:
+                upDirection = false;
+                downDirection = true;
+                leftDirection = false;
+                rightDirection = false;
+                break;
+            case LEFT:
+                upDirection = false;
+                downDirection = false;
+                leftDirection = true;
+                rightDirection = false;
+                break;
+            case RIGHT:
+                upDirection = false;
+                downDirection = false;
+                leftDirection = false;
+                rightDirection = true;
+                break;
         }
+        
         Point last = snake[0];
         snake[0] = getCanonicalCoordinates(snake[0],new Dimension(DOT_SIZE,DOT_SIZE));
         
