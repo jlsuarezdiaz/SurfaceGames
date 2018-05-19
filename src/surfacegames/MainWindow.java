@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButtonMenuItem;
 import puzzle.PuzzleWindow;
 import minesweeper.MinesWindow;
-import minesweeper.MinesWindow2;
 import snake.SnakeWindow;
 import static surfacegames.GameType.BATTLESHIP;
 
@@ -50,7 +49,7 @@ public class MainWindow extends javax.swing.JFrame {
                 iw = new PuzzleWindow(this);
                 break;
             case MINESWEEPER:
-                iw = new MinesWindow2(this);
+                iw = new MinesWindow(this);
                 break;
             case BATTLESHIP:
                 Gui.setSurface(selectedSurface);

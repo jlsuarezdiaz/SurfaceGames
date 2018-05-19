@@ -11,21 +11,24 @@ import surfacegames.MainWindow;
 
 /**
  *
- * @author Javier
+ * @author jlsuarezdiaz
  */
-public class MinesWindow extends GameWindow{
+public class MinesWindow extends GameWindow {
 
+    MainWindow parent;
+    
     /**
-     * Creates new form MinesWindow
+     * Creates new form MinesWindow2
      */
     public MinesWindow() {
         initComponents();
     }
-
+    
     public MinesWindow(MainWindow g){
         super(g);
         initComponents();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,34 +38,25 @@ public class MinesWindow extends GameWindow{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        minesPanel1 = new minesweeper.MinesPanel();
+        mineSweeper21 = new minesweeper.MinesPanel();
 
         setClosable(true);
+        setIconifiable(true);
+        setTitle("Buscaminas");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(minesPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(minesPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        mineSweeper21.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(mineSweeper21, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private minesweeper.MinesPanel minesPanel1;
+    private minesweeper.MinesPanel mineSweeper21;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public GamePanel getGamePanel() {
-        return this.minesPanel1;
+        return mineSweeper21;
     }
 }

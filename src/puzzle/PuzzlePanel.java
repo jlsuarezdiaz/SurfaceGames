@@ -361,7 +361,7 @@ public class PuzzlePanel extends GamePanel{
                     i++;
                 }
                 int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "¿Hacia dónde?", "Escoge", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
-                System.out.println(opcionSeleccionada);
+
                 if(opcionSeleccionada >= 0){
                     buttons.get(bidx).rotate((int)(opciones.get(opcionSeleccionada).getRot()));
                     Collections.swap(buttons, bidx, lidx);
