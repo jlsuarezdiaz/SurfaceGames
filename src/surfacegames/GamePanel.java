@@ -474,6 +474,52 @@ public abstract class GamePanel extends javax.swing.JPanel{
         return null;
     }
     
+    /**
+     * 
+     * @param p
+     * @return 
+     */
+    public float getRotationChange(Point p){
+        // SENTIDO HORARIO Y SEXAGESIMAL
+        int w = dim.width;
+        int h = dim.height;
+        int x = p.x;
+        int y = p.y;
+        switch(surface){
+            case DISK:
+            case V_CYLINDER:
+            case H_CYLINDER:
+            case TORUS:
+                return 0;
+            case V_SPHERE:
+                if(y >= h || y < 0){
+                    return 180;
+                }
+                else return 0;
+            case H_SPHERE:
+                if(x >= w || x < 0){
+                    return 180;
+                }
+                else return 0;
+            case TORUS_2:
+                if(x >= w){
+                    return 90;
+                }
+                else if(x < 0){
+                    return 90;
+                }
+                else if(y >= h){
+                    return 270;
+                }
+                else if(y < 0){
+                    return 270;
+                }
+                else return 0;
+            
+        }
+        return 0;
+    }
+    
     public abstract Surface[] getAllowedSurfaces();
     
     public abstract boolean isSurfaceChangeAllowedDuringGame();
