@@ -58,7 +58,8 @@ public class PuzzlePanel extends GamePanel{
     private List<MyButton> buttons;
     
     private final int NUMBER_OF_BUTTONS = fil*col;
-    private int desired_width = 300;
+    private int desired_width;
+    private int desired_height;
 
     public PuzzlePanel() {
         initUI();
@@ -117,11 +118,12 @@ public class PuzzlePanel extends GamePanel{
         panel.setLayout(new GridLayout(fil, col, 0, 0));
         
         desired_width = this.dim.width;
+        desired_height = this.dim.height;
 
         try {
             source = loadImage();
             int h = getNewHeight(source.getWidth(), source.getHeight());
-            resized = resizeImage(source, desired_width, h,
+            resized = resizeImage(source, desired_width, desired_height,
                     BufferedImage.TYPE_INT_ARGB);
             
         } catch (IOException ex) {
@@ -132,11 +134,11 @@ public class PuzzlePanel extends GamePanel{
         width = resized.getWidth(null);
         height = resized.getHeight(null);
         
+        
         CELL_SIZE_X = width/col;
         CELL_SIZE_Y = height/fil;
         
-        System.out.println(CELL_SIZE_X);
-        System.out.println(CELL_SIZE_Y);
+        
         
         add(panel, BorderLayout.CENTER);
 
@@ -178,7 +180,7 @@ public class PuzzlePanel extends GamePanel{
     
     
     private int getNewHeight(int w, int h) {
-        double ratio = w / (double) w;
+        double ratio = w / (double) h;
         int newHeight = (int) (h * ratio);
         return newHeight;
     }
@@ -245,14 +247,20 @@ public class PuzzlePanel extends GamePanel{
         };
        
        Point lastNuevo = getCanonicalPosition(last);
-       System.out.println(lastNuevo);
+       System.out.println("__________");
+       System.out.println("bidx"+bidx);
+       System.out.println("lidx"+lidx);
+       System.out.println("MC:"+mc);
+       System.out.println("LAST:"+last);
+       System.out.println("LASTN:"+lastNuevo);
        
        for(Point p: neighborhood){
+           System.out.println("P:"+p);
             if(isPositionValid(p)){
                 Point canonical = getCanonicalPosition(p);
-                
+                System.out.println("PC:"+canonical);
                 int canon_pos = puzzleCoordToPosition(canonical);
-                
+                System.out.println("cp"+canon_pos);
                 
                 if(canon_pos == lidx){
                     valido=true;
