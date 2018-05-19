@@ -7,6 +7,7 @@ package puzzle;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -18,6 +19,7 @@ import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Math.floorDiv;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import surfacegames.GamePanel;
 import surfacegames.Surface;
+import static utils.Math.mod;
 
 /**
  *
@@ -76,6 +79,34 @@ public class PuzzlePanel extends GamePanel{
         return true;
     }
     
+    private final int N_ROWS = 4;
+    private final int N_COLS = 4;
+    private int CELL_SIZE_X ;
+    private int CELL_SIZE_Y;
+    
+    private int getCanonicalPosition(int pos){
+        //Posicion --> Coordenadas de mina
+        int y = floorDiv(pos,N_COLS);
+        int x = mod(pos,N_COLS);
+        //Coordenadas de mina --> Coordenadas de panel
+        Point p = new Point(x*CELL_SIZE_X,y*CELL_SIZE_Y);
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE_X,CELL_SIZE_Y));
+        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        x = p.x /CELL_SIZE_X;
+        y = p.y /CELL_SIZE_Y;
+        // Coordenadas de mina canónicas --> Posición canónica.
+        pos = y*N_COLS + x;
+        return pos;
+    }
+    
+     private Point getCanonicalPosition(Point mine_coord){
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        Point p = new Point(mine_coord.x*CELL_SIZE_X, mine_coord.y*CELL_SIZE_Y);
+        p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE_X,CELL_SIZE_Y));
+        //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
+        return new Point(p.x/CELL_SIZE_X,p.y/CELL_SIZE_Y);
+    }
   
     private void initUI() {
         buttons = new ArrayList<>();
@@ -101,6 +132,12 @@ public class PuzzlePanel extends GamePanel{
         width = resized.getWidth(null);
         height = resized.getHeight(null);
         
+        CELL_SIZE_X = width/col;
+        CELL_SIZE_Y = height/fil;
+        
+        System.out.println(CELL_SIZE_X);
+        System.out.println(CELL_SIZE_Y);
+        
         add(panel, BorderLayout.CENTER);
 
         for (int i = 0; i < fil; i++) {
@@ -115,7 +152,7 @@ public class PuzzlePanel extends GamePanel{
                 MyButton button = new MyButton(image);
                 button.putClientProperty("position", new Point(i, j));
 
-                if (i == 3 && j == 2) {
+                if (i == 3 && j == 3) {
                     lastButton = new MyButton();
                     lastButton.setBorderPainted(true);
                     lastButton.setContentAreaFilled(true);
@@ -164,11 +201,17 @@ public class PuzzlePanel extends GamePanel{
         return resizedImage;
     }
     
+    private Point positionToPuzzleCoord(int pos){
+        return new Point(mod(pos,N_COLS),floorDiv(pos,N_COLS));
+    }
+    
     private boolean validateMovement(int bidx, int lidx){
         Surface tipo = this.getSurface();
         boolean disco, lateral, bases;
-
-       switch(tipo){
+        boolean valido = false;
+        Point mc = positionToPuzzleCoord(bidx);
+        Point last = positionToPuzzleCoord(lidx);
+       /*
             case DISK:
                return (bidx - 1 == lidx) || (bidx + 1 == lidx)|| (bidx - col == lidx) || (bidx + col == lidx);
             
@@ -190,10 +233,45 @@ public class PuzzlePanel extends GamePanel{
                 bases = (bidx < col && lidx == bidx + col*(fil-1)) || (lidx < col  && bidx == lidx + col*(fil-1));
                 return(disco||lateral||bases);
                
-       }                
-
+       }  */
+       
+       Point neighborhood[] = new Point[]{
+            new Point(mc.x-1, mc.y  ), //PSOE
+            
+            new Point(mc.x  , mc.y-1), //arriba centro
+            new Point(mc.x  , mc.y+1), //abajo centro
+            
+            new Point(mc.x+1, mc.y  ), //Ciudadanos
+        };
+       
+       Point lastNuevo = getCanonicalPosition(last);
+       System.out.println(lastNuevo);
+       
+       for(Point p: neighborhood){
+            if(isPositionValid(p)){
+                Point canonical = getCanonicalPosition(p);
+                
+                int canon_pos = puzzleCoordToPosition(canonical);
+                
+                
+                if(canon_pos == lidx){
+                    valido=true;
+                }
+            }
+        }
         
-        return false;
+        return valido;
+    }
+    
+    private int puzzleCoordToPosition(Point puzzle_coord){
+        return puzzle_coord.y*N_COLS + puzzle_coord.x;
+    }
+    
+    private boolean isPositionValid(Point mine_coord){
+        //Coordenadas de panel --> Coordenadas de panel canónicas
+        Point p = new Point(mine_coord.x*CELL_SIZE_X, mine_coord.y*CELL_SIZE_Y);
+        
+        return !isOnBorderOrBeyond(p);
     }
     
     private class ClickAction extends AbstractAction {
