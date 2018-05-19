@@ -263,9 +263,6 @@ public class MineSweeper2 extends GamePanel {
         };
         
         for(Point p: neighborhood){
-            System.out.println(p);
-        }
-        for(Point p: neighborhood){
             if(isPositionValid(p)){
                 Point canonical = getCanonicalPosition(p);
                 System.out.println("From: "+mc);
