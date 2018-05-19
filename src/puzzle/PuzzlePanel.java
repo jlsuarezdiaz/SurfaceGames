@@ -247,10 +247,10 @@ public class PuzzlePanel extends GamePanel{
        }  */
        
        String nombres[] = new String[]{
-           new String("Arriba"),
            new String("Izquierda"),
-           new String("Derecha"),
+           new String("Arriba"),
            new String("Abajo"),
+           new String("Derecha"),
            
        };
        
@@ -270,22 +270,17 @@ public class PuzzlePanel extends GamePanel{
        float rotaciones[] = new float[4];
        
        Point lastNuevo = getCanonicalPosition(last);
-       System.out.println("__________");
-       System.out.println("bidx"+bidx);
-       System.out.println("lidx"+lidx);
-       System.out.println("MC:"+mc);
-       System.out.println("LAST:"+last);
-       System.out.println("LASTN:"+lastNuevo);
+       
        int indice = 0;
        ArrayList<Point> validos = new ArrayList<Point>();
        for(Point p: neighborhood){
-           System.out.println("P:"+p);
+           
             if(isPositionValid(p)){
                 rotaciones[indice] = getRotationChange(p);
                 Point canonical = getCanonicalPosition(p);
-                System.out.println("PC:"+canonical);
+                
                 int canon_pos = puzzleCoordToPosition(canonical);
-                System.out.println("cp"+canon_pos);
+                
                 
                 if(canon_pos == lidx){
                     PairRot pair= new PairRot(nombres[indice], rotaciones[indice]);
@@ -352,6 +347,7 @@ public class PuzzlePanel extends GamePanel{
                 Image imgDest = (Image) imgdest;
                 
                 buttons.get(bidx).setIcon((ImageIcon)imgdest);*/
+                buttons.get(bidx).rotate(90);
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
             }
@@ -368,7 +364,7 @@ public class PuzzlePanel extends GamePanel{
                         direcciones[i] = pair.getNombre();
                         i++;
                     }
-                    int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "hacia donde", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
+                    int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "¿Hacia dónde?", "Escoge", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
                     
                 }
                 
