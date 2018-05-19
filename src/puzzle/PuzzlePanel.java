@@ -14,6 +14,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
@@ -41,12 +43,16 @@ import static utils.Math.mod;
 
 /**
  *
- * @author nuria
+ * @author nuria y moya
  */
+
+
+
 public class PuzzlePanel extends GamePanel{
     private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
 
     private JPanel panel;
+    private JPanel ventanaEmergente;
     private BufferedImage source;
     private BufferedImage resized;    
     private Image image;
@@ -207,8 +213,11 @@ public class PuzzlePanel extends GamePanel{
         return new Point(mod(pos,N_COLS),floorDiv(pos,N_COLS));
     }
     
-    private boolean validateMovement(int bidx, int lidx){
+    ArrayList<Integer> validos_st = new ArrayList<Integer>();
+    
+    private ArrayList<PairRot> validateMovement(int bidx, int lidx){
         Surface tipo = this.getSurface();
+        validos_st.clear();
         boolean disco, lateral, bases;
         boolean valido = false;
         Point mc = positionToPuzzleCoord(bidx);
@@ -237,6 +246,18 @@ public class PuzzlePanel extends GamePanel{
                
        }  */
        
+       String nombres[] = new String[]{
+           new String("Arriba"),
+           new String("Izquierda"),
+           new String("Derecha"),
+           new String("Abajo"),
+           
+       };
+       
+       ArrayList<PairRot> pairs = new ArrayList<PairRot>();
+       
+       
+       
        Point neighborhood[] = new Point[]{
             new Point(mc.x-1, mc.y  ), //PSOE
             
@@ -246,6 +267,8 @@ public class PuzzlePanel extends GamePanel{
             new Point(mc.x+1, mc.y  ), //Ciudadanos
         };
        
+       float rotaciones[] = new float[4];
+       
        Point lastNuevo = getCanonicalPosition(last);
        System.out.println("__________");
        System.out.println("bidx"+bidx);
@@ -253,22 +276,29 @@ public class PuzzlePanel extends GamePanel{
        System.out.println("MC:"+mc);
        System.out.println("LAST:"+last);
        System.out.println("LASTN:"+lastNuevo);
-       
+       int indice = 0;
+       ArrayList<Point> validos = new ArrayList<Point>();
        for(Point p: neighborhood){
            System.out.println("P:"+p);
             if(isPositionValid(p)){
+                rotaciones[indice] = getRotationChange(p);
                 Point canonical = getCanonicalPosition(p);
                 System.out.println("PC:"+canonical);
                 int canon_pos = puzzleCoordToPosition(canonical);
                 System.out.println("cp"+canon_pos);
                 
                 if(canon_pos == lidx){
-                    valido=true;
+                    PairRot pair= new PairRot(nombres[indice], rotaciones[indice]);
+                    
+                    pairs.add(pair);
+                    
                 }
             }
+            
+           indice++; 
         }
         
-        return valido;
+        return pairs;
     }
     
     private int puzzleCoordToPosition(Point puzzle_coord){
@@ -301,10 +331,48 @@ public class PuzzlePanel extends GamePanel{
 
             JButton button = (JButton) e.getSource();
             int bidx = buttons.indexOf(button);
-
-            if (validateMovement(bidx, lidx)) {
+            
+            
+           
+      
+            //Solo una opcion
+            ArrayList<PairRot> opciones = validateMovement(bidx, lidx);
+            
+            
+            if (opciones.size() == 1 ) {
+                /*PairRot pair = opciones.get(0);
+                JButton buttonCogido = buttons.get(bidx);
+                BufferedImage img = (BufferedImage)buttonCogido.getIcon();
+                double rot = pair.getRot();
+                Point c = new Point(img.getWidth()/2, img.getHeight()/2);
+                AffineTransform at = AffineTransform.getRotateInstance(rot,c.x,c.y);
+                AffineTransformOp atop;
+                atop= new AffineTransformOp(at,AffineTransformOp.TYPE_BILINEAR);
+                BufferedImage imgdest = atop.filter(img, null);
+                Image imgDest = (Image) imgdest;
+                
+                buttons.get(bidx).setIcon((ImageIcon)imgdest);*/
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
+            }
+            
+            else{
+                if(opciones.size() > 1){
+                    
+                    
+                    
+                    String direcciones[] = new String[opciones.size()];
+                    int i=0;
+                    for(PairRot pair: opciones){
+                        
+                        direcciones[i] = pair.getNombre();
+                        i++;
+                    }
+                    int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "hacia donde", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
+                    
+                }
+                
+                
             }
         }
         
