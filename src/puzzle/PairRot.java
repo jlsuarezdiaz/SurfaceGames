@@ -11,19 +11,19 @@ package puzzle;
  */
 public class PairRot {
     private String nombre;
-    private double Rot;
+    private float rot;
     
-    public PairRot(String n, double rot){
+    public PairRot(String n, float rot){
         this.nombre = n;
-        this.Rot = rot;
+        this.rot = rot;
     }
     
     public void setNombre(String n){
         this.nombre=n;
     }
     
-    public void setRot(double rot){
-        this.Rot = rot;
+    public void setRot(float rot){
+        this.rot = rot;
     }
     
     public String getNombre(){
@@ -31,6 +31,6 @@ public class PairRot {
     }
     
     public double getRot(){
-        return this.Rot;
+        return this.rot;
     }
 }

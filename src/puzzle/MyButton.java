@@ -89,7 +89,7 @@ class MyButton extends JButton {
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(deg),i.getIconWidth()/2,i.getIconHeight()/2);
         g.setTransform(at);
         i.paintIcon(null, g, 0, 0);
-        //g.dispose();
+        g.dispose();
         
         setIcon(new ImageIcon(bi));
     }

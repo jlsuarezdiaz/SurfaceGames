@@ -347,29 +347,30 @@ public class PuzzlePanel extends GamePanel{
                 Image imgDest = (Image) imgdest;
                 
                 buttons.get(bidx).setIcon((ImageIcon)imgdest);*/
-                buttons.get(bidx).rotate(90);
+                buttons.get(bidx).rotate((int)opciones.get(0).getRot());
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
             }
             
-            else{
-                if(opciones.size() > 1){
-                    
-                    
-                    
-                    String direcciones[] = new String[opciones.size()];
-                    int i=0;
-                    for(PairRot pair: opciones){
-                        
-                        direcciones[i] = pair.getNombre();
-                        i++;
-                    }
-                    int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "¿Hacia dónde?", "Escoge", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
-                    
+            else if(opciones.size() > 1){
+                  
+                String direcciones[] = new String[opciones.size()];
+                int i=0;
+                for(PairRot pair: opciones){
+                    direcciones[i] = pair.getNombre();
+                    i++;
                 }
-                
-                
+                int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "¿Hacia dónde?", "Escoge", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
+                System.out.println(opcionSeleccionada);
+                if(opcionSeleccionada >= 0){
+                    buttons.get(bidx).rotate((int)(opciones.get(opcionSeleccionada).getRot()));
+                    Collections.swap(buttons, bidx, lidx);
+                    updateButtons();
+                }
             }
+                
+                
+            
         }
         
 
