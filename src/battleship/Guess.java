@@ -34,7 +34,6 @@ public class Guess {
             return true;
 
         } else {
-//            System.out.println("MISS");
             cpu();
             return false;
         }
@@ -48,7 +47,6 @@ public class Guess {
         int button = guess - 200;
 
         if (PlaceShips.getpLocations().contains(guess)) {
-//            System.out.println("guess is " + guess);
             cCurrentHits.add(guess);
 
             if (mode == 0 || mode == 1) {

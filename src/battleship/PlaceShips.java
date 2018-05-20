@@ -3,6 +3,7 @@ package battleship;
 import java.awt.Color;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import javax.swing.Icon;
 import surfacegames.*;
 
 //rename shipLocations?
@@ -22,7 +23,12 @@ public class PlaceShips {
     private static boolean secondSpot = false;
     private static boolean pVertical;
     private static ArrayList<Integer> pLocations = new ArrayList<>();
-
+    private final Icon barco_verde = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-verde.png"));
+    private final Icon barco_azul = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-azul.png"));
+    private final Icon barco_rojo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-rojo.png"));
+    private final Icon barco_amarillo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-amarillo.png"));
+    private final Icon barco_negro = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png"));
+    
     public static ArrayList<Integer> getpLocations() {
         return pLocations;
     }
@@ -94,20 +100,20 @@ public class PlaceShips {
         pAddShips = true;
     }
     
-    public static Color getCurrentPlayerShipColor(){
-        Color shipColor = null;
+    public Icon getCurrentPlayerShipColor(){
+        Icon shipColor = null;
         switch(currentShip){
             case 2:
-                shipColor = Color.GREEN;
+                shipColor = barco_verde;
                 break;
             case 3:
-                shipColor = Color.BLUE;
+                shipColor = barco_azul;
                 break;
             case 4:
-                shipColor = Color.YELLOW;
+                shipColor = barco_amarillo;
                 break;
             case 5:
-                shipColor = Color.BLACK;
+                shipColor = barco_negro;
                 break;
         }
         return shipColor;

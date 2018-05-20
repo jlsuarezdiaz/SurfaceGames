@@ -60,13 +60,13 @@ public class Gui extends JFrame implements ActionListener {
             buttons[i] = new JButton(Integer.toString(i));
             buttons[i].setBorder(new LineBorder(Color.BLACK));
             if (PlaceShips.cLocations.contains(100 + i)) {
-                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+//                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
 //                buttons[i
 //                
-//                buttons[i].setBackground(Color.gray); //change color to see cpu ships
+                buttons[i].setBackground(Color.gray); //change color to see cpu ships
             } else {
-//                buttons[i].setBackground(Color.gray);
-                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
+                buttons[i].setBackground(Color.gray);
+//                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
 //                buttons[i].setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
             }
             buttons[i].setActionCommand((num * 100) + i + "");
@@ -94,16 +94,17 @@ public class Gui extends JFrame implements ActionListener {
                     button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-roto.png")));
                     button.setEnabled(false);
                 } else {
+                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
                     button.setEnabled(false);
-                    button.setBackground(Color.LIGHT_GRAY);
                 }
 
             } else if (bCoord >= 200 && PlaceShips.pAddShips) {
                 PlaceShips.player(bCoord,surface);
+                PlaceShips g = new PlaceShips();
                 if (PlaceShips.getpLocations().contains(bCoord)) {
                     button.setEnabled(false);
-                    button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
-                    button.setBackground(PlaceShips.getCurrentPlayerShipColor());
+                    System.out.println(getClass().getResource("/battleship/media/barco.png"));
+                    button.setDisabledIcon(g.getCurrentPlayerShipColor());
                 }
             }
         }
