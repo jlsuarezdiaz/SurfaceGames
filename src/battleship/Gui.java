@@ -60,14 +60,9 @@ public class Gui extends JFrame implements ActionListener {
             buttons[i] = new JButton(Integer.toString(i));
             buttons[i].setBorder(new LineBorder(Color.BLACK));
             if (PlaceShips.cLocations.contains(100 + i)) {
-//                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
-//                buttons[i
-//                
                 buttons[i].setBackground(Color.gray); //change color to see cpu ships
             } else {
                 buttons[i].setBackground(Color.gray);
-//                buttons[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
-//                buttons[i].setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png")));
             }
             buttons[i].setActionCommand((num * 100) + i + "");
             buttons[i].setPreferredSize(new Dimension(100,100));
@@ -103,7 +98,6 @@ public class Gui extends JFrame implements ActionListener {
                 PlaceShips g = new PlaceShips();
                 if (PlaceShips.getpLocations().contains(bCoord)) {
                     button.setEnabled(false);
-                    System.out.println(getClass().getResource("/battleship/media/barco.png"));
                     button.setDisabledIcon(g.getCurrentPlayerShipColor());
                 }
             }
