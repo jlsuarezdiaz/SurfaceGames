@@ -5,21 +5,39 @@ import java.awt.Color;
 public class CheckGame {
 
     //cpu ships
-    private static int cPortaaviones = 5;
-    private static int cAcorazado = 4;
-    private static int cCrucero = 3;
-    private static int cSubmarino = 3;
-    private static int cLancha = 2;
-    private static int cAllShips = cPortaaviones + cAcorazado + cCrucero + cSubmarino + cLancha;
+    private static int cPortaaviones;
+    private static int cAcorazado;
+    private static int cCrucero;
+    private static int cSubmarino;
+    private static int cLancha;
+    private static int cAllShips;
 
     //player ships
-    private static int pPortaaviones = 5;
-    private static int pAcorazado = 4;
-    private static int pCrucero = 3;
-    private static int pSubmarino = 3;
-    private static int pLancha = 2;
-    private static int pAllShips = pPortaaviones + pAcorazado + pCrucero + pSubmarino + pLancha;
+    private static int pPortaaviones;
+    private static int pAcorazado;
+    private static int pCrucero;
+    private static int pSubmarino;
+    private static int pLancha;
+    private static int pAllShips;
 
+    
+    public static void init() {
+        //cpu ships
+        cPortaaviones = 5;
+        cAcorazado = 4;
+        cCrucero = 3;
+        cSubmarino = 3;
+        cLancha = 2;
+        cAllShips = cPortaaviones + cAcorazado + cCrucero + cSubmarino + cLancha;
+
+        //player ships
+        pPortaaviones = 5;
+        pAcorazado = 4;
+        pCrucero = 3;
+        pSubmarino = 3;
+        pLancha = 2;
+        pAllShips = pPortaaviones + pAcorazado + pCrucero + pSubmarino + pLancha;
+    }
     public static boolean player(String ship) {
 
         if (ship.equals("PORTAAVIONES")) {

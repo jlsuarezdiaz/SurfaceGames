@@ -44,7 +44,7 @@ public class Guess {
 
     public static void cpu() {
         int guess = cpuGuess();
-        int button = guess - 200;
+        int button = guess - 200 >= 0 ? guess - 200 : 0 ;
 
         if (PlaceShips.getpLocations().contains(guess)) {
             cCurrentHits.add(guess);
@@ -68,8 +68,6 @@ public class Guess {
             }
         } else {
             Gui.buttons[button].setEnabled(false);
-//            Gui.buttons[button].setBackground(Color.LIGHT_GRAY);
-
         }
         cGuesses.add(guess);
     }
@@ -220,14 +218,16 @@ public class Guess {
                     removeGuesses(i);
                 }
         }
-        if (cCurrentHits.size() == 0) {
+        if (cCurrentHits.isEmpty()) {
             mode = 0;
         }
     }
 
     private static void removeGuesses(int i) {
-        if (cCurrentHits.contains(PlaceShips.getpLocations().get(i))) {
-            cCurrentHits.remove(cCurrentHits.indexOf(PlaceShips.getpLocations().get(i)));
+        if (i < PlaceShips.getpLocations().size()){
+            if (cCurrentHits.contains(PlaceShips.getpLocations().get(i))) {
+                cCurrentHits.remove(cCurrentHits.indexOf(PlaceShips.getpLocations().get(i)));
+            }
         }
     }
 
