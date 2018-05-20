@@ -242,11 +242,13 @@ public class PlaceShips {
             secondSpot = true;
             return true;
         } else if (secondSpot) {
+            // Aquí se comprueba si la nave puede seguir construyéndose en dirección vectical
             if(okVertical && checkValidVertical(button, currentShip - 2)){
                 pVertical = true;
                 pLocations.add(button);
                 secondSpot = false;
                 return true;
+            // Aquí se comprueba si la nave puede seguir construyéndose en dirección horizontal                
             }else if(okHorizontal && checkValidHorizontal(button, currentShip - 2)){
                 pVertical = false;
                 pLocations.add(button);

@@ -19,13 +19,15 @@ public class Gui extends JFrame implements ActionListener {
     private static JLabel text;
     private static JFrame f;
     private static JPanel container ;
-    private static Gui gui;
+    private static Gui gui = new Gui();
     private static Surface surface;
     //sonidos
-    private static Map<String, Clip> soundEffects;
-    
+    private static Map<String, Clip> soundEffects = new HashMap<String, Clip>();
+
+
     public static void main(String[] args) {
-        gui = new Gui();
+        gui.addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
+        gui.addSoundEffect("agua", "/surfacegames/media/agua.wav");
         CheckGame.init();
         Guess.reset();
         PlaceShips.init();
@@ -42,7 +44,6 @@ public class Gui extends JFrame implements ActionListener {
         return surface;
     }
     private static void createGui() {
-        soundEffects = new HashMap<String,Clip>();
         f = new JFrame("HUNDIR LA FLOTA");
         buttons = new JButton[NUM_BUTTONS];
         f.setResizable(false);
@@ -104,9 +105,12 @@ public class Gui extends JFrame implements ActionListener {
             //code here to handle user clicking on grid
             if (bCoord < 200) {
                 if (Guess.player(bCoord)) {
+                    gui.playSoundEffect("explosion");
+                    
                     button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-roto.png")));
                     button.setEnabled(false);
                 } else {
+                    gui.playSoundEffect("agua");
                     button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
                     button.setEnabled(false);
                 }
