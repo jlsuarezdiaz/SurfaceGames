@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.midi.SysexMessage;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -69,6 +70,7 @@ public class PuzzlePanel extends GamePanel{
 
     public PuzzlePanel() {
         initUI();
+        addSoundEffect("win","/surfacegames/media/epic_win.wav");
     }
     
     /*Métodos abstractos*/
@@ -175,12 +177,20 @@ public class PuzzlePanel extends GamePanel{
                     lastButton.putClientProperty("position", new Point(i, j));
                 } else {
                     buttons.add(button);
+                    button.setId(j+col*i+1);
                 }
             }
         }
         
-        //Collections.shuffle(buttons);
+        boolean solvable = false;
         buttons.add(lastButton);
+        
+        while(!solvable){
+            Collections.shuffle(buttons);
+            solvable = isSolvable();
+            System.out.println(solvable);
+        }
+        //buttons.add(lastButton);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
             MyButton btn = buttons.get(i);
@@ -315,6 +325,55 @@ public class PuzzlePanel extends GamePanel{
         return !isOnBorderOrBeyond(p);
     }
     
+    private int findEmptyPosition(){
+        for(int i = 0; i < NUMBER_OF_BUTTONS; i++){
+            if(buttons.get(i).getId()==0){
+                System.out.println("--");
+                System.out.println(i);
+                System.out.println(fil);
+                System.out.println(fil-i/fil);
+                System.out.println("--");
+                return fil - i/fil; 
+            }
+        }
+        return -1;
+    }
+    
+    private int getInvCount(){
+        int invCount = 0;
+        for(int i = 0; i < NUMBER_OF_BUTTONS-1; i++){
+            for(int j = i+1; j < NUMBER_OF_BUTTONS; j++){
+                if(buttons.get(i).getId() != 0 && buttons.get(j).getId() != 0 && buttons.get(i).getId() > buttons.get(j).getId()){
+                    invCount++;
+                }
+            }
+        }
+        System.out.println(invCount);
+        return invCount;
+    }
+    
+    private boolean isSolvable(){
+        if(fil != col){
+            return true; //NOT IMPLEMENTED
+        }
+        else{
+            int N = fil;
+            int invCount = getInvCount();
+            if((N & 1) != 0){ //Impar
+                return (invCount & 1) == 0; //soluble solo si inversiones pares.
+            }
+            else{
+                int pos = findEmptyPosition();
+                if((pos & 1) == 0){
+                    return (invCount & 1) != 0; //soluble si el hueco esta en fila par (desde el final) e inversiones impares
+                }
+                else{
+                    return (invCount & 1) == 0; //soluble si el hueco esta en fila impar e inversiones pares
+                }
+            }
+        }
+    }
+    
     private class ClickAction extends AbstractAction {
 
         @Override
@@ -371,8 +430,10 @@ public class PuzzlePanel extends GamePanel{
                     buttons.get(bidx).rotate((int)(opciones.get(opcionSeleccionada).getRot()));
                     Collections.swap(buttons, bidx, lidx);
                     updateButtons();
+                    
                 }
             }
+            System.out.println(isSolvable());
                 
         }
         
@@ -460,6 +521,7 @@ public class PuzzlePanel extends GamePanel{
         if(terminado){
            JOptionPane.showMessageDialog(this, "Ha conseguido terminar el puzzle.",
                     "¡Enhorabuena!", JOptionPane.INFORMATION_MESSAGE); 
+            playSoundEffect("win");
         }
        
     }

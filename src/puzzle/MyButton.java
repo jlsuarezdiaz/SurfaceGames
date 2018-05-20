@@ -28,11 +28,13 @@ class MyButton extends JButton {
     private boolean isLastButton;
     
     private int rotation;
+    
+    private int id = 0;
 
     public MyButton() {
 
         super();
-
+        setId(0);
         initUI();
     }
 
@@ -96,5 +98,17 @@ class MyButton extends JButton {
     
     public int getRotation(){
         return this.rotation;
+    }
+    
+    public void setId(int id){
+        this.id = id;
+        setToolTipText(Integer.toString(id));
+        if(id == 0){
+            setToolTipText("Desplaza una pieza aquí.");
+        }
+    }
+    
+    public int getId(){
+        return id;
     }
 }
