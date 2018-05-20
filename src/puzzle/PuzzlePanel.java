@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.midi.SysexMessage;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -49,7 +50,7 @@ import static utils.Math.mod;
 
 
 public class PuzzlePanel extends GamePanel{
-    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS};
+    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS, Surface.TORUS_2};
 
     private JPanel panel;
     private JPanel ventanaEmergente;
@@ -69,6 +70,7 @@ public class PuzzlePanel extends GamePanel{
 
     public PuzzlePanel() {
         initUI();
+        addSoundEffect("win","/surfacegames/media/epic_win.wav");
     }
     
     /*Métodos abstractos*/
@@ -90,6 +92,13 @@ public class PuzzlePanel extends GamePanel{
     private final int N_COLS = 4;
     private int CELL_SIZE_X ;
     private int CELL_SIZE_Y;
+    
+    private float getPuzzleRotationChange(Point puzzle_coord){
+        //Coordenadas de panel —> Coordenadas de panel canónicas
+        Point p = new Point(puzzle_coord.x*CELL_SIZE_X, puzzle_coord.y*CELL_SIZE_Y);
+        //Coordenadas de panel canónicas —> Coordenadas de mina canónicas
+        return getRotationChange(p);
+    }
     
     private int getCanonicalPosition(int pos){
         //Posicion --> Coordenadas de mina
@@ -144,18 +153,13 @@ public class PuzzlePanel extends GamePanel{
         CELL_SIZE_X = width/col;
         CELL_SIZE_Y = height/fil;
         
-        
-        
         add(panel, BorderLayout.CENTER);
 
         for (int i = 0; i < fil; i++) {
-
             for (int j = 0; j < col; j++) {
-
                 image = createImage(new FilteredImageSource(resized.getSource(),
                         new CropImageFilter(j * width / col, i * height / fil,
                                 (width / col), height / fil)));
-                
                 
                 MyButton button = new MyButton(image);
                 button.putClientProperty("position", new Point(i, j));
@@ -168,12 +172,20 @@ public class PuzzlePanel extends GamePanel{
                     lastButton.putClientProperty("position", new Point(i, j));
                 } else {
                     buttons.add(button);
+                    button.setId(j+col*i+1);
                 }
             }
         }
         
-        Collections.shuffle(buttons);
+        boolean solvable = false;
         buttons.add(lastButton);
+        
+        while(!solvable){
+            Collections.shuffle(buttons);
+            solvable = isSolvable();
+            //System.out.println(solvable);
+        }
+        //buttons.add(lastButton);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
             MyButton btn = buttons.get(i);
@@ -181,6 +193,9 @@ public class PuzzlePanel extends GamePanel{
             btn.setBorder(BorderFactory.createLineBorder(Color.gray));
             btn.addActionListener(new ClickAction());
         }
+        
+        //Por si está bien desde el principio
+        checkSolution();
         
     }
     
@@ -247,17 +262,15 @@ public class PuzzlePanel extends GamePanel{
        }  */
        
        String nombres[] = new String[]{
-           new String("Arriba"),
            new String("Izquierda"),
-           new String("Derecha"),
+           new String("Arriba"),
            new String("Abajo"),
+           new String("Derecha"),
            
        };
        
        ArrayList<PairRot> pairs = new ArrayList<PairRot>();
-       
-       
-       
+              
        Point neighborhood[] = new Point[]{
             new Point(mc.x-1, mc.y  ), //PSOE
             
@@ -270,22 +283,17 @@ public class PuzzlePanel extends GamePanel{
        float rotaciones[] = new float[4];
        
        Point lastNuevo = getCanonicalPosition(last);
-       System.out.println("__________");
-       System.out.println("bidx"+bidx);
-       System.out.println("lidx"+lidx);
-       System.out.println("MC:"+mc);
-       System.out.println("LAST:"+last);
-       System.out.println("LASTN:"+lastNuevo);
+       
        int indice = 0;
        ArrayList<Point> validos = new ArrayList<Point>();
        for(Point p: neighborhood){
-           System.out.println("P:"+p);
+           
             if(isPositionValid(p)){
-                rotaciones[indice] = getRotationChange(p);
+                rotaciones[indice] =  getPuzzleRotationChange(p);
                 Point canonical = getCanonicalPosition(p);
-                System.out.println("PC:"+canonical);
+                
                 int canon_pos = puzzleCoordToPosition(canonical);
-                System.out.println("cp"+canon_pos);
+                
                 
                 if(canon_pos == lidx){
                     PairRot pair= new PairRot(nombres[indice], rotaciones[indice]);
@@ -312,6 +320,55 @@ public class PuzzlePanel extends GamePanel{
         return !isOnBorderOrBeyond(p);
     }
     
+    private int findEmptyPosition(){
+        for(int i = 0; i < NUMBER_OF_BUTTONS; i++){
+            if(buttons.get(i).getId()==0){
+                //System.out.println("--");
+                //System.out.println(i);
+               // System.out.println(fil);
+                //System.out.println(fil-i/fil);
+                //System.out.println("--");
+                return fil - i/fil; 
+            }
+        }
+        return -1;
+    }
+    
+    private int getInvCount(){
+        int invCount = 0;
+        for(int i = 0; i < NUMBER_OF_BUTTONS-1; i++){
+            for(int j = i+1; j < NUMBER_OF_BUTTONS; j++){
+                if(buttons.get(i).getId() != 0 && buttons.get(j).getId() != 0 && buttons.get(i).getId() > buttons.get(j).getId()){
+                    invCount++;
+                }
+            }
+        }
+        //System.out.println(invCount);
+        return invCount;
+    }
+    
+    private boolean isSolvable(){
+        if(fil != col){
+            return true; //NOT IMPLEMENTED
+        }
+        else{
+            int N = fil;
+            int invCount = getInvCount();
+            if((N & 1) != 0){ //Impar
+                return (invCount & 1) == 0; //soluble solo si inversiones pares.
+            }
+            else{
+                int pos = findEmptyPosition();
+                if((pos & 1) == 0){
+                    return (invCount & 1) != 0; //soluble si el hueco esta en fila par (desde el final) e inversiones impares
+                }
+                else{
+                    return (invCount & 1) == 0; //soluble si el hueco esta en fila impar e inversiones pares
+                }
+            }
+        }
+    }
+    
     private class ClickAction extends AbstractAction {
 
         @Override
@@ -331,9 +388,6 @@ public class PuzzlePanel extends GamePanel{
 
             JButton button = (JButton) e.getSource();
             int bidx = buttons.indexOf(button);
-            
-            
-           
       
             //Solo una opcion
             ArrayList<PairRot> opciones = validateMovement(bidx, lidx);
@@ -352,32 +406,32 @@ public class PuzzlePanel extends GamePanel{
                 Image imgDest = (Image) imgdest;
                 
                 buttons.get(bidx).setIcon((ImageIcon)imgdest);*/
+                buttons.get(bidx).rotate((int)opciones.get(0).getRot());
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
             }
             
-            else{
-                if(opciones.size() > 1){
-                    
-                    
-                    
-                    String direcciones[] = new String[opciones.size()];
-                    int i=0;
-                    for(PairRot pair: opciones){
-                        
-                        direcciones[i] = pair.getNombre();
-                        i++;
-                    }
-                    int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "hacia donde", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
+            else if(opciones.size() > 1){
+                  
+                String direcciones[] = new String[opciones.size()];
+                int i=0;
+                for(PairRot pair: opciones){
+                    direcciones[i] = pair.getNombre();
+                    i++;
+                }
+                int opcionSeleccionada = JOptionPane.showOptionDialog(panel, "¿Hacia dónde?", "Escoge", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,  direcciones, null);
+
+                if(opcionSeleccionada >= 0){
+                    buttons.get(bidx).rotate((int)(opciones.get(opcionSeleccionada).getRot()));
+                    Collections.swap(buttons, bidx, lidx);
+                    updateButtons();
                     
                 }
-                
-                
             }
+            //System.out.println(isSolvable());
+                
         }
         
-
-
         private void updateButtons() {
             
             panel.removeAll();
@@ -398,17 +452,85 @@ public class PuzzlePanel extends GamePanel{
             current.add((Point) btn.getClientProperty("position"));
         }
         
-        ArrayList<ArrayList<Point>> sols = createSolutions();
-
-        for(ArrayList<Point> solution : sols){
-            if (compareList(solution, current)) {
-            JOptionPane.showMessageDialog(this, "Terminado!!!!",
-                    "Congratulation", JOptionPane.INFORMATION_MESSAGE);
-        }
+        //Encontramos la posición en el tablero del botón 0
+        
+        //Encontramos el índice
+        int index_first = -1;
+        for(MyButton b: buttons){
+            if(b.getId() == 1){
+                index_first = buttons.indexOf(b);
+            }
         }
         
+        int x = (int)current.get(index_first).getX();
+        int y = (int) current.get(index_first).getY();
+
+        int rot = (int) buttons.get(index_first).getRotation();
+
+        List<Point> solution = new ArrayList<>();
+        //Creamos las soluciones
+        if(rot!=0){
+            //Creamos el vector solución con giros
+            for(int fila = 0; fila < fil; fila++){
+                for(int columna = 0; columna < col; columna++){
+                    if(rot == 180 && (this.getSurface() == Surface.V_SPHERE||this.getSurface() == Surface.H_SPHERE||this.getSurface() == Surface.TORUS)){ 
+                        solution.add(new Point(x-fila,y-columna));
+                    }else if(rot == 90 && this.getSurface() == Surface.TORUS){
+                        solution.add(new Point(x+columna,y+fila));
+                    }else if(rot == 270 && this.getSurface() == Surface.TORUS){
+                        solution.add(new Point(x-columna,y-fila));
+                    }
+                }
+            } 
+        }else{
+            //Creamos el vector solución clásica
+            for(int fila = 0; fila < fil; fila++){
+                for(int columna = 0; columna < col; columna++){
+                    solution.add(new Point(x+fila,y+columna));
+                }
+            }
+        }
+        
+        boolean terminado = true;
+        
+        //Comprobamos si las soluciones son correctas
+        
+        //Si hay giros -> tiene que haberlo en todas las fichas
+        if(rot != 0){
+            for(MyButton btn: buttons){
+                if(rot != btn.getRotation()){
+                    terminado = false;
+                }
+            }
+        }
+        
+        //Por si no era solución por los giros
+        if(terminado){
+            //Para cada uno de los puntos de la solución
+            for(Point s : solution){
+                //Compruebo si tiene posición válida en la superficie en cuestión
+                if(!isPositionValid(s)){
+                    terminado = false;
+                }else{
+                    //Calculo sus coordenadas canónicas
+                    Point canonical_point = getCanonicalPosition(s);
+                    if(solution.indexOf(s) != current.indexOf(canonical_point)){
+                        terminado = false;
+                    }
+                }
+            }  
+        }
+               
+        
+        if(terminado){
+           JOptionPane.showMessageDialog(this, "Ha conseguido terminar el puzzle.",
+                    "¡Enhorabuena!", JOptionPane.INFORMATION_MESSAGE); 
+            playSoundEffect("win");
+        }
+       
     }
     
+    /*
     private ArrayList<ArrayList<Point>> createSolutions(){
         Surface tipo = this.getSurface();
         
@@ -482,7 +604,7 @@ public class PuzzlePanel extends GamePanel{
         return all_sol;
         
         
-    }
+    }*/
 
     public static boolean compareList(List ls1, List ls2) {
         return ls1.toString().contentEquals(ls2.toString());
