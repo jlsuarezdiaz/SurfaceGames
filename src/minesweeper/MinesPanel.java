@@ -75,6 +75,10 @@ public class MinesPanel extends GamePanel {
         setDoubleBuffered(true);
         addMouseListener(new MinesAdapter());
         newGame();
+        
+        addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
+        addSoundEffect("coin", "/surfacegames/media/coin.wav");
+        addSoundEffect("win","/surfacegames/media/epic_win.wav");
     }
     
     private Point positionToMineCoord(int pos){
@@ -195,9 +199,7 @@ public class MinesPanel extends GamePanel {
             }
         }
         
-        addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
-        addSoundEffect("coin", "/surfacegames/media/coin.wav");
-        addSoundEffect("win","/surfacegames/media/epic_win.wav");
+        
     }
     
     public void find_empty_cells(int j) {
