@@ -140,19 +140,6 @@ public class PlaceShips {
             
             switch(Gui.getSurface()){
                 case V_SPHERE:
-                    //Identificar parte superior e inferior
-                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
-                        okVertical = true;
-                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
-                        okVertical = true;
-                    //Identificar mitades lateral izquierdo
-                    if(lastButt%10 == 0 && abs(lastButt-button)==90) //!!!
-                        okVertical = true;
-                    //Identificar mitades lateral derecho
-                    if(lastButt%10==9 && abs(lastButt-button)==90) //!!!
-                        okVertical = true;
-                break;
-                case H_SPHERE:
                     //Identificar laterales
                     if(lastButt%10 == 0 && (button-9)==lastButt)
                         okHorizontal = true;
@@ -163,7 +150,20 @@ public class PlaceShips {
                         okHorizontal=true;
                     //Identificar mitades parte inferior
                     if(lastButt>=290 && lastButt<=299 && (lastButt+button)%10==9)
-                        okHorizontal=true;
+                        okHorizontal=true;                                        
+                break;
+                case H_SPHERE:
+                    //Identificar parte superior e inferior
+                    if(lastButt >=200 && lastButt<=209 && (button-90)==lastButt)
+                        okVertical = true;
+                    else if(lastButt >=290 && lastButt<=299 && (button+90)==lastButt)
+                        okVertical = true;
+                    //Identificar mitades lateral izquierdo
+                    if(lastButt%10 == 0 && (abs(lastButt-200)+abs(button-200))==90) 
+                        okVertical = true;
+                    //Identificar mitades lateral derecho
+                    if(lastButt%10==9 && (abs(lastButt-209)+abs(button-209))==90)
+                        okVertical = true;                    
                 break;
                 case TORUS:
                     //Identificar laterales
