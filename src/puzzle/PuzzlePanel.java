@@ -153,18 +153,13 @@ public class PuzzlePanel extends GamePanel{
         CELL_SIZE_X = width/col;
         CELL_SIZE_Y = height/fil;
         
-        
-        
         add(panel, BorderLayout.CENTER);
 
         for (int i = 0; i < fil; i++) {
-
             for (int j = 0; j < col; j++) {
-
                 image = createImage(new FilteredImageSource(resized.getSource(),
                         new CropImageFilter(j * width / col, i * height / fil,
                                 (width / col), height / fil)));
-                
                 
                 MyButton button = new MyButton(image);
                 button.putClientProperty("position", new Point(i, j));
@@ -188,7 +183,7 @@ public class PuzzlePanel extends GamePanel{
         while(!solvable){
             Collections.shuffle(buttons);
             solvable = isSolvable();
-            System.out.println(solvable);
+            //System.out.println(solvable);
         }
         //buttons.add(lastButton);
 
@@ -328,11 +323,11 @@ public class PuzzlePanel extends GamePanel{
     private int findEmptyPosition(){
         for(int i = 0; i < NUMBER_OF_BUTTONS; i++){
             if(buttons.get(i).getId()==0){
-                System.out.println("--");
-                System.out.println(i);
-                System.out.println(fil);
-                System.out.println(fil-i/fil);
-                System.out.println("--");
+                //System.out.println("--");
+                //System.out.println(i);
+               // System.out.println(fil);
+                //System.out.println(fil-i/fil);
+                //System.out.println("--");
                 return fil - i/fil; 
             }
         }
@@ -348,7 +343,7 @@ public class PuzzlePanel extends GamePanel{
                 }
             }
         }
-        System.out.println(invCount);
+        //System.out.println(invCount);
         return invCount;
     }
     
@@ -433,7 +428,7 @@ public class PuzzlePanel extends GamePanel{
                     
                 }
             }
-            System.out.println(isSolvable());
+            //System.out.println(isSolvable());
                 
         }
         
@@ -458,10 +453,19 @@ public class PuzzlePanel extends GamePanel{
         }
         
         //Encontramos la posición en el tablero del botón 0
-        int x = (int)current.get(0).getX();
-        int y = (int) current.get(0).getX();
+        
+        //Encontramos el índice
+        int index_first = -1;
+        for(MyButton b: buttons){
+            if(b.getId() == 1){
+                index_first = buttons.indexOf(b);
+            }
+        }
+        
+        int x = (int)current.get(index_first).getX();
+        int y = (int) current.get(index_first).getY();
 
-        int rot = (int) buttons.get(0).getRotation();
+        int rot = (int) buttons.get(index_first).getRotation();
 
         List<Point> solution = new ArrayList<>();
         //Creamos las soluciones
