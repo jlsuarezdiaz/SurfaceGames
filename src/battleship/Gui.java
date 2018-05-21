@@ -116,7 +116,7 @@ public class Gui extends JFrame implements ActionListener {
                 }
 
             } else if (bCoord >= 200 && PlaceShips.pAddShips) {
-                PlaceShips.player(bCoord,surface);
+                PlaceShips.player(bCoord);
                 PlaceShips g = new PlaceShips();
                 if (PlaceShips.getpLocations().contains(bCoord)) {
                     button.setEnabled(false);

@@ -127,7 +127,7 @@ public class PlaceShips {
         return shipColor;
     }
     //rules for player placement of ships
-    public static boolean player(int button, Surface surface) {
+    public static boolean player(int button) {
 
         int size = pLocations.size();
         int lastButt;
@@ -241,7 +241,7 @@ public class PlaceShips {
             firstSpot = false;
             secondSpot = true;
             return true;
-        } else if (secondSpot) {
+        } else if (secondSpot && Gui.getSurface() == Surface.DISK) {
             // Aquí se comprueba si la nave puede seguir construyéndose en dirección vectical
             if(okVertical && checkValidVertical(button, currentShip - 2)){
                 pVertical = true;
