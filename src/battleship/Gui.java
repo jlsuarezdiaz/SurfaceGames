@@ -2,10 +2,6 @@ package battleship;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -21,16 +17,14 @@ public class Gui extends JFrame implements ActionListener {
     private static JPanel container ;
     private static Gui gui = new Gui();
     private static Surface surface;
-    //sonidos
-    private static Map<String, Clip> soundEffects = new HashMap<String, Clip>();
-
+ 
 
     public static void main(String[] args) {
-        gui.addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
-        gui.addSoundEffect("agua", "/surfacegames/media/agua.wav");
+        //gui.addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
+        //gui.addSoundEffect("agua", "/surfacegames/media/agua.wav");
         CheckGame.init();
         Guess.reset();
-    //    PlaceShips.init();
+        PlaceShips.init();
        
         PlaceShips.cpu();
         createGui();
@@ -65,7 +59,7 @@ public class Gui extends JFrame implements ActionListener {
         container.add(gui.createGrid(2)).setBounds(550, 20, 500, 500);       
         //Mensaje
         container.add(message);
-        message.setBounds(250, 550, 500, 20);
+        message.setBounds(250, 550, 600, 20);
         
         f.setContentPane(container);
         //Tamaño ventana juego
@@ -105,12 +99,12 @@ public class Gui extends JFrame implements ActionListener {
             //code here to handle user clicking on grid
             if (bCoord < 200) {
                 if (Guess.player(bCoord)) {
-                    gui.playSoundEffect("explosion");
+//                    gui.playSoundEffect("explosion");
                     
                     button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-roto.png")));
                     button.setEnabled(false);
                 } else {
-                    gui.playSoundEffect("agua");
+//                    gui.playSoundEffect("agua");
                     button.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/battleship/media/mar.png")));
                     button.setEnabled(false);
                 }
@@ -135,24 +129,5 @@ public class Gui extends JFrame implements ActionListener {
     public static void message(String text) {
         Gui.text.setText(text);
 
-    }
-    // Código para sonidos :D
-    public void addSoundEffect(String key, String path) {
-        try {
-            Clip c = AudioSystem.getClip();
-            c.open(AudioSystem.getAudioInputStream(getClass().getResource(path)));
-            soundEffects.put(key, c);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void playSoundEffect(String key) {
-        Clip c = soundEffects.get(key);
-        if (c != null) {
-            c.stop();
-            c.setMicrosecondPosition(0);
-            c.start();
-        }
     }
 }

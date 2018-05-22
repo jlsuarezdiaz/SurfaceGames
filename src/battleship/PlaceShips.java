@@ -29,6 +29,15 @@ public class PlaceShips {
     private final Icon barco_amarillo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-amarillo.png"));
     private final Icon barco_negro = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png"));
     
+    
+    public static void init(){
+        currentShip = -1;
+        pAddShips = false; //determines when player can add their ships
+        firstSpot = true;
+        secondSpot = false;
+        pLocations = new ArrayList<>();
+    }
+    
     public static ArrayList<Integer> getpLocations() {
         return pLocations;
     }
