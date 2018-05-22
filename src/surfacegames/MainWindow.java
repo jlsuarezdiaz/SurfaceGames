@@ -308,7 +308,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void snakeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snakeMenuItemActionPerformed
         try{
-            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
             repaint();
         }catch(Exception ex){
             ex.printStackTrace();
@@ -404,7 +404,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void puzzleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puzzleMenuItemActionPerformed
         // TODO add your handling code here:
         try{
-            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
             repaint();
         }catch(Exception ex){
             ex.printStackTrace();
@@ -414,7 +414,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void minesweeperMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minesweeperMenuItemActionPerformed
         try{
-            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/disco.jpg")));
             repaint();
         }catch(Exception ex){
             ex.printStackTrace();

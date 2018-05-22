@@ -86,7 +86,8 @@ public class MinesPanel extends GamePanel {
     }
     
     private int mineCoordToPosition(Point mine_coord){
-        return mine_coord.y*N_COLS + mine_coord.x;
+        System.out.println(mine_coord);
+        return ((mine_coord!=null)?(mine_coord.y*N_COLS + mine_coord.x):-1);
     }
     
     private Point getCanonicalPosition(Point mine_coord){
@@ -94,7 +95,7 @@ public class MinesPanel extends GamePanel {
         Point p = new Point(mine_coord.x*CELL_SIZE, mine_coord.y*CELL_SIZE);
         p = getCanonicalCoordinates(p, new Dimension(CELL_SIZE,CELL_SIZE));
         //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
-        return new Point(p.x/CELL_SIZE,p.y/CELL_SIZE);
+        return (p != null)?new Point(p.x/CELL_SIZE,p.y/CELL_SIZE):null;
     }
     
     private boolean isPositionValid(Point mine_coord){
@@ -189,10 +190,12 @@ public class MinesPanel extends GamePanel {
                 for(Point p: neighborhood){
                     if(isPositionValid(p)){
                         Point canonical = getCanonicalPosition(p);
-                        int canon_pos = mineCoordToPosition(canonical);
-                        
-                        if (field[canon_pos] != COVERED_MINE_CELL)
-                            field[canon_pos] += 1;
+                        if(canonical != null){
+                            int canon_pos = mineCoordToPosition(canonical);
+
+                            if (field[canon_pos] != COVERED_MINE_CELL)
+                                field[canon_pos] += 1;
+                        }
                     }
                 }             
                 
@@ -221,11 +224,13 @@ public class MinesPanel extends GamePanel {
         for(Point p: neighborhood){
             if(isPositionValid(p)){
                 Point canonical = getCanonicalPosition(p);
-                int canon_pos = mineCoordToPosition(canonical);
-                if(field[canon_pos] > MINE_CELL){
-                    field[canon_pos] -= COVER_FOR_CELL;
-                    if(field[canon_pos] == EMPTY_CELL){
-                        find_empty_cells(canon_pos);
+                if(canonical != null){
+                    int canon_pos = mineCoordToPosition(canonical);
+                    if(field[canon_pos] > MINE_CELL){
+                        field[canon_pos] -= COVER_FOR_CELL;
+                        if(field[canon_pos] == EMPTY_CELL){
+                            find_empty_cells(canon_pos);
+                        }
                     }
                 }
             }

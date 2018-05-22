@@ -317,18 +317,29 @@ public abstract class GamePanel extends javax.swing.JPanel{
             {
                 float t = ((float)h/w);
                 float s = ((float)w/h);
-                
-                if(y < 0 && x < w/2){
+                if(y < 0 && x < 0){
+                    psurf = null; //Undefined point in not tessellable surface
+                }
+                else if(y < 0 && x < w/2){
                     psurf = new Point((int)(s*mod(y,h)),h/2 - (int)(t*x) - gy);
                 }
                 else if(y < 0 && x < w){
                     psurf = new Point((int)(s*mod(y,h)),h - (int)(t*(x-w/2)) - gy);
+                }
+                else if(x >= w && y < 0){
+                    psurf = null;
                 }
                 else if(x >= w && y < h/2){
                     psurf = new Point(w/2 - (int)(s*y) - gx, (int)(t*mod(x,w)));
                 }
                 else if(x >= w && y < h){
                     psurf = new Point(w - (int)(s*(y - h/2))- gx, (int)(t*mod(x,w)));
+                }
+                else if(x >= w && y >= h){
+                    psurf = null;
+                }
+                else if(y >= h && x < 0){
+                    psurf = null;
                 }
                 else if(y >= h && x < w/2){
                     psurf = new Point((int)(s*mod(y,h)), h/2 - (int)(t*x) -gy);
