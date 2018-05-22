@@ -147,10 +147,10 @@ public class PlaceShips {
                         okHorizontal = true;
                     //Identificar mitades parte superior
                     if(lastButt>=200 && lastButt<=209 && (lastButt+button)%10==9)
-                        okHorizontal=true;
+                        okVertical=true;
                     //Identificar mitades parte inferior
                     if(lastButt>=290 && lastButt<=299 && (lastButt+button)%10==9)
-                        okHorizontal=true;                                        
+                        okVertical=true;                                        
                 break;
                 case H_SPHERE:
                     //Identificar parte superior e inferior
@@ -160,10 +160,10 @@ public class PlaceShips {
                         okVertical = true;
                     //Identificar mitades lateral izquierdo
                     if(lastButt%10 == 0 && (abs(lastButt-200)+abs(button-200))==90) 
-                        okVertical = true;
+                        okHorizontal = true;
                     //Identificar mitades lateral derecho
                     if(lastButt%10==9 && (abs(lastButt-209)+abs(button-209))==90)
-                        okVertical = true;                    
+                        okHorizontal = true;                    
                 break;
                 case TORUS:
                     //Identificar laterales
@@ -221,7 +221,7 @@ public class PlaceShips {
             }
             currentShip = SUBMARINO;
         }
-        if (size >= 15 && size < 17) {
+        if (size >= 15) {
             if (size == 16) {
                 Gui.message("Encuentra los barcos de tu adversario en el tablero de la izquierda");
             }
@@ -252,7 +252,7 @@ public class PlaceShips {
             if (pVertical) {
                 if (okVertical) {
                     pLocations.add(button);
-                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
+                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15) {
                         firstSpot = true;
                     }
                     return true;
@@ -263,7 +263,7 @@ public class PlaceShips {
             } else if (!pVertical) {
                 if (okHorizontal) {
                     pLocations.add(button);
-                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
+                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15) {
                         firstSpot = true;
                     }
                     return true;
