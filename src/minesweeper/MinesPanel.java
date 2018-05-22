@@ -226,7 +226,7 @@ public class MinesPanel extends GamePanel {
                 Point canonical = getCanonicalPosition(p);
                 if(canonical != null){
                     int canon_pos = mineCoordToPosition(canonical);
-                    if(field[canon_pos] > MINE_CELL){
+                    if(field[canon_pos] > MINE_CELL && (field[canon_pos] != COVERED_MINE_CELL)){ //TODO: el segundo término del AND es un parche para solucionar el bug del 2-toro (la mina en la esquina no detecta un no vecino y este sí alcanza la mina.
                         field[canon_pos] -= COVER_FOR_CELL;
                         if(field[canon_pos] == EMPTY_CELL){
                             find_empty_cells(canon_pos);
