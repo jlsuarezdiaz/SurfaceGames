@@ -3,6 +3,7 @@ package battleship;
 import java.awt.Color;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.Icon;
 import surfacegames.*;
 
@@ -100,13 +101,37 @@ public class PlaceShips {
     }
 
     public static void cpu() {
-        addShip(PORTAAVIONES);
-        addShip(ACORAZADO);
-        addShip(CRUCERO);
-        addShip(SUBMARINO);
-        addShip(LANCHA);
-//        System.out.println(cLocations);
+        // las direcciones de las naves son consecutivas
+        switch(Gui.getSurface()){
+            case V_SPHERE:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+                break;
+            case H_SPHERE:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(110, 180, 181, 182, 183, 189, 119, 118, 117, 149, 148, 147, 195, 105, 115, 142, 143));
+                break;
+            case TORUS:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(149, 148, 147, 146, 145, 108, 198, 188, 178, 104, 194, 184, 191, 181, 171, 140, 141));
+                break;
+//            case V_CYLINDER:
+//                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+//                break;
+//            case H_CYLINDER:
+//                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+//                break;
+            default:
+                addShip(PORTAAVIONES);
+                addShip(ACORAZADO);
+                addShip(CRUCERO);
+                addShip(SUBMARINO);
+                addShip(LANCHA);                
+        }
+
+        System.out.println(cLocations);
         pAddShips = true;
+        
     }
     
     public Icon getCurrentPlayerShipColor(){
@@ -233,6 +258,7 @@ public class PlaceShips {
         if (size >= 15) {
             if (size == 16) {
                 Gui.message("Encuentra los barcos de tu adversario en el tablero de la izquierda");
+                System.out.println(pLocations);
             }
             currentShip = LANCHA;
         }
