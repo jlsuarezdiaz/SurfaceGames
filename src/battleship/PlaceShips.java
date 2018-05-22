@@ -15,14 +15,14 @@ public class PlaceShips {
     public static final int CRUCERO = 3;
     public static final int SUBMARINO = 3;
     public static final int LANCHA = 2;
-    public static ArrayList<Integer> cLocations = new ArrayList<>();
+    public static ArrayList<Integer> cLocations;
     //for Player
-    private static int currentShip = -1;
-    public static boolean pAddShips = false; //determines when player can add their ships
-    private static boolean firstSpot = true;
-    private static boolean secondSpot = false;
+    private static int currentShip;
+    public static boolean pAddShips; //determines when player can add their ships
+    private static boolean firstSpot;
+    private static boolean secondSpot;
     private static boolean pVertical;
-    private static ArrayList<Integer> pLocations = new ArrayList<>();
+    private static ArrayList<Integer> pLocations;
     private final Icon barco_verde = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-verde.png"));
     private final Icon barco_azul = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-azul.png"));
     private final Icon barco_rojo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-rojo.png"));
@@ -33,6 +33,14 @@ public class PlaceShips {
         return pLocations;
     }
 
+    public static void init(){
+        cLocations = new ArrayList<>();
+        pLocations = new ArrayList<>();
+        currentShip = -1;
+        pAddShips = false; //determines when player can add their ships
+        firstSpot = true;
+        secondSpot = false;
+    }
     //rules for cpu placement of ships
     private static boolean shipOrientation(int startPoint, int ship) { //return true if vertical
         int gridMax = 199;
@@ -119,9 +127,8 @@ public class PlaceShips {
         return shipColor;
     }
     //rules for player placement of ships
-    public static boolean player(int button, Surface surface) {
+    public static boolean player(int button) {
 
-        int ship = 0;
         int size = pLocations.size();
         int lastButt;
         boolean okVertical = false;
@@ -131,11 +138,12 @@ public class PlaceShips {
             lastButt = pLocations.get(pLocations.size() - 1);
             
             //Posiciones básicas
-            if(abs(button-lastButt)==1 && 
-                    !(lastButt%10==9 && button%10==0) && 
-                    !(button%10==9 && lastButt%10==0)) // horizontal
-                    okHorizontal = true;
-            else if(abs(button-lastButt)==10) // vertical
+            if (abs(button - lastButt) == 1
+                    && !(lastButt-1 == button && lastButt % 10 == 0)
+                    && !(lastButt % 10 == 9 && lastButt+1 == button) // horizontal
+                    ){
+                okHorizontal = true;
+            }else if(abs(button-lastButt)==10) // vertical
                 okVertical = true;
             
             switch(Gui.getSurface()){
@@ -233,12 +241,14 @@ public class PlaceShips {
             firstSpot = false;
             secondSpot = true;
             return true;
-        } else if (secondSpot) {
+        } else if (secondSpot && Gui.getSurface() == Surface.DISK) {
+            // Aquí se comprueba si la nave puede seguir construyéndose en dirección vectical
             if(okVertical && checkValidVertical(button, currentShip - 2)){
                 pVertical = true;
                 pLocations.add(button);
                 secondSpot = false;
                 return true;
+            // Aquí se comprueba si la nave puede seguir construyéndose en dirección horizontal                
             }else if(okHorizontal && checkValidHorizontal(button, currentShip - 2)){
                 pVertical = false;
                 pLocations.add(button);
