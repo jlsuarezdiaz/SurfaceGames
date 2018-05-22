@@ -334,7 +334,7 @@ public class MainWindow extends javax.swing.JFrame {
         JInternalFrame iw = desktop.getSelectedFrame();
         selectedSurface = Surface.TORUS;
         try{
-            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/toro.jpg")));
+            this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/donut.png")));
             repaint();
         }catch(Exception ex){
             ex.printStackTrace();
