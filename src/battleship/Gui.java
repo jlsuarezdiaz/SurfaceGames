@@ -30,7 +30,7 @@ public class Gui extends JFrame implements ActionListener {
         gui.addSoundEffect("agua", "/surfacegames/media/agua.wav");
         CheckGame.init();
         Guess.reset();
-        PlaceShips.init();
+    //    PlaceShips.init();
        
         PlaceShips.cpu();
         createGui();
