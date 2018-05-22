@@ -3,6 +3,7 @@ package battleship;
 import java.awt.Color;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.Icon;
 import surfacegames.*;
 
@@ -15,32 +16,33 @@ public class PlaceShips {
     public static final int CRUCERO = 3;
     public static final int SUBMARINO = 3;
     public static final int LANCHA = 2;
-    public static ArrayList<Integer> cLocations;
+    public static ArrayList<Integer> cLocations = new ArrayList<>();
     //for Player
-    private static int currentShip;
-    public static boolean pAddShips; //determines when player can add their ships
-    private static boolean firstSpot;
-    private static boolean secondSpot;
+    private static int currentShip = -1;
+    public static boolean pAddShips = false; //determines when player can add their ships
+    private static boolean firstSpot = true;
+    private static boolean secondSpot = false;
     private static boolean pVertical;
-    private static ArrayList<Integer> pLocations;
+    private static ArrayList<Integer> pLocations = new ArrayList<>();
     private final Icon barco_verde = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-verde.png"));
     private final Icon barco_azul = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-azul.png"));
     private final Icon barco_rojo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-rojo.png"));
     private final Icon barco_amarillo = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco-amarillo.png"));
     private final Icon barco_negro = new javax.swing.ImageIcon(getClass().getResource("/battleship/media/barco.png"));
     
-    public static ArrayList<Integer> getpLocations() {
-        return pLocations;
-    }
-
+    
     public static void init(){
-        cLocations = new ArrayList<>();
-        pLocations = new ArrayList<>();
         currentShip = -1;
         pAddShips = false; //determines when player can add their ships
         firstSpot = true;
         secondSpot = false;
+        pLocations = new ArrayList<>();
     }
+    
+    public static ArrayList<Integer> getpLocations() {
+        return pLocations;
+    }
+
     //rules for cpu placement of ships
     private static boolean shipOrientation(int startPoint, int ship) { //return true if vertical
         int gridMax = 199;
@@ -99,13 +101,37 @@ public class PlaceShips {
     }
 
     public static void cpu() {
-        addShip(PORTAAVIONES);
-        addShip(ACORAZADO);
-        addShip(CRUCERO);
-        addShip(SUBMARINO);
-        addShip(LANCHA);
-//        System.out.println(cLocations);
+        // las direcciones de las naves son consecutivas
+        switch(Gui.getSurface()){
+            case V_SPHERE:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+                break;
+            case H_SPHERE:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(110, 180, 181, 182, 183, 189, 119, 118, 117, 149, 148, 147, 195, 105, 115, 142, 143));
+                break;
+            case TORUS:
+                // HECHO
+                cLocations = new ArrayList(Arrays.asList(149, 148, 147, 146, 145, 108, 198, 188, 178, 104, 194, 184, 191, 181, 171, 140, 141));
+                break;
+//            case V_CYLINDER:
+//                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+//                break;
+//            case H_CYLINDER:
+//                cLocations = new ArrayList(Arrays.asList(191, 198, 188, 178, 168, 108, 101, 111, 121, 149, 140, 141, 104, 114, 124, 174, 164));
+//                break;
+            default:
+                addShip(PORTAAVIONES);
+                addShip(ACORAZADO);
+                addShip(CRUCERO);
+                addShip(SUBMARINO);
+                addShip(LANCHA);                
+        }
+
+        System.out.println(cLocations);
         pAddShips = true;
+        
     }
     
     public Icon getCurrentPlayerShipColor(){
@@ -127,8 +153,9 @@ public class PlaceShips {
         return shipColor;
     }
     //rules for player placement of ships
-    public static boolean player(int button, Surface surface) {
+    public static boolean player(int button) {
 
+        int ship = 0;
         int size = pLocations.size();
         int lastButt;
         boolean okVertical = false;
@@ -138,12 +165,11 @@ public class PlaceShips {
             lastButt = pLocations.get(pLocations.size() - 1);
             
             //Posiciones básicas
-            if (abs(button - lastButt) == 1
-                    && !(lastButt-1 == button && lastButt % 10 == 0)
-                    && !(lastButt % 10 == 9 && lastButt+1 == button) // horizontal
-                    ){
-                okHorizontal = true;
-            }else if(abs(button-lastButt)==10) // vertical
+            if(abs(button-lastButt)==1 && 
+                    !(lastButt%10==9 && button%10==0) && 
+                    !(button%10==9 && lastButt%10==0)) // horizontal
+                    okHorizontal = true;
+            else if(abs(button-lastButt)==10) // vertical
                 okVertical = true;
             
             switch(Gui.getSurface()){
@@ -155,10 +181,10 @@ public class PlaceShips {
                         okHorizontal = true;
                     //Identificar mitades parte superior
                     if(lastButt>=200 && lastButt<=209 && (lastButt+button)%10==9)
-                        okHorizontal=true;
+                        okVertical=true;
                     //Identificar mitades parte inferior
                     if(lastButt>=290 && lastButt<=299 && (lastButt+button)%10==9)
-                        okHorizontal=true;                                        
+                        okVertical=true;                                        
                 break;
                 case H_SPHERE:
                     //Identificar parte superior e inferior
@@ -168,10 +194,10 @@ public class PlaceShips {
                         okVertical = true;
                     //Identificar mitades lateral izquierdo
                     if(lastButt%10 == 0 && (abs(lastButt-200)+abs(button-200))==90) 
-                        okVertical = true;
+                        okHorizontal = true;
                     //Identificar mitades lateral derecho
                     if(lastButt%10==9 && (abs(lastButt-209)+abs(button-209))==90)
-                        okVertical = true;                    
+                        okHorizontal = true;                    
                 break;
                 case TORUS:
                     //Identificar laterales
@@ -229,9 +255,10 @@ public class PlaceShips {
             }
             currentShip = SUBMARINO;
         }
-        if (size >= 15 && size < 17) {
+        if (size >= 15) {
             if (size == 16) {
                 Gui.message("Encuentra los barcos de tu adversario en el tablero de la izquierda");
+                System.out.println(pLocations);
             }
             currentShip = LANCHA;
         }
@@ -260,7 +287,7 @@ public class PlaceShips {
             if (pVertical) {
                 if (okVertical) {
                     pLocations.add(button);
-                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
+                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15) {
                         firstSpot = true;
                     }
                     return true;
@@ -271,7 +298,7 @@ public class PlaceShips {
             } else if (!pVertical) {
                 if (okHorizontal) {
                     pLocations.add(button);
-                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15 || pLocations.size() == 17) {
+                    if (pLocations.size() == 5 || pLocations.size() == 9 || pLocations.size() == 12 || pLocations.size() == 15) {
                         firstSpot = true;
                     }
                     return true;
