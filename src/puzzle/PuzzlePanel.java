@@ -208,7 +208,7 @@ public class PuzzlePanel extends GamePanel{
 
     private BufferedImage loadImage() throws IOException {
 
-        BufferedImage bimg = ImageIO.read(new File("src/puzzle/icesid.jpg"));
+        BufferedImage bimg = ImageIO.read(getClass().getResource("/puzzle/icesid.jpg"));
 
         return bimg;
     }
