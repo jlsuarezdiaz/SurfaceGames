@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.Control;
+import javax.sound.sampled.FloatControl;
 import static utils.Math.mod;
 
 /**
@@ -63,6 +65,22 @@ public abstract class GamePanel extends javax.swing.JPanel{
     public Dimension getDimension(){
         return this.dim;
     }
+    
+    private void drawBorderVerticalLeft(Graphics2D g2d, int w, int h, int offset){
+        g2d.drawLine(offset, offset, offset, h-offset);
+    }
+    
+    private void drawBorderVerticalRight(Graphics2D g2d, int w, int h, int offset){
+        g2d.drawLine(w-offset, offset, w-offset, h-offset);
+    }
+    
+    private void drawBorderHorizontalUp(Graphics2D g2d, int w, int h, int offset){
+        g2d.drawLine(offset, offset, w-offset, offset);
+    }
+    
+    private void drawBorderHorizontalDown(Graphics2D g2d, int w, int h, int offset){
+        g2d.drawLine(offset, h-offset, w-offset, h-offset);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -86,6 +104,7 @@ public abstract class GamePanel extends javax.swing.JPanel{
         Color startColor4 = Color.ORANGE;
         Color endColor4 = new Color(160, 82, 45); // BROWN
         
+        Color borderColor = Color.GRAY;
                 
         int w = dim.width;
         int h = dim.height;
@@ -100,6 +119,13 @@ public abstract class GamePanel extends javax.swing.JPanel{
         //int grosor = (int) stroke.getLineWidth();
         int offset = (int) stroke.getLineWidth()/2;
         switch(surface){
+            case DISK:
+                g2d.setPaint(borderColor);
+                drawBorderHorizontalUp(g2d, w, h, offset);
+                drawBorderHorizontalDown(g2d, w, h, offset);
+                drawBorderVerticalLeft(g2d, w, h, offset);
+                drawBorderVerticalRight(g2d, w, h, offset);
+                break;
             case V_CYLINDER:
                 startX = startY = endX = 0;
                 endY = h;
@@ -107,6 +133,10 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 g2d.setPaint(gradient);
                 g2d.drawLine(offset, offset, offset, h-offset);
                 g2d.drawLine(w-offset,0,w-offset,h-offset);
+                
+                g2d.setPaint(borderColor);
+                drawBorderHorizontalUp(g2d, w, h, offset);
+                drawBorderHorizontalDown(g2d, w, h, offset);
             break;
             
             case H_CYLINDER:
@@ -116,6 +146,10 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 g2d.setPaint(gradient);
                 g2d.drawLine(offset, offset, w-offset, offset);
                 g2d.drawLine(offset,h-offset,w-offset,h-offset);
+                
+                g2d.setPaint(borderColor);
+                drawBorderVerticalLeft(g2d, w, h, offset);
+                drawBorderVerticalRight(g2d, w, h, offset);
             break;
             
             case TORUS:
@@ -260,9 +294,152 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 gradient4 = new GradientPaint(startX,startY,startColor4,endX,endY,endColor4);
                 g2d.setPaint(gradient4);
                 g2d.drawLine(offset, offset, offset, h/2);
+                   
+            break;
+            
+            case PROJECTIVE:
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                gradient = new GradientPaint(startX, startY, endColor, endX, endY, startColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
                 
                 
+                startX = startY = endX = 0;
+                endY = h;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                gradient2 = new GradientPaint(startX, startY, endColor2, endX, endY, startColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset); 
+            break;
+            
+            case V_MOBIUS:
+                startX = startY = endX = 0;
+                endY = h;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                gradient = new GradientPaint(startX, startY, endColor, endX, endY, startColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset); 
                 
+                g2d.setPaint(borderColor);
+                drawBorderHorizontalUp(g2d, w, h, offset);
+                drawBorderHorizontalDown(g2d, w, h, offset);
+            break;
+            
+            case H_MOBIUS:
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                gradient = new GradientPaint(startX, startY, endColor, endX, endY, startColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
+                
+                g2d.setPaint(borderColor);
+                drawBorderVerticalLeft(g2d, w, h, offset);
+                drawBorderVerticalRight(g2d, w, h, offset);
+            break;
+            
+            case V_KLEIN:
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
+                
+                
+                startX = startY = endX = 0;
+                endY = h;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                gradient2 = new GradientPaint(startX, startY, endColor2, endX, endY, startColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset); 
+            break;
+            case H_KLEIN:
+                startX = startY = endY = 0;
+                endX = w;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w-offset, offset);
+                gradient = new GradientPaint(startX, startY, endColor, endX, endY, startColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset,h-offset,w-offset,h-offset);
+                
+                
+                startX = startY = endX = 0;
+                endY = h;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(offset, offset, offset, h-offset);
+                g2d.drawLine(w-offset,offset,w-offset,h-offset); 
+            break;
+            case PROJECTIVE_4:
+                startX = startY = endY = 0;
+                endX = w/2;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(offset, offset, w/2, offset);
+                
+                startX = w/2;
+                endX = w;
+                startY = endY = 0;
+                gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+                g2d.setPaint(gradient);
+                g2d.drawLine(w/2,offset,w-offset,offset);
+                
+                startX = endX = w;
+                startY = 0;
+                endY = h/2;
+                gradient2 = new GradientPaint(startX, startY, startColor2, endX, endY, endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w-offset, offset, w-offset, h/2);
+                
+                startX = endX = w;
+                startY = h/2;
+                endY = h;
+                gradient2 = new GradientPaint(startX,startY,startColor2,endX,endY,endColor2);
+                g2d.setPaint(gradient2);
+                g2d.drawLine(w-offset, h/2, w-offset, h-offset);
+                
+                startX = w;
+                endX = w/2;
+                startY = endY = h;
+                gradient3 = new GradientPaint(startX,startY,startColor3,endX,endY,endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(w/2,h-offset, w-offset, h-offset);
+                
+                startX = w/2;
+                endX = 0;
+                startY = endY = h;
+                gradient3 = new GradientPaint(startX,startY,startColor3,endX,endY,endColor3);
+                g2d.setPaint(gradient3);
+                g2d.drawLine(offset, h-offset, w/2, h-offset);
+                
+                startX = endX = 0;
+                startY = h;
+                endY = h/2;
+                gradient4 = new GradientPaint(startX,startY,startColor4,endX,endY,endColor4);
+                g2d.setPaint(gradient4);
+                g2d.drawLine(offset, h/2, offset, h-offset);
+                
+               
+                
+                startX = endY = endX = 0;
+                startY = w/2;
+                gradient4 = new GradientPaint(startX,startY,startColor4,endX,endY,endColor4);
+                g2d.setPaint(gradient4);
+                g2d.drawLine(offset, offset, offset, h/2);
             break;
         }
     }
@@ -359,7 +536,96 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 
             }
             break;
-              
+            
+            case PROJECTIVE:
+                if(x >= w || x < 0){ 
+                    psurf = new Point(mod(x,w),mod(h-y-gy,h));
+                }
+                else if(y >= h || y < 0){ 
+                    psurf = new Point(mod(w-x-gx,w),mod(y,h));
+                }
+                else{
+                    psurf = new Point(mod(x,w),mod(y,h));
+                }
+                break;
+            case V_MOBIUS:
+                if(x >= w || x < 0){ 
+                    psurf = new Point(mod(x,w),mod(h-y-gy,h));
+                }
+                else{
+                    psurf = new Point(p);
+                }
+                break;
+            case H_MOBIUS:
+                if(y >= h || y < 0){
+                    psurf = new Point(mod(w-x-gx,w),mod(y,h));
+                }
+                else{
+                    psurf = new Point(p);
+                }
+                break;
+            case V_KLEIN:
+                if(x >= w || x < 0){ 
+                    psurf = new Point(mod(x,w),mod(h-y-gy,h));
+                }
+                else{
+                    psurf = new Point(mod(x,w),mod(y,h));
+                }
+                break;
+            case H_KLEIN:
+                if(y >= h || y < 0){
+                    psurf = new Point(mod(w-x-gx,w),mod(y,h));
+                }
+                else{
+                    psurf = new Point(mod(x,w),mod(y,h));
+                }
+                break;
+            
+            case PROJECTIVE_4:
+            {
+                float t = ((float)h/w);
+                float s = ((float)w/h);
+                if(y < 0 && x < 0){
+                    psurf = null; //Undefined point in not tessellable surface
+                }
+                else if(y < 0 && x < w/2){
+                    psurf = new Point(w/2 + x,mod(h-y-gy,h));
+                }
+                else if(y < 0 && x < w){
+                    psurf = new Point(x - w/2,mod(h-y-gy,h));
+                }
+                else if(x >= w && y < 0){
+                    psurf = null;
+                }
+                else if(x >= w && y < h/2){
+                    psurf = new Point(mod(w-x-gx,w), h/2 + y);
+                }
+                else if(x >= w && y < h){
+                    psurf = new Point(mod(w-x-gx,w), y - h/2);
+                }
+                else if(x >= w && y >= h){
+                    psurf = null;
+                }
+                else if(y >= h && x < 0){
+                    psurf = null;
+                }
+                else if(y >= h && x < w/2){
+                    psurf = new Point(w/2 + x,mod(h-y-gy,h));
+                }
+                else if(y >= h && x < w){
+                    psurf = new Point(x - w/2,mod(h-y-gy,h));
+                }
+                else if(x < 0 && y < h/2){
+                    psurf = new Point(mod(w-x-gx,w), h/2 + y);
+                }
+                else if(x < 0 && y < h){
+                    psurf = new Point(mod(w-x-gx,w), y - h/2);
+                }
+                else{
+                    psurf = new Point(p);
+                }
+            }
+                break;
         }
         
         return psurf;
@@ -382,13 +648,21 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case H_SPHERE:
             case TORUS:
             case TORUS_2:
+            case PROJECTIVE:
+            case V_KLEIN:
+            case H_KLEIN:
+            case PROJECTIVE_4:
                 return false;
             case DISK:
                 return x==-gx || x==w || y==-gy || y == h;
             case V_CYLINDER:
+            case V_MOBIUS:
                 return y==-gy || y== h;
             case H_CYLINDER:
+            case H_MOBIUS:
                 return x==-gx || x==w;
+            
+                
         }
         return false;
     }
@@ -408,17 +682,27 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case H_SPHERE:
             case TORUS:
             case TORUS_2:
+            case PROJECTIVE:
+            case V_KLEIN:
+            case H_KLEIN:
+            case PROJECTIVE_4:
                 return false;
             case DISK:
                 return x<0 || x>=w || y<0 || y >= h;
             case V_CYLINDER:
+            case V_MOBIUS:
                 return y<0 || y>= h;
             case H_CYLINDER:
+            case H_MOBIUS:
                 return x<0 || x>=w;
         }
         return false;
     }
-    
+    /**
+     * @deprecated Use getDirectionChange or getRotationChange instead.
+     * @param p
+     * @return 
+     */
     public boolean isOnOrientationChange(Point p){
         int w = dim.width;
         int h = dim.height;
@@ -434,7 +718,6 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 return y >= h || y < 0;
             case H_SPHERE:
                 return x >= w || x < 0;
-            
         }
         return false;
     }
@@ -449,6 +732,11 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case V_CYLINDER:
             case H_CYLINDER:
             case TORUS:
+            case PROJECTIVE:
+            case V_MOBIUS:
+            case H_MOBIUS:
+            case V_KLEIN:
+            case H_KLEIN:
                 return Direction.SAME;
             case V_SPHERE:
                 if(y >= h){
@@ -480,7 +768,20 @@ public abstract class GamePanel extends javax.swing.JPanel{
                     return Direction.LEFT;
                 }
                 else return Direction.SAME;
-            
+            case PROJECTIVE_4:
+                if(x >= w){
+                    return Direction.LEFT;
+                }
+                else if(x < 0){
+                    return Direction.RIGHT;
+                }
+                else if(y >= h){
+                    return Direction.UP;
+                }
+                else if(y < 0){
+                    return Direction.DOWN;
+                }
+                else return Direction.SAME;
         }
         return null;
     }
@@ -501,6 +802,11 @@ public abstract class GamePanel extends javax.swing.JPanel{
             case V_CYLINDER:
             case H_CYLINDER:
             case TORUS:
+            case PROJECTIVE:
+            case V_MOBIUS:
+            case H_MOBIUS:
+            case V_KLEIN:
+            case H_KLEIN:
                 return 0;
             case V_SPHERE:
                 if(y >= h || y < 0){
@@ -526,7 +832,11 @@ public abstract class GamePanel extends javax.swing.JPanel{
                     return 270;
                 }
                 else return 0;
-            
+            case PROJECTIVE_4:
+                if(x >= w || x < 0 || y >= h || y < 0){
+                    return 180;
+                }
+                else return 0;
         }
         return 0;
     }
@@ -551,7 +861,8 @@ public abstract class GamePanel extends javax.swing.JPanel{
     public void playBackgroundSound(){
         if(this.backgroundSound != null){
             try{
-                
+                //FloatControl c = (FloatControl)backgroundClip.getControl(FloatControl.Type.SAMPLE_RATE);
+                //c.setValue(1.2f);
                 backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
                 backgroundClip.start();
             }

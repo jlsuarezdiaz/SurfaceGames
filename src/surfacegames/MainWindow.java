@@ -92,6 +92,24 @@ public class MainWindow extends javax.swing.JFrame {
             case TORUS_2:
                 this.torus2MenuItem.setSelected(true);
                 break;
+            case PROJECTIVE:
+                this.projectiveMenuItem.setSelected(true);
+                break;
+            case V_MOBIUS:
+                this.vMobiusMenuItem.setSelected(true);
+                break;
+            case H_MOBIUS:
+                this.hMobiusMenuItem.setSelected(true);
+                break;
+            case V_KLEIN:
+                this.vKleinMenuItem.setSelected(true);
+                break;
+            case H_KLEIN:
+                this.hKleinMenuItem.setSelected(true);
+                break;
+            case PROJECTIVE_4:
+                this.projective4MenuItem.setSelected(true);
+                break;
         }
         Enumeration<AbstractButton> buttons = surfaceBtGroup.getElements();
         while(buttons.hasMoreElements()){
@@ -122,6 +140,24 @@ public class MainWindow extends javax.swing.JFrame {
                     break;
                 case TORUS_2:
                     this.torus2MenuItem.setEnabled(true);
+                    break;
+                case PROJECTIVE:
+                    this.projectiveMenuItem.setEnabled(true);
+                    break;
+                case V_KLEIN:
+                    this.vKleinMenuItem.setEnabled(true);
+                    break;
+                case H_KLEIN:
+                    this.hKleinMenuItem.setEnabled(true);
+                    break;
+                case V_MOBIUS:
+                    this.vMobiusMenuItem.setEnabled(true);
+                    break;
+                case H_MOBIUS:
+                    this.hMobiusMenuItem.setEnabled(true);
+                    break;
+                case PROJECTIVE_4:
+                    this.projective4MenuItem.setEnabled(true);
                     break;
                 }
             }
@@ -155,6 +191,12 @@ public class MainWindow extends javax.swing.JFrame {
         hcylinderMenuItem = new javax.swing.JRadioButtonMenuItem();
         torusMenuItem = new javax.swing.JRadioButtonMenuItem();
         torus2MenuItem = new javax.swing.JRadioButtonMenuItem();
+        projectiveMenuItem = new javax.swing.JRadioButtonMenuItem();
+        vMobiusMenuItem = new javax.swing.JRadioButtonMenuItem();
+        hMobiusMenuItem = new javax.swing.JRadioButtonMenuItem();
+        vKleinMenuItem = new javax.swing.JRadioButtonMenuItem();
+        hKleinMenuItem = new javax.swing.JRadioButtonMenuItem();
+        projective4MenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         surfaceHelpMenuItem = new javax.swing.JMenuItem();
         optionsMenu = new javax.swing.JMenu();
@@ -286,6 +328,60 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         surfaceMenu.add(torus2MenuItem);
+
+        surfaceBtGroup.add(projectiveMenuItem);
+        projectiveMenuItem.setText("Plano proyectivo");
+        projectiveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projectiveMenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(projectiveMenuItem);
+
+        surfaceBtGroup.add(vMobiusMenuItem);
+        vMobiusMenuItem.setText("Cinta de Möbius (vertical)");
+        vMobiusMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vMobiusMenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(vMobiusMenuItem);
+
+        surfaceBtGroup.add(hMobiusMenuItem);
+        hMobiusMenuItem.setText("Cinta de Möbius (horizontal)");
+        hMobiusMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hMobiusMenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(hMobiusMenuItem);
+
+        surfaceBtGroup.add(vKleinMenuItem);
+        vKleinMenuItem.setText("Botella de Klein (vertical)");
+        vKleinMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vKleinMenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(vKleinMenuItem);
+
+        surfaceBtGroup.add(hKleinMenuItem);
+        hKleinMenuItem.setText("Botella de Klein (horizontal)");
+        hKleinMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hKleinMenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(hKleinMenuItem);
+
+        surfaceBtGroup.add(projective4MenuItem);
+        projective4MenuItem.setText("4 proyectivos");
+        projective4MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projective4MenuItemActionPerformed(evt);
+            }
+        });
+        surfaceMenu.add(projective4MenuItem);
         surfaceMenu.add(jSeparator1);
 
         surfaceHelpMenuItem.setText("Ayuda");
@@ -456,6 +552,90 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_torus2MenuItemActionPerformed
 
+    private void vMobiusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vMobiusMenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.V_MOBIUS;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); //TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.V_MOBIUS);
+        }
+    }//GEN-LAST:event_vMobiusMenuItemActionPerformed
+
+    private void hMobiusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hMobiusMenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.H_MOBIUS;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); // TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.H_MOBIUS);
+        }
+    }//GEN-LAST:event_hMobiusMenuItemActionPerformed
+
+    private void projectiveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectiveMenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.PROJECTIVE;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); //TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.PROJECTIVE);
+        }
+    }//GEN-LAST:event_projectiveMenuItemActionPerformed
+
+    private void vKleinMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vKleinMenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.V_KLEIN;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); //TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.V_KLEIN);
+        }
+    }//GEN-LAST:event_vKleinMenuItemActionPerformed
+
+    private void hKleinMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hKleinMenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.H_KLEIN;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); //TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.H_KLEIN);
+        }
+    }//GEN-LAST:event_hKleinMenuItemActionPerformed
+
+    private void projective4MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projective4MenuItemActionPerformed
+        JInternalFrame iw = desktop.getSelectedFrame();
+        selectedSurface = Surface.PROJECTIVE_4;
+        try{
+            //this.desktop.setBackgroundImage(ImageIO.read(getClass().getResource("/surfacegames/media/ntorus.jpg"))); //TODO
+            repaint();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        if(iw != null){
+            ((GameWindow)iw).getGamePanel().setSurface(Surface.PROJECTIVE_4);
+        }
+    }//GEN-LAST:event_projective4MenuItemActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -463,12 +643,16 @@ public class MainWindow extends javax.swing.JFrame {
     private surfacegames.BackgroundDesktop desktop;
     private javax.swing.JRadioButtonMenuItem diskMenuItem;
     private javax.swing.JMenu gameMenu;
+    private javax.swing.JRadioButtonMenuItem hKleinMenuItem;
+    private javax.swing.JRadioButtonMenuItem hMobiusMenuItem;
     private javax.swing.JRadioButtonMenuItem hcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem hsphereMenuItem;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem minesweeperMenuItem;
     private javax.swing.JMenu newGameMenu;
     private javax.swing.JMenu optionsMenu;
+    private javax.swing.JRadioButtonMenuItem projective4MenuItem;
+    private javax.swing.JRadioButtonMenuItem projectiveMenuItem;
     private javax.swing.JMenuItem puzzleMenuItem;
     private javax.swing.JMenuItem snakeMenuItem;
     private javax.swing.JMenuItem soundMenuItem;
@@ -478,6 +662,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar topMenu;
     private javax.swing.JRadioButtonMenuItem torus2MenuItem;
     private javax.swing.JRadioButtonMenuItem torusMenuItem;
+    private javax.swing.JRadioButtonMenuItem vKleinMenuItem;
+    private javax.swing.JRadioButtonMenuItem vMobiusMenuItem;
     private javax.swing.JRadioButtonMenuItem vcylinderMenuItem;
     private javax.swing.JRadioButtonMenuItem vsphereMenuItem;
     // End of variables declaration//GEN-END:variables

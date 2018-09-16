@@ -24,5 +24,6 @@ public enum Surface {
     H_MOBIUS,
     PROJECTIVE,
     V_KLEIN,
-    H_KLEIN
+    H_KLEIN,
+    PROJECTIVE_4,
 }

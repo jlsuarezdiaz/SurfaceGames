@@ -32,7 +32,8 @@ import surfacegames.Surface;
  * @author nuria
  */
 public class SnakePanel extends AnimatedGamePanel {
-    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS,Surface.TORUS_2};
+    private static final Surface[] allowedSurfaces = {Surface.DISK,Surface.V_SPHERE,Surface.H_SPHERE,Surface.V_CYLINDER,Surface.H_CYLINDER,Surface.TORUS,Surface.TORUS_2, 
+        Surface.PROJECTIVE, Surface.V_MOBIUS, Surface.H_MOBIUS, Surface.V_KLEIN, Surface.H_KLEIN, Surface.PROJECTIVE_4};
     
     private final int MAX_DOTS = 2000; // Tamaño máximo de la serpiente
     private final int DOT_SIZE = 10;
