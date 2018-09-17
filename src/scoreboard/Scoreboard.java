@@ -7,12 +7,13 @@ package scoreboard;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import surfacegames.Scoreable;
 
 /**
  *
  * @author jlsuarezdiaz
  */
-public class Scoreboard extends javax.swing.JPanel {
+public class Scoreboard extends javax.swing.JPanel implements Scoreable{
 
     private ArrayList<Led7Cell> digits;
     
@@ -54,7 +55,7 @@ public class Scoreboard extends javax.swing.JPanel {
         }
     }
     
-    public void setValue(int value){
+    public void setScore(int value){
         this.value = value;
         clear();
    
@@ -75,6 +76,16 @@ public class Scoreboard extends javax.swing.JPanel {
         clear();
         this.repaint();
     }
+    
+    public void setHeight(int height){
+        for(int i = 0; i < digits.size(); i++){
+            digits.get(i).setHeight(height);
+        }
+    }
+    
+    public int getScore(){
+        return (this.value==null)?0:this.value;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,7 +97,9 @@ public class Scoreboard extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(0, 0, 0));
-        setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT);
+        flowLayout1.setAlignOnBaseline(true);
+        setLayout(flowLayout1);
     }// </editor-fold>//GEN-END:initComponents
 
 

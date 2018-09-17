@@ -9,6 +9,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -200,6 +201,11 @@ public class Led7Cell extends javax.swing.JPanel {
                 break;
         }
         this.repaint();
+    }
+    
+    public void setHeight(int height){
+        int width = (height*2)/3;
+        setPreferredSize(new Dimension(width,height));
     }
     
     

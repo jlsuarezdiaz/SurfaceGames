@@ -5,6 +5,8 @@
  */
 package snake;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import surfacegames.GamePanel;
 import surfacegames.GameWindow;
 import surfacegames.MainWindow;
@@ -21,12 +23,14 @@ public class SnakeWindow extends GameWindow{
     public SnakeWindow() {
         super();
         initComponents();
+        snakePanel.setScoreable(scoreboard);
         //setPreferredSize(snakePanel.getDimension());
     }
     
     public SnakeWindow(MainWindow g){
         super(g);
         initComponents();
+        snakePanel.setScoreable(scoreboard);
     }
 
     /**
@@ -38,30 +42,34 @@ public class SnakeWindow extends GameWindow{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        scoreboard = new scoreboard.Scoreboard(6);
+        scoreboard.setHeight(48);
+        scoreboard.setForegroundColor(Color.GREEN);
         snakePanel = new snake.SnakePanel();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Snake");
 
-        javax.swing.GroupLayout snakePanelLayout = new javax.swing.GroupLayout(snakePanel);
-        snakePanel.setLayout(snakePanelLayout);
-        snakePanelLayout.setHorizontalGroup(
-            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
-        );
-        snakePanelLayout.setVerticalGroup(
-            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
-        );
+        jPanel3.setLayout(new java.awt.BorderLayout());
 
-        getContentPane().add(snakePanel, java.awt.BorderLayout.CENTER);
+        scoreboard.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        scoreboard.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        jPanel3.add(scoreboard, java.awt.BorderLayout.PAGE_START);
+
+        snakePanel.setLayout(new java.awt.FlowLayout());
+        jPanel3.add(snakePanel, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel3;
+    private scoreboard.Scoreboard scoreboard;
     private snake.SnakePanel snakePanel;
     // End of variables declaration//GEN-END:variables
 

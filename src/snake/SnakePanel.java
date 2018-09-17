@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import surfacegames.AnimatedGamePanel;
 import surfacegames.Direction;
 import surfacegames.GamePanel;
+import surfacegames.Scoreable;
 import surfacegames.Surface;
 
 /**
@@ -63,6 +64,8 @@ public class SnakePanel extends AnimatedGamePanel {
     private Image head_img;
     
     private boolean pause = false;
+    
+    private Scoreable score;
 
     /**
      * Creates new form SnakePanel
@@ -72,6 +75,18 @@ public class SnakePanel extends AnimatedGamePanel {
         initComponents();
         initBoard();
         
+    }
+    
+    public SnakePanel(Scoreable s){
+        super();
+        initComponents();
+        setScoreable(s);
+        initBoard();
+    }
+    
+    public void setScoreable(Scoreable s){
+        this.score = s;
+        if(score != null) score.setScore(2*(dim.width+dim.height)/10); // Puntuación inicial: el perímetro.
     }
     
     public void initBoard(){
@@ -111,6 +126,8 @@ public class SnakePanel extends AnimatedGamePanel {
         }
         
         locateApple(); //Coloca la manzana.
+        
+        
 
         //Temporizador: controla la animación.
         // 1 (DELAY) - intervalo (en ms) en que se ejecuta el evento
@@ -179,9 +196,11 @@ public class SnakePanel extends AnimatedGamePanel {
     }
     
     public void resume(){
-        pause=false;
-        timer.start();
-        playBackgroundSound();
+        if(inGame){
+            pause=false;
+            timer.start();
+            playBackgroundSound();
+        }
     }
     
     private void checkApple(){
@@ -189,6 +208,7 @@ public class SnakePanel extends AnimatedGamePanel {
         if(snake[0].equals(apple)){
             if(dots < MAX_DOTS -1) dots++;
             playSoundEffect("coin");
+            if(score != null) score.setScore(score.getScore()+5*dots);
             locateApple();
         }
     }
@@ -265,11 +285,19 @@ public class SnakePanel extends AnimatedGamePanel {
             playSoundEffect("teleport");
         }
         
+        if(score != null){
+            score.setScore(score.getScore()-1);
+            int curr = score.getScore();
+            if(curr < 30) score.setForegroundColor(Color.RED);
+            else if(curr < 100) score.setForegroundColor(Color.YELLOW);
+            else score.setForegroundColor(Color.GREEN);
+        } //Cada paso resta 1
+        
     }
     
     private void checkCollision(){
-        // Si hemos chocado con algún border se acabó
-        if(snake[0] == null || isOnBorderOrBeyond(snake[0])){
+        // Si hemos chocado con algún border o estamos sin puntos se acabó
+        if(snake[0] == null || isOnBorderOrBeyond(snake[0]) || (score != null && score.getScore() <= 0)){
             inGame = false;
         }
         else{
@@ -284,6 +312,7 @@ public class SnakePanel extends AnimatedGamePanel {
         if(!inGame){
             timer.stop();
             stopBackgroundSound();
+            endBackgroundSound();
             playSoundEffect("explosion");
             
             try{
@@ -347,7 +376,6 @@ public class SnakePanel extends AnimatedGamePanel {
                 formKeyPressed(evt);
             }
         });
-        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed

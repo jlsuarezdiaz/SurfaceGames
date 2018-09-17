@@ -109,7 +109,7 @@ public class ScoreboardTest extends javax.swing.JFrame {
             
             led7Cell1.setNumber(i);
             scoreboard1.setForegroundColor(colors[k]);
-            scoreboard1.setValue(j);
+            scoreboard1.setScore(j);
             
             i = (i+1) % 10;
             j = j+1;
