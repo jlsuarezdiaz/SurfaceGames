@@ -138,7 +138,7 @@ public class MinesPanel extends AnimatedGamePanel {
     }
     
     private int mineCoordToPosition(Point mine_coord){
-        System.out.println(mine_coord);
+        //System.out.println(mine_coord);
         return ((mine_coord!=null)?(mine_coord.y*N_COLS + mine_coord.x):-1);
     }
     
