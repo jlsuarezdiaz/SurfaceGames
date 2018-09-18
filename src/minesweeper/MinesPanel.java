@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import static java.lang.Math.floorDiv;
@@ -22,12 +24,17 @@ import static java.lang.Math.floorDiv;
 import javax.swing.JOptionPane;
 import static java.lang.Math.floorDiv;
 import static java.lang.Math.floorDiv;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.Timer;
+import surfacegames.AnimatedGamePanel;
+import surfacegames.Scoreable;
 
 /**
  *
  * @author jlsuarezdiaz
  */
-public class MinesPanel extends GamePanel {
+public class MinesPanel extends AnimatedGamePanel {
     private static final Surface ALLOWED_SURFACES[] = {Surface.DISK,Surface.H_CYLINDER,Surface.V_CYLINDER,Surface.H_SPHERE,Surface.V_SPHERE,Surface.TORUS,Surface.TORUS_2};
     
     private final int NUM_IMAGES = 13;
@@ -51,11 +58,26 @@ public class MinesPanel extends GamePanel {
 
     private int[] field;
     private boolean inGame;
+    private boolean started;
     private int mines_left;
     private Image[] img;
 
     private int all_cells;
     //private JLabel statusbar;
+    
+    private Scoreable mines_score = null;
+    private Scoreable times_score = null;
+    private JButton theFace = null;
+    private final Icon[] face_icons = {new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/happy.png")),
+                                       new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/expecting.png")),
+                                       new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/dead.png")),
+                                       new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/easy.png"))};
+    private static final int NORMAL_FACE = 0;
+    private static final int PRESSED_FACE = 1;
+    private static final int EXPLODED_FACE = 2;
+    private static final int WIN_FACE = 3;
+    
+    private Timer timer;
     
     /**
      * Creates new form MineSweeper2
@@ -72,6 +94,8 @@ public class MinesPanel extends GamePanel {
             img[i] = (new ImageIcon(getClass().getResource("/minesweeper/media/"+i + ".png"))).getImage();
         }
         
+        timer = new Timer(1000,this);
+        
         setDoubleBuffered(true);
         addMouseListener(new MinesAdapter());
         newGame();
@@ -79,6 +103,34 @@ public class MinesPanel extends GamePanel {
         addSoundEffect("explosion", "/surfacegames/media/explosion.wav");
         addSoundEffect("coin", "/surfacegames/media/coin.wav");
         addSoundEffect("win","/surfacegames/media/epic_win.wav");
+    }
+    
+    public void setMinesScore(Scoreable s){
+        this.mines_score = s;
+        if(mines_score != null){
+            mines_score.setScore(this.mines_left);
+        }
+    }
+    
+    public void setTimeScore(Scoreable s){
+        this.times_score = s;
+        if(times_score != null){
+            times_score.setScore(0);
+        }
+    }
+    
+    public void setTheFace(JButton bt){
+        this.theFace = bt;
+        if(this.theFace != null){
+            theFace.setIcon(face_icons[NORMAL_FACE]);
+            theFace.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    newGame();
+                    repaint();
+                }
+            });
+        }
     }
     
     private Point positionToMineCoord(int pos){
@@ -152,6 +204,8 @@ public class MinesPanel extends GamePanel {
         
         random = new Random();
         inGame = true;
+        timer.stop();
+        started = false;
         mines_left = N_MINES;
         
         all_cells = N_ROWS*N_COLS;
@@ -201,7 +255,9 @@ public class MinesPanel extends GamePanel {
                 
             }
         }
-        
+        if(mines_score != null) mines_score.setScore(this.mines_left);
+        if(times_score != null) times_score.setScore(0);
+        if(theFace != null) theFace.setIcon(face_icons[NORMAL_FACE]);
         
     }
     
@@ -280,8 +336,12 @@ public class MinesPanel extends GamePanel {
         if (uncover == 0 && inGame) {
             inGame = false;
             playSoundEffect("win");
+            if(theFace != null) theFace.setIcon(face_icons[WIN_FACE]);
+            timer.stop();
             //statusbar.setText("Game won");
         } else if (!inGame){
+            if(theFace != null) theFace.setIcon(face_icons[EXPLODED_FACE]);
+            timer.stop();
             //statusbar.setText("Game lost");
         }
     }
@@ -306,6 +366,13 @@ public class MinesPanel extends GamePanel {
         super.setSurface(s);
         newGame();
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(times_score != null){
+            times_score.increaseScore(1);
+        }
+    }
     
     
     
@@ -313,76 +380,93 @@ public class MinesPanel extends GamePanel {
         
         @Override
         public void mousePressed(MouseEvent e) {
+            if(inGame){
+                int x = e.getX();
+                int y = e.getY();
 
-            int x = e.getX();
-            int y = e.getY();
+                int cCol = x / CELL_SIZE;
+                int cRow = y / CELL_SIZE;
 
-            int cCol = x / CELL_SIZE;
-            int cRow = y / CELL_SIZE;
-
-            boolean rep = false;
-
-
-            if (!inGame) {
-                newGame();
-                repaint();
-            }
+                boolean rep = false;
 
 
-            if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {
+                //if (!inGame) {
+                    //newGame();
+                    //repaint();
+                //}
 
-                if (e.getButton() == MouseEvent.BUTTON3) {
-
-                    if (field[(cRow * N_COLS) + cCol] > MINE_CELL) {
-                        rep = true;
-
-                        if (field[(cRow * N_COLS) + cCol] <= COVERED_MINE_CELL) {
-                            if (mines_left > 0) {
-                                field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;
-                                mines_left--;
-                                //statusbar.setText(Integer.toString(mines_left));
-                            } 
-                            else{
-                                //statusbar.setText("No marks left");
-                            }
-                        } 
-                        else {
-
-                            field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;
-                            mines_left++;
-                            //statusbar.setText(Integer.toString(mines_left));
-                        }
-                    }
-
-                } else {
-
-                    if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
-                        return;
-                    }
-
-                    if ((field[(cRow * N_COLS) + cCol] > MINE_CELL) &&
-                        (field[(cRow * N_COLS) + cCol] < MARKED_MINE_CELL)) {
-
-                        field[(cRow * N_COLS) + cCol] -= COVER_FOR_CELL;
-                        rep = true;
-
-                        if (field[(cRow * N_COLS) + cCol] == MINE_CELL){
-                            inGame = false;
-                            playSoundEffect("explosion");
-                        }
-                        else if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL){
-                            find_empty_cells((cRow * N_COLS) + cCol);
-                            playSoundEffect("coin");
-                        }
-                        else{
-                            playSoundEffect("coin");
-                        }
-                    }
+                if(!started){
+                    started = true;
+                    timer.start();
                 }
 
-                if (rep)
-                    repaint();
 
+                if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {
+
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+
+                        if (field[(cRow * N_COLS) + cCol] > MINE_CELL) {
+                            rep = true;
+
+                            if (field[(cRow * N_COLS) + cCol] <= COVERED_MINE_CELL) {
+                                if (mines_left > 0) {
+                                    field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;
+                                    mines_left--;
+                                    //statusbar.setText(Integer.toString(mines_left));
+                                } 
+                                else{
+                                    //statusbar.setText("No marks left");
+                                }
+                            } 
+                            else {
+
+                                field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;
+                                mines_left++;
+                                //statusbar.setText(Integer.toString(mines_left));
+                            }
+                        }
+
+                    } else {
+
+                        if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
+                            return;
+                        }
+
+                        if ((field[(cRow * N_COLS) + cCol] > MINE_CELL) &&
+                            (field[(cRow * N_COLS) + cCol] < MARKED_MINE_CELL)) {
+
+                            field[(cRow * N_COLS) + cCol] -= COVER_FOR_CELL;
+                            rep = true;
+
+                            if (field[(cRow * N_COLS) + cCol] == MINE_CELL){
+                                inGame = false;
+                                playSoundEffect("explosion");
+                            }
+                            else if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL){
+                                find_empty_cells((cRow * N_COLS) + cCol);
+                                playSoundEffect("coin");
+                            }
+                            else{
+                                playSoundEffect("coin");
+                            }
+                        }
+                    }
+
+                    if (rep)
+                        repaint();
+
+                }
+                if(mines_score != null) mines_score.setScore(mines_left);
+                if(theFace != null) theFace.setIcon(face_icons[PRESSED_FACE]);
+            }
+        }
+        
+        @Override
+        public void mouseReleased(MouseEvent e){
+            if(theFace != null){
+                if(theFace.getIcon().equals(face_icons[PRESSED_FACE])){
+                    theFace.setIcon(face_icons[NORMAL_FACE]);
+                }
             }
         }
     }

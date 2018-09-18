@@ -17,4 +17,8 @@ public interface Scoreable {
     public int getScore();
     
     public void setForegroundColor(Color c);
+    
+    public void increaseScore(int value);
+    
+    public void decreaseScore(int value);
 }

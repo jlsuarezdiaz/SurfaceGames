@@ -208,7 +208,7 @@ public class SnakePanel extends AnimatedGamePanel {
         if(snake[0].equals(apple)){
             if(dots < MAX_DOTS -1) dots++;
             playSoundEffect("coin");
-            if(score != null) score.setScore(score.getScore()+5*dots);
+            if(score != null) score.increaseScore(5*dots);
             locateApple();
         }
     }
@@ -286,7 +286,7 @@ public class SnakePanel extends AnimatedGamePanel {
         }
         
         if(score != null){
-            score.setScore(score.getScore()-1);
+            score.decreaseScore(1);
             int curr = score.getScore();
             if(curr < 30) score.setForegroundColor(Color.RED);
             else if(curr < 100) score.setForegroundColor(Color.YELLOW);

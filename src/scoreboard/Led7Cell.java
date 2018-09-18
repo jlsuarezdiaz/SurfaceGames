@@ -38,9 +38,13 @@ public class Led7Cell extends javax.swing.JPanel {
     private Boolean led7rightUpOn = false;
     private Boolean led7rightDownOn = false;
     
+    private double offset = 3.0;
+    private double corner = 8.0;
+    private float strokeWidth = 6.0f;
+    
     private static final Composite ledOff = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.3f);
     private static final Composite ledOn = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1.0f);
-    private static final Stroke ledStroke = new BasicStroke(6.0f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+    private Stroke ledStroke = new BasicStroke(strokeWidth,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND); 
     private static final RenderingHints flatten = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     
     //private Boolean[] led7on;
@@ -54,15 +58,15 @@ public class Led7Cell extends javax.swing.JPanel {
     public Led7Cell() {
         initComponents();
         //led7 = new Line2D.Double[7];
-        //led7on = new Boolean[7];
+        //led7on = new Boolean[7]; 
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         double w = this.getWidth();
         double h = this.getHeight();
-        double offset = 3.0;
-        double corner = 8.0;
+        //double offset = 3.0;
+        //double corner = 8.0;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
@@ -206,6 +210,10 @@ public class Led7Cell extends javax.swing.JPanel {
     public void setHeight(int height){
         int width = (height*2)/3;
         setPreferredSize(new Dimension(width,height));
+        offset = height/20.0;
+        corner = height/7.5;
+        strokeWidth = height/10.0f;
+        ledStroke = new BasicStroke(strokeWidth,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
     }
     
     

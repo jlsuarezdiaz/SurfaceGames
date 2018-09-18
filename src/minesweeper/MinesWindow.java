@@ -5,6 +5,7 @@
  */
 package minesweeper;
 
+import java.awt.Color;
 import surfacegames.GamePanel;
 import surfacegames.GameWindow;
 import surfacegames.MainWindow;
@@ -27,6 +28,9 @@ public class MinesWindow extends GameWindow {
     public MinesWindow(MainWindow g){
         super(g);
         initComponents();
+        mineSweeper21.setMinesScore(minesBoard);
+        mineSweeper21.setTimeScore(timeBoard);
+        mineSweeper21.setTheFace(faceBt);
     }
 
     /**
@@ -38,21 +42,51 @@ public class MinesWindow extends GameWindow {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        scorePanel = new javax.swing.JPanel();
+        minesBoard = new scoreboard.Scoreboard(3);
+        faceBt = new javax.swing.JButton();
+        timeBoard = new scoreboard.Scoreboard(4);
         mineSweeper21 = new minesweeper.MinesPanel();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Buscaminas");
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        scorePanel.setLayout(new java.awt.BorderLayout());
+
+        minesBoard.setForegroundColor(Color.RED);
+        minesBoard.setHeight(24);
+        scorePanel.add(minesBoard, java.awt.BorderLayout.LINE_START);
+
+        faceBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/happy.png"))); // NOI18N
+        faceBt.setPreferredSize(new java.awt.Dimension(28, 28));
+        scorePanel.add(faceBt, java.awt.BorderLayout.CENTER);
+
+        timeBoard.setForegroundColor(Color.CYAN);
+        timeBoard.setHeight(24);
+        scorePanel.add(timeBoard, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.add(scorePanel, java.awt.BorderLayout.PAGE_START);
+
         mineSweeper21.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(mineSweeper21, java.awt.BorderLayout.CENTER);
+        jPanel1.add(mineSweeper21, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton faceBt;
+    private javax.swing.JPanel jPanel1;
     private minesweeper.MinesPanel mineSweeper21;
+    private scoreboard.Scoreboard minesBoard;
+    private javax.swing.JPanel scorePanel;
+    private scoreboard.Scoreboard timeBoard;
     // End of variables declaration//GEN-END:variables
 
     @Override

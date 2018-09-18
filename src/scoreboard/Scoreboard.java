@@ -86,6 +86,14 @@ public class Scoreboard extends javax.swing.JPanel implements Scoreable{
     public int getScore(){
         return (this.value==null)?0:this.value;
     }
+    
+    public void increaseScore(int value){
+        setScore(this.value+value);
+    }
+    
+    public void decreaseScore(int value){
+        setScore(this.value-value);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
