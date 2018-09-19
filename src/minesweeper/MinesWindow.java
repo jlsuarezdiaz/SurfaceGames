@@ -62,6 +62,8 @@ public class MinesWindow extends GameWindow {
         scorePanel.add(minesBoard, java.awt.BorderLayout.LINE_START);
 
         faceBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/minesweeper/media/happy.png"))); // NOI18N
+        faceBt.setMaximumSize(new java.awt.Dimension(28, 28));
+        faceBt.setMinimumSize(new java.awt.Dimension(28, 28));
         faceBt.setPreferredSize(new java.awt.Dimension(28, 28));
         scorePanel.add(faceBt, java.awt.BorderLayout.CENTER);
 

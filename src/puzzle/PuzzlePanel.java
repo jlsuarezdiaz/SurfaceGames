@@ -39,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import surfacegames.GamePanel;
+import surfacegames.Scoreable;
 import surfacegames.Surface;
 import static utils.Math.mod;
 
@@ -67,10 +68,19 @@ public class PuzzlePanel extends GamePanel{
     private final int NUMBER_OF_BUTTONS = fil*col;
     private int desired_width;
     private int desired_height;
+    
+    private Scoreable score = null;
+    
+    private boolean solved = false;
 
     public PuzzlePanel() {
         initUI();
         addSoundEffect("win","/surfacegames/media/epic_win.wav");
+    }
+    
+    public void setScore(Scoreable s){
+        this.score = s;
+        if(score != null) score.setScore(0);
     }
     
     /*Métodos abstractos*/
@@ -373,8 +383,10 @@ public class PuzzlePanel extends GamePanel{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            checkButton(e);
-            checkSolution();
+            if(!solved){
+                checkButton(e);
+                checkSolution();
+            }
         }
 
         private void checkButton(ActionEvent e) {
@@ -409,6 +421,7 @@ public class PuzzlePanel extends GamePanel{
                 buttons.get(bidx).rotate((int)opciones.get(0).getRot());
                 Collections.swap(buttons, bidx, lidx);
                 updateButtons();
+                if(score != null) score.increaseScore(1);
             }
             
             else if(opciones.size() > 1){
@@ -425,7 +438,7 @@ public class PuzzlePanel extends GamePanel{
                     buttons.get(bidx).rotate((int)(opciones.get(opcionSeleccionada).getRot()));
                     Collections.swap(buttons, bidx, lidx);
                     updateButtons();
-                    
+                    if(score != null) score.increaseScore(1);
                 }
             }
             //System.out.println(isSolvable());
@@ -523,6 +536,7 @@ public class PuzzlePanel extends GamePanel{
                
         
         if(terminado){
+           solved = true;
            JOptionPane.showMessageDialog(this, "Ha conseguido terminar el puzzle.",
                     "¡Enhorabuena!", JOptionPane.INFORMATION_MESSAGE); 
             playSoundEffect("win");
