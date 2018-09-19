@@ -99,6 +99,9 @@
           </LayoutCode>
         </Container>
         <Component class="puzzle.PuzzlePanel" name="puzzlePanel">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="javax.swing.GroupLayout snakePanelLayout = new javax.swing.GroupLayout(puzzlePanel);&#xa;        puzzlePanel.setLayout(snakePanelLayout);&#xa;        snakePanelLayout.setHorizontalGroup(&#xa;            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)&#xa;            .addGap(0, 390, Short.MAX_VALUE)&#xa;        );&#xa;        snakePanelLayout.setVerticalGroup(&#xa;            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)&#xa;            .addGap(0, 268, Short.MAX_VALUE)&#xa;        );"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Center"/>

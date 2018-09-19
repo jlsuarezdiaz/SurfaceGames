@@ -42,6 +42,7 @@ import surfacegames.GamePanel;
 import surfacegames.Scoreable;
 import surfacegames.Surface;
 import static utils.Math.mod;
+import utils.SurfaceBorder;
 
 /**
  *
@@ -133,13 +134,24 @@ public class PuzzlePanel extends GamePanel{
         //Coordenadas de panel canónicas --> Coordenadas de mina canónicas
         return new Point(p.x/CELL_SIZE_X,p.y/CELL_SIZE_Y);
     }
+
+    @Override
+    public void setSurface(Surface s) {
+        super.setSurface(s); //To change body of generated methods, choose Tools | Templates.
+        panel.setBorder(new SurfaceBorder(surface,borderThickness));
+        repaint();
+    }
+     
+    
   
     private void initUI() {
         buttons = new ArrayList<>();
 
         panel = new JPanel();
         panel.setSize(this.dim);
-        panel.setBorder(BorderFactory.createLineBorder(Color.gray));
+        //panel.setBorder(BorderFactory.createLineBorder(Color.gray));
+        //panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setBorder(new SurfaceBorder(surface,borderThickness));
         panel.setLayout(new GridLayout(fil, col, 0, 0));
         
         desired_width = this.dim.width;

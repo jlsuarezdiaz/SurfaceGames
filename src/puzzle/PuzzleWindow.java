@@ -22,12 +22,14 @@ public class PuzzleWindow extends GameWindow {
     public PuzzleWindow() {
         initComponents();
         puzzlePanel.setScore(scoreboard);
+        puzzlePanel.setBorderThickness(8);
     }
     
     public PuzzleWindow(MainWindow g){
         super(g);
         initComponents();
         puzzlePanel.setScore(scoreboard);
+        puzzlePanel.setBorderThickness(8);
     }
 
     /**
@@ -51,6 +53,17 @@ public class PuzzleWindow extends GameWindow {
 
         scoreboard.setForegroundColor(Color.WHITE);
         jPanel1.add(scoreboard, java.awt.BorderLayout.PAGE_START);
+
+        javax.swing.GroupLayout snakePanelLayout = new javax.swing.GroupLayout(puzzlePanel);
+        puzzlePanel.setLayout(snakePanelLayout);
+        snakePanelLayout.setHorizontalGroup(
+            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
+        );
+        snakePanelLayout.setVerticalGroup(
+            snakePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 268, Short.MAX_VALUE)
+        );
         jPanel1.add(puzzlePanel, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
