@@ -9,6 +9,7 @@ import java.awt.Color;
 import surfacegames.GamePanel;
 import surfacegames.GameWindow;
 import surfacegames.MainWindow;
+import utils.SurfaceBorder;
 
 /**
  *
@@ -28,9 +29,10 @@ public class MinesWindow extends GameWindow {
     public MinesWindow(MainWindow g){
         super(g);
         initComponents();
-        mineSweeper21.setMinesScore(minesBoard);
-        mineSweeper21.setTimeScore(timeBoard);
-        mineSweeper21.setTheFace(faceBt);
+        minesPanel.setMinesScore(minesBoard);
+        minesPanel.setTimeScore(timeBoard);
+        minesPanel.setTheFace(faceBt);
+        minesPanel.setBorderThickness(4);
     }
 
     /**
@@ -47,7 +49,7 @@ public class MinesWindow extends GameWindow {
         minesBoard = new scoreboard.Scoreboard(3);
         faceBt = new javax.swing.JButton();
         timeBoard = new scoreboard.Scoreboard(4);
-        mineSweeper21 = new minesweeper.MinesPanel();
+        minesPanel = new minesweeper.MinesPanel();
 
         setClosable(true);
         setIconifiable(true);
@@ -73,8 +75,8 @@ public class MinesWindow extends GameWindow {
 
         jPanel1.add(scorePanel, java.awt.BorderLayout.PAGE_START);
 
-        mineSweeper21.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(mineSweeper21, java.awt.BorderLayout.CENTER);
+        minesPanel.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(minesPanel, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -85,14 +87,14 @@ public class MinesWindow extends GameWindow {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton faceBt;
     private javax.swing.JPanel jPanel1;
-    private minesweeper.MinesPanel mineSweeper21;
     private scoreboard.Scoreboard minesBoard;
+    private minesweeper.MinesPanel minesPanel;
     private javax.swing.JPanel scorePanel;
     private scoreboard.Scoreboard timeBoard;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public GamePanel getGamePanel() {
-        return mineSweeper21;
+        return minesPanel;
     }
 }

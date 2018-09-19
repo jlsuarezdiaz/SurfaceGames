@@ -40,18 +40,18 @@ public class PuzzleWindow extends GameWindow {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        puzzlePanel = new puzzle.PuzzlePanel();
         scoreboard = new scoreboard.Scoreboard(4);
+        puzzlePanel = new puzzle.PuzzlePanel();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Puzzle");
 
         jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(puzzlePanel, java.awt.BorderLayout.CENTER);
 
         scoreboard.setForegroundColor(Color.WHITE);
         jPanel1.add(scoreboard, java.awt.BorderLayout.PAGE_START);
+        jPanel1.add(puzzlePanel, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 

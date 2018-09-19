@@ -24,6 +24,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.Control;
 import javax.sound.sampled.FloatControl;
 import static utils.Math.mod;
+import utils.SurfaceBorder;
 
 /**
  *
@@ -39,6 +40,8 @@ public abstract class GamePanel extends javax.swing.JPanel{
     protected Clip backgroundClip = null;
     
     protected Map<String, Clip> soundEffects = new HashMap<String,Clip>();
+    
+    protected int borderThickness = 4;
 
     /**
      * Creates new form GamePanel
@@ -46,11 +49,22 @@ public abstract class GamePanel extends javax.swing.JPanel{
     public GamePanel() {
         initComponents();
         setDimension(dim);
+        updateBorder();
     }
     
     public void setSurface(Surface s){
         this.surface = s;
+        updateBorder();
         this.repaint();
+    }
+    
+    public void setBorderThickness(int thick){
+        this.borderThickness = thick;
+        updateBorder();
+    }
+    
+    private void updateBorder(){
+        setBorder(new SurfaceBorder(surface, borderThickness));
     }
     
     public Surface getSurface(){
@@ -87,6 +101,9 @@ public abstract class GamePanel extends javax.swing.JPanel{
         super.paintComponent(g);
         
         Graphics2D g2d = (Graphics2D)g;
+        
+        /* // -------------------- MOVED TO SurfaceBorder ------------------------------ //
+        
         
         //Definimos colores para degradado (STACKOVERFLOW)
         //TODO++: Añadir lineas para bordes (en este caso con un color fijo y que les de apariencia de borde)
@@ -442,6 +459,7 @@ public abstract class GamePanel extends javax.swing.JPanel{
                 g2d.drawLine(offset, offset, offset, h/2);
             break;
         }
+        */
     }
     
     

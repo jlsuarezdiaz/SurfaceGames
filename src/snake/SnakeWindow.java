@@ -24,6 +24,7 @@ public class SnakeWindow extends GameWindow{
         super();
         initComponents();
         snakePanel.setScoreable(scoreboard);
+        snakePanel.setBorderThickness(8);
         //setPreferredSize(snakePanel.getDimension());
     }
     
@@ -31,6 +32,7 @@ public class SnakeWindow extends GameWindow{
         super(g);
         initComponents();
         snakePanel.setScoreable(scoreboard);
+        snakePanel.setBorderThickness(8);
     }
 
     /**

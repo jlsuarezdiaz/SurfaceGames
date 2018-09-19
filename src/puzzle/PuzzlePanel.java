@@ -144,6 +144,7 @@ public class PuzzlePanel extends GamePanel{
         
         desired_width = this.dim.width;
         desired_height = this.dim.height;
+        
 
         try {
             source = loadImage();
@@ -208,6 +209,7 @@ public class PuzzlePanel extends GamePanel{
         checkSolution();
         
     }
+    
     
     
     private int getNewHeight(int w, int h) {
